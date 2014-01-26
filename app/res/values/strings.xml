@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="scantext">Start</string>
     <string name="scan_name">ScanListActivity</string>
-    <string name="Calibrate">calibrate_name</string>
+    <string name="Calibrate">Start Calibration</string>
     <string name="AddPoint">Add Router</string>
 
 </resources>

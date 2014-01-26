@@ -34,7 +34,7 @@ public class AddRouter extends Activity {
 		sb_z.setProgress(128);
 		sb_dbm.setMax(120);
 		sb_dbm.setProgress(Math.abs((data.getIntExtra("dBm", 75))));
-		ed_x.addTextChangedListener(TextWatcher)
+		//TODO sync sliders to text and vice versa
 	}
 	
 	public void Cancel()

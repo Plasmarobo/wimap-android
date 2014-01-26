@@ -25,12 +25,16 @@ public final class R {
         public static final int fake_map=0x7f020000;
         public static final int fake_map_v=0x7f020001;
         public static final int ic_launcher=0x7f020002;
+        public static final int man16=0x7f020003;
+        public static final int man32=0x7f020004;
+        public static final int man_large=0x7f020005;
     }
     public static final class id {
         public static final int TextView01=0x7f09000b;
         public static final int TextView02=0x7f090008;
         public static final int TextView03=0x7f090005;
-        public static final int action_settings=0x7f090016;
+        public static final int action_settings=0x7f090018;
+        public static final int avatar=0x7f090012;
         public static final int button1=0x7f090001;
         public static final int button2=0x7f090002;
         public static final int dBmbar=0x7f09000f;
@@ -38,15 +42,16 @@ public final class R {
         public static final int edit_Y=0x7f090007;
         public static final int edit_Z=0x7f09000a;
         public static final int edit_dBm=0x7f09000d;
-        public static final int map_image=0x7f090010;
-        public static final int power=0x7f090013;
-        public static final int scan_list=0x7f090011;
+        public static final int frame=0x7f090010;
+        public static final int map_image=0x7f090011;
+        public static final int power=0x7f090015;
+        public static final int scan_list=0x7f090013;
         public static final int scan_list_cal=0x7f090003;
-        public static final int scan_list_item=0x7f090012;
+        public static final int scan_list_item=0x7f090014;
         public static final int splash_view=0x7f090000;
-        public static final int ssid=0x7f090014;
+        public static final int ssid=0x7f090016;
         public static final int textView1=0x7f09000e;
-        public static final int uid=0x7f090015;
+        public static final int uid=0x7f090017;
         public static final int xbar=0x7f090006;
         public static final int ybar=0x7f090009;
         public static final int zbar=0x7f09000c;

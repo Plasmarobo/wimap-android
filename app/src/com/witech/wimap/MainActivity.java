@@ -78,5 +78,11 @@ public class MainActivity extends Activity {
          Toast.makeText(this,"Scanning Area", Toast.LENGTH_SHORT).show();
     }
     
+    protected void startCalibration()
+    {
+    	Intent i = new Intent(this, CalibrateActivity.class);
+    	startActivity(i);
+    }
+    
     
 }
