@@ -117,7 +117,7 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/startscan"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="0.50"
@@ -125,7 +125,7 @@
             android:text="Commit" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/startcal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"

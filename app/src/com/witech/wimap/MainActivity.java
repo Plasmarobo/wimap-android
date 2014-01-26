@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import android.net.wifi.WifiManager;
 import android.net.wifi.ScanResult;
@@ -51,7 +53,24 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
     	Log.v("MainActivity", "Created");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);   
+        setContentView(R.layout.activity_main);  
+        Button cal = (Button) findViewById(R.id.startcal);
+        Button scan = (Button) findViewById(R.id.startscan);
+        cal.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	//unregisterReceiver(wifi_rec);
+            	//Intent listIntent = new Intent(v.getContext(), ScanListActivity.class);
+    			//Log.i("MainActivity", "Starting Activity");
+    			//startActivity(listIntent);
+            	MainActivity act = (MainActivity) v.getContext();
+            	act.initScan();
+            }
+        });
+        scan.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	startActivity(new Intent(v.getContext(), MapActivity.class));
+            }
+        });
     }
 
 
@@ -76,12 +95,6 @@ public class MainActivity extends Activity {
          registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
          wifi_man.startScan();
          Toast.makeText(this,"Scanning Area", Toast.LENGTH_SHORT).show();
-    }
-    
-    protected void startCalibration()
-    {
-    	Intent i = new Intent(this, CalibrateActivity.class);
-    	startActivity(i);
     }
     
     

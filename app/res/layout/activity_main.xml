@@ -10,7 +10,7 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/startscan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,12 +19,11 @@
         android:text="@string/scantext" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/startcal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/startscan"
         android:layout_centerHorizontal="true"
-        android:onClick="startCalibration"
         android:text="@string/Calibrate" />
 
 </RelativeLayout>

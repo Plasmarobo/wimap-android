@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class CalibrateActivity extends Activity {
 	private Timer timer;
 	private BasicResult rt;
 	private RouterDatabase db;
+	
 	
 	
 	class WifiReciever extends BroadcastReceiver
@@ -66,20 +68,30 @@ public class CalibrateActivity extends Activity {
 		db = new RouterDatabase(this);
 		db.open();
 		rt = new BasicResult(0, null, null);
-		setContentView(R.layout.calibration_ui);
-		final ListView listview = (ListView) findViewById(R.id.scan_list_cal);
-		adapter = new ScanListAdapter(this);
+		setContentView(R.layout.scan_list);
+		final ListView listview = (ListView) findViewById(R.id.scan_list);
+		adapter = new ScanListAdapter(listview.getContext(), new String[] {"Loading"}, new String[] {"null"}, new int[] {-75});
 		listview.setAdapter(adapter);	
+		listview.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+
+            	Intent edit_router = new Intent(view.getContext(), AddRouter.class);
+        		rt = (BasicResult) parent.getItemAtPosition(position);
+        		edit_router.putExtra("dBm", rt.GetPower());
+        		startActivityForResult(edit_router, EDITROUTER);
+            }
+		});
 		wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi_rec = new WifiReciever();
         registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 2000);
+        timer.scheduleAtFixedRate(new WifiScanner(), 0, 5000);
 	}
 	protected void onResume()
 	{
 		timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 2000);
+        timer.scheduleAtFixedRate(new WifiScanner(), 0, 5000);
 		db.open();
 		super.onResume();
 	}
@@ -88,14 +100,6 @@ public class CalibrateActivity extends Activity {
 		timer.cancel();
 		db.close();
 		super.onPause();
-	}
-	
-	public void addRouter(AdapterView<?> arg0, View arg1, int position, long arg3)
-	{
-		Intent edit_router = new Intent(this, AddRouter.class);
-		rt = (BasicResult) arg0.getItemAtPosition(position);
-		edit_router.putExtra("dBm", rt.GetPower());
-		startActivityForResult(edit_router, EDITROUTER);
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data)

@@ -35,8 +35,6 @@ public final class R {
         public static final int TextView03=0x7f090005;
         public static final int action_settings=0x7f090018;
         public static final int avatar=0x7f090012;
-        public static final int button1=0x7f090001;
-        public static final int button2=0x7f090002;
         public static final int dBmbar=0x7f09000f;
         public static final int edit_X=0x7f090004;
         public static final int edit_Y=0x7f090007;
@@ -50,6 +48,8 @@ public final class R {
         public static final int scan_list_item=0x7f090014;
         public static final int splash_view=0x7f090000;
         public static final int ssid=0x7f090016;
+        public static final int startcal=0x7f090002;
+        public static final int startscan=0x7f090001;
         public static final int textView1=0x7f09000e;
         public static final int uid=0x7f090017;
         public static final int xbar=0x7f090006;

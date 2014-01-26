@@ -16,12 +16,11 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_Z = "z";
 	
   private static final String DATABASE_NAME = "room.db";
-  private static final int DATABASE_VERSION = 1;
+  private static final int DATABASE_VERSION = 2;
 
   // Database creation sql statement
   private static final String DATABASE_CREATE = "create table "
-      + TABLE_ROUTERS + "(id"
-      + " integer primary key autoincrement, " + COLUMN_SSID
+      + TABLE_ROUTERS + "(id integer primary key autoincrement, " + COLUMN_SSID
       + " text not null, " + COLUMN_UID + " text not null, " + COLUMN_POWER + " text not null," + COLUMN_X + " integer," + COLUMN_Y + " integer, " + COLUMN_Z + "integer);";
 
   public LocalDBHelper(Context context) {

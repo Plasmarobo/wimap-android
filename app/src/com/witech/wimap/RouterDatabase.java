@@ -79,8 +79,9 @@ public class RouterDatabase {
   public List<Router> getAllRouters() {
     List<Router> routers = new ArrayList<Router>();
 
-    Cursor cursor = database.query(LocalDBHelper.TABLE_ROUTERS,
-        allColumns, null, null, null, null, null);
+    //Cursor cursor = database.query(LocalDBHelper.TABLE_ROUTERS,
+    //    allColumns, null, null, null, null, null);
+    Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS, null);
 
     cursor.moveToFirst();
     while (!cursor.isAfterLast()) {

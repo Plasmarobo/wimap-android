@@ -3,6 +3,10 @@
     android:id="@+id/scan_list_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:longClickable="false"
     android:orientation="horizontal" >
 
     <EditText
@@ -12,11 +16,17 @@
         android:clickable="false"
         android:ems="10"
         android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:longClickable="false"
         android:textSize="@dimen/power_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:longClickable="false"
         android:orientation="vertical" >
 
         <EditText
@@ -24,7 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
-            android:focusable="false" >
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:longClickable="false" >
 
             <requestFocus />
         </EditText>
@@ -34,7 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
-            android:focusable="false" />
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:longClickable="false" />
 
     </LinearLayout>
 
