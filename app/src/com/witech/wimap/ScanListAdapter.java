@@ -43,6 +43,12 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 			values.add(new BasicResult(list.get(i)));
 		}
 	}
+	public ScanListAdapter(Context context)
+	{
+		super(context, R.layout.scan_list_item);
+		values = new ArrayList<BasicResult>();
+		this.context = context;
+	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent)

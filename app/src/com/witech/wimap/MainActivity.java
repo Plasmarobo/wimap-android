@@ -51,19 +51,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
     	Log.v("MainActivity", "Created");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if(!wifi_man.isWifiEnabled())
-        {
-        	Log.i("MainActivity", "Enabling Wireless");
-        	Toast.makeText(this, "Enabling wifi", Toast.LENGTH_SHORT).show();
-        	wifi_man.setWifiEnabled(true);
-        	wifi_man.createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY, "Router Triangulation");
-        }
-        wifi_rec = new WifiReciever();
-        registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifi_man.startScan();
-        Toast.makeText(this,"Scanning Area", Toast.LENGTH_SHORT).show();
+        setContentView(R.layout.activity_main);   
     }
 
 
@@ -73,5 +61,22 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    
+    protected void initScan()
+    {
+    	 wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+         if(!wifi_man.isWifiEnabled())
+         {
+         	Log.i("MainActivity", "Enabling Wireless");
+         	Toast.makeText(this, "Enabling wifi", Toast.LENGTH_SHORT).show();
+         	wifi_man.setWifiEnabled(true);
+         	wifi_man.createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY, "Router Triangulation");
+         }
+         wifi_rec = new WifiReciever();
+         registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+         wifi_man.startScan();
+         Toast.makeText(this,"Scanning Area", Toast.LENGTH_SHORT).show();
+    }
+    
     
 }
