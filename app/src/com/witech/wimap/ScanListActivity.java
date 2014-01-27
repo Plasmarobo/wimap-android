@@ -1,7 +1,12 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.witech.wimap.BasicResult;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -13,18 +18,22 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.View.OnClickListener;
+
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
 
 public class ScanListActivity extends Activity {
 	private WifiManager wifi_man;
 	private WifiReciever wifi_rec;
 	private List<ScanResult> wifi_list;
 	private ScanListAdapter adapter;
-	private BasicResult rt;
+	private Router rt;
 	private RouterDatabase db;
+	private Timer timer;
 	static final int EDITROUTER = 1;
 	
 	class WifiReciever extends BroadcastReceiver
@@ -38,8 +47,10 @@ public class ScanListActivity extends Activity {
 			{
 				list.add(new BasicResult(wifi_list.get(i)));
 			}
+			
 			adapter.clear();
 			adapter.addAll(list);
+			adapter.notifyDataSetChanged();
 			//wifi_man.startScan();
 		}
 	}
@@ -53,8 +64,8 @@ public class ScanListActivity extends Activity {
 		
 		db = new RouterDatabase(this);
 		db.open();
-		rt = new BasicResult(0, null, null);
-		
+		//rt = new BasicResult(0, null, null);
+		timer = new Timer();
 		final ListView listview = (ListView) findViewById(R.id.scan_list);
 		Intent viewintent = getIntent();
 		if(viewintent.hasExtra("powers") && viewintent.hasExtra("ssids") && viewintent.hasExtra("uids"))
@@ -65,30 +76,39 @@ public class ScanListActivity extends Activity {
 			adapter = new ScanListAdapter(this, ssid, uids, power);
 		}else adapter = new ScanListAdapter(this);
 		listview.setAdapter(adapter);
-		listview.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
 
-            	Intent edit_router = new Intent(view.getContext(), AddRouter.class);
-        		rt = (BasicResult) parent.getItemAtPosition(position);
-        		edit_router.putExtra("dBm", rt.GetPower());
-        		startActivityForResult(edit_router, EDITROUTER);
-            }
-		});
 		wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi_rec = new WifiReciever();
         registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifi_man.startScan();
+        timer.scheduleAtFixedRate(new TimerTask() {
+
+			@Override
+			public void run() {
+				wifi_man.startScan();
+				
+			}}, 0, 5000);
 	}
 	protected void onResume()
 	{
 		wifi_man.startScan();
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+			@Override
+			public void run() {
+				wifi_man.startScan();
+				
+			}}, 0, 5000);
 		db.open();
+		registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		super.onResume();
 	}
 	protected void onPause()
 	{
+		timer.cancel();
 		db.close();
+		unregisterReceiver(wifi_rec);
 		super.onPause();
 	}
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -97,19 +117,31 @@ public class ScanListActivity extends Activity {
 		{
 			if(resultCode == RESULT_OK)
 			{
-				Router r = new Router(data.getIntExtra("X", 0),
-						data.getIntExtra("Y", 0),
-						data.getIntExtra("Z", 0),
-						rt.GetSSID(),
-						rt.GetUID(),
-						data.getIntExtra("dBm", 0));
-				db.WriteRouter(r);
+				rt.SetX(data.getIntExtra("X", 0));
+				rt.SetY(data.getIntExtra("Y", 0));
+				rt.SetZ(data.getIntExtra("Z", 0));
+				rt.SetPower(data.getIntExtra("dBm", 0));
+				db.open();
+				db.WriteRouter(rt);
+				db.close();
 				Toast.makeText(this, "Saved Router", Toast.LENGTH_SHORT).show();
 			}
 			
 		}
 	}
-	
+	public void editRouter(View button)
+	{
+		Log.i("List", "click");
+		View row = (View)button.getParent();
+		ListView list = (ListView) row.getParent();
+		Intent edit_router = new Intent(list.getContext(), AddRouter.class);
+		TextView power = (TextView)row.findViewById(R.id.power);
+		TextView ssid = (TextView)row.findViewById(R.id.ssid);
+		TextView uid = (TextView)row.findViewById(R.id.uid);
+		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), 0);
+		edit_router.putExtra("dBm",Integer.parseInt((String) power.getText()));
+		startActivityForResult(edit_router, EDITROUTER);
+	}
 	
 	
 	

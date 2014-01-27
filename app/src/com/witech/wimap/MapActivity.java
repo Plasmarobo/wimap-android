@@ -15,6 +15,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MapActivity extends Activity {
 	private WifiManager wifi_man;
@@ -33,14 +34,18 @@ public class MapActivity extends Activity {
 		{
 			Log.i("ScanListActivity", "Scan Results updated");
 			wifi_list = wifi_man.getScanResults();
+			if(wifi_list.size() > 2)
+			{
 			List<LinearDistance> ld = new ArrayList<LinearDistance>();
 			for(int i = 0; i < wifi_list.size(); ++i)
 			{
 				ScanResult sr = wifi_list.get(i);
 				for(int j = 0; j < routers.size(); ++j)
 				{
-					Router rt = routers.get(i);
-					if(sr.BSSID == rt.GetUID())
+					Router rt = routers.get(j);
+					if(rt == null)
+						continue;
+					if(sr.BSSID.equals(rt.GetUID()))
 					{
 						ld.add(new LinearDistance(rt.GetPower(), sr.level, 0.45f, (float)rt.GetX(), (float)rt.GetY(), (float)rt.GetZ()));
 					}
@@ -58,8 +63,14 @@ public class MapActivity extends Activity {
 			}
 			user_x = user_x/distance_sum;
 			user_y = user_y/distance_sum;
+			Log.i("USER_X", Double.toString(user_x));
+			Log.i("USER_Y", Double.toString(user_y));
 			icon.setX((float)user_x);
 			icon.setY((float)user_y);
+			icon.bringToFront();
+			Toast.makeText(c, "Pos X: " + user_x + " Y:" + user_y, Toast.LENGTH_SHORT).show();
+			}
+			
 		}
 	}
 	
@@ -87,14 +98,14 @@ public class MapActivity extends Activity {
         wifi_rec = new WifiReciever();
         registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 1000);
+        timer.scheduleAtFixedRate(new WifiScanner(), 0, 3000);
         icon.setX(map.getWidth()/2);
         icon.setY(map.getHeight()/2);
     }
 	protected void onResume()
 	{
 		timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 1000);
+        timer.scheduleAtFixedRate(new WifiScanner(), 0, 3000);
 		super.onResume();
 	}
 	protected void onPause()

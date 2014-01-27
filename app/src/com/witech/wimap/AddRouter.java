@@ -3,6 +3,8 @@ package com.witech.wimap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -37,23 +39,24 @@ public class AddRouter extends Activity {
 		//TODO sync sliders to text and vice versa
 	}
 	
-	public void Cancel()
+	public void Cancel(View v)
 	{
 		setResult(RESULT_CANCEL, null);
 		finish();
 	}
 	
-	public void Commit()
+	public void Commit(View v)
 	{
+		View form = (View) v.getParent().getParent();
 		Intent result = new Intent();
-		TextView ed_x = (TextView) findViewById(R.id.edit_X);
-		TextView ed_y = (TextView) findViewById(R.id.edit_Y);
-		TextView ed_z = (TextView) findViewById(R.id.edit_Z);
-		TextView ed_dbm = (TextView) findViewById(R.id.edit_dBm);
-		result.putExtra("dBm", Integer.parseInt((String) ed_dbm.getText()));
-		result.putExtra("X", Integer.parseInt((String) ed_x.getText()));
-		result.putExtra("Y", Integer.parseInt((String) ed_y.getText()));
-		result.putExtra("Z", Integer.parseInt((String) ed_z.getText()));
+		EditText ed_x = (EditText) form.findViewById(R.id.edit_X);
+		EditText ed_y = (EditText) form.findViewById(R.id.edit_Y);
+		EditText ed_z = (EditText) form.findViewById(R.id.edit_Z);
+		EditText ed_dbm = (EditText) form.findViewById(R.id.edit_dBm);
+		result.putExtra("dBm", Integer.parseInt(ed_dbm.getText().toString()));
+		result.putExtra("X", Integer.parseInt(ed_x.getText().toString()));
+		result.putExtra("Y", Integer.parseInt(ed_y.getText().toString()));
+		result.putExtra("Z", Integer.parseInt(ed_z.getText().toString()));
 		setResult(RESULT_OK, result);
 		finish();
 	}

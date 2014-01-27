@@ -29,11 +29,11 @@
             android:label="@string/scan_name">         
         </activity>
         <activity
-            android:name="com.witech.wimap.CalibrateActivity"
+            android:name="com.witech.wimap.MapActivity"
             android:label="@string/scan_name">         
         </activity>
-        <activity
-            android:name="com.witech.wimap.MapActivity"
+         <activity
+            android:name="com.witech.wimap.AddRouter"
             android:label="@string/scan_name">         
         </activity>
     </application>

@@ -30,31 +30,33 @@ public final class R {
         public static final int man_large=0x7f020005;
     }
     public static final class id {
-        public static final int TextView01=0x7f09000b;
-        public static final int TextView02=0x7f090008;
-        public static final int TextView03=0x7f090005;
-        public static final int action_settings=0x7f090018;
-        public static final int avatar=0x7f090012;
-        public static final int dBmbar=0x7f09000f;
-        public static final int edit_X=0x7f090004;
-        public static final int edit_Y=0x7f090007;
-        public static final int edit_Z=0x7f09000a;
-        public static final int edit_dBm=0x7f09000d;
-        public static final int frame=0x7f090010;
-        public static final int map_image=0x7f090011;
-        public static final int power=0x7f090015;
-        public static final int scan_list=0x7f090013;
-        public static final int scan_list_cal=0x7f090003;
-        public static final int scan_list_item=0x7f090014;
+        public static final int TextView01=0x7f09000c;
+        public static final int TextView02=0x7f090009;
+        public static final int TextView03=0x7f090006;
+        public static final int action_settings=0x7f09001a;
+        public static final int avatar=0x7f090013;
+        public static final int button1=0x7f090003;
+        public static final int dBmbar=0x7f090010;
+        public static final int edit_X=0x7f090005;
+        public static final int edit_Y=0x7f090008;
+        public static final int edit_Z=0x7f09000b;
+        public static final int edit_b=0x7f090016;
+        public static final int edit_dBm=0x7f09000e;
+        public static final int frame=0x7f090011;
+        public static final int map_image=0x7f090012;
+        public static final int power=0x7f090017;
+        public static final int scan_list=0x7f090014;
+        public static final int scan_list_cal=0x7f090004;
+        public static final int scan_list_item=0x7f090015;
         public static final int splash_view=0x7f090000;
-        public static final int ssid=0x7f090016;
+        public static final int ssid=0x7f090018;
         public static final int startcal=0x7f090002;
         public static final int startscan=0x7f090001;
-        public static final int textView1=0x7f09000e;
-        public static final int uid=0x7f090017;
-        public static final int xbar=0x7f090006;
-        public static final int ybar=0x7f090009;
-        public static final int zbar=0x7f09000c;
+        public static final int textView1=0x7f09000f;
+        public static final int uid=0x7f090019;
+        public static final int xbar=0x7f090007;
+        public static final int ybar=0x7f09000a;
+        public static final int zbar=0x7f09000d;
     }
     public static final class integer {
         public static final int EditRouterGrid=0x7f050000;
@@ -75,6 +77,7 @@ public final class R {
     public static final class string {
         public static final int AddPoint=0x7f060005;
         public static final int Calibrate=0x7f060004;
+        public static final int Edit=0x7f060006;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int scan_name=0x7f060003;

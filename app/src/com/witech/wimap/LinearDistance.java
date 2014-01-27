@@ -17,9 +17,8 @@ public class LinearDistance {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		//nominal = rx*pi*(d^2)/a
-		//sqrt(nominal*a)/(rx*pi)
-		d = Math.sqrt(nominal*attn/(valued));
+		double relative_strength = Math.abs(nominal)/Math.abs(valued);
+		d = Math.sqrt(relative_strength);
 	}
 	
 	public double GetDistance()

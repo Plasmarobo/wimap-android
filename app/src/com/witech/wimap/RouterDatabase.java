@@ -105,4 +105,8 @@ public class RouterDatabase {
     r.SetZ(cursor.getInt(6));
     return r;
   }
+  public void ForceReset()
+  {
+	  dbHelper.onUpgrade(database, 0, 2);
+  }
 } 

@@ -7,5 +7,6 @@
     <string name="scan_name">ScanListActivity</string>
     <string name="Calibrate">Start Calibration</string>
     <string name="AddPoint">Add Router</string>
+    <string name="Edit">Edit</string>
 
 </resources>

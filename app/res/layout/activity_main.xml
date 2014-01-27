@@ -26,4 +26,13 @@
         android:layout_centerHorizontal="true"
         android:text="@string/Calibrate" />
 
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/startcal"
+        android:layout_alignRight="@+id/startcal"
+        android:onClick="ClearDB"
+        android:text="Clear Calibration" />
+
 </RelativeLayout>

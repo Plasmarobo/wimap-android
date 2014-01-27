@@ -29,7 +29,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase database) {
-    database.execSQL(DATABASE_CREATE);
+    database.execSQL("create table router_info (id integer primary key autoincrement, ssid text not null, uid text not null, power integer, x integer, y integer, z integer);");
   }
 
   @Override
@@ -37,7 +37,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     Log.w(LocalDBHelper.class.getName(),
         "Upgrading database from version " + oldVersion + " to "
             + newVersion + ", which will destroy all old data");
-    db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTERS);
+    db.execSQL("DROP TABLE IF EXISTS router_info");
     onCreate(db);
   }
 

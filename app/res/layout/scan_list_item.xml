@@ -3,13 +3,19 @@
     android:id="@+id/scan_list_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="false"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
+    android:clickable="true"
     android:longClickable="false"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+   >
 
-    <EditText
+    <Button
+        android:id="@+id/edit_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Edit"
+        android:onClick="editRouter" />
+
+    <TextView
         android:id="@+id/power"
         android:layout_width="74dp"
         android:layout_height="71dp"
@@ -29,7 +35,7 @@
         android:longClickable="false"
         android:orientation="vertical" >
 
-        <EditText
+        <TextView
             android:id="@+id/ssid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,9 +45,9 @@
             android:longClickable="false" >
 
             <requestFocus />
-        </EditText>
+        </TextView>
 
-        <EditText
+        <TextView
             android:id="@+id/uid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,6 +1,8 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.witech.wimap.R;
@@ -68,5 +70,21 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 		}
 		return v;
 	}
+	@Override
+	public void notifyDataSetChanged()
+	{
+		Collections.sort(values, new Comparator<BasicResult>(){
+		@Override
+		public int compare(BasicResult a, BasicResult b)
+		{
+			if(Math.abs(a.GetPower()) > Math.abs(b.GetPower()))
+				return 1;
+			else
+				return 0;
+		}
+		});
+		super.notifyDataSetChanged();
+	}
+	
 
 }

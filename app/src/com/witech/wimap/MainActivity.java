@@ -96,6 +96,13 @@ public class MainActivity extends Activity {
          wifi_man.startScan();
          Toast.makeText(this,"Scanning Area", Toast.LENGTH_SHORT).show();
     }
+    public void ClearDB(View v)
+    {
+    	RouterDatabase db = new RouterDatabase(v.getContext());
+		db.open();
+		db.ForceReset();
+		db.close();
+    }
     
     
 }
