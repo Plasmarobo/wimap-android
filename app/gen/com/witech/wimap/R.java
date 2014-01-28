@@ -25,9 +25,10 @@ public final class R {
         public static final int fake_map=0x7f020000;
         public static final int fake_map_v=0x7f020001;
         public static final int ic_launcher=0x7f020002;
-        public static final int man16=0x7f020003;
-        public static final int man32=0x7f020004;
-        public static final int man_large=0x7f020005;
+        public static final int lost32=0x7f020003;
+        public static final int man16=0x7f020004;
+        public static final int man32=0x7f020005;
+        public static final int man_large=0x7f020006;
     }
     public static final class id {
         public static final int TextView01=0x7f09000c;

@@ -36,39 +36,43 @@ public class MapActivity extends Activity {
 			wifi_list = wifi_man.getScanResults();
 			if(wifi_list.size() > 2)
 			{
-			List<LinearDistance> ld = new ArrayList<LinearDistance>();
+			List<RadialDistance> ld = new ArrayList<RadialDistance>();
 			for(int i = 0; i < wifi_list.size(); ++i)
 			{
 				ScanResult sr = wifi_list.get(i);
-				for(int j = 0; j < routers.size(); ++j)
+				if(sr.level > -90)
 				{
-					Router rt = routers.get(j);
-					if(rt == null)
-						continue;
-					if(sr.BSSID.equals(rt.GetUID()))
+					for(int j = 0; j < routers.size(); ++j)
 					{
-						ld.add(new LinearDistance(rt.GetPower(), sr.level, 0.45f, (float)rt.GetX(), (float)rt.GetY(), (float)rt.GetZ()));
+						Router rt = routers.get(j);
+						if(rt == null)
+							continue;
+						if(sr.BSSID.equals(rt.GetUID()))
+						{
+							ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), (rt.GetComparativeDistance(sr) + rt.GetFDSPLDistance(sr))/2.0));
+						}
 					}
 				}
 			}
 			//Try a weighted average algorithm
 			user_x = 0;
 			user_y = 0;
-			double distance_sum = 0;;
-			for(int i = 0; i < ld.size(); ++i)
+			
+			
+			
+			if(ld.size() > 3)
 			{
-				user_x += ld.get(i).GetX()*ld.get(i).GetDistance();
-				user_y += ld.get(i).GetY()*ld.get(i).GetDistance();
-				distance_sum += ld.get(i).GetDistance();
+				
+				Log.i("USER_X", Double.toString(user_x));
+				Log.i("USER_Y", Double.toString(user_y));
+				icon.setX((float)user_x);
+				icon.setY((float)user_y);
+				icon.bringToFront();
+				icon.setBackgroundResource(R.drawable.man32);
+			}else{
+				icon.setBackgroundResource(R.drawable.lost32);
 			}
-			user_x = user_x/distance_sum;
-			user_y = user_y/distance_sum;
-			Log.i("USER_X", Double.toString(user_x));
-			Log.i("USER_Y", Double.toString(user_y));
-			icon.setX((float)user_x);
-			icon.setY((float)user_y);
-			icon.bringToFront();
-			Toast.makeText(c, "Pos X: " + user_x + " Y:" + user_y, Toast.LENGTH_SHORT).show();
+			
 			}
 			
 		}

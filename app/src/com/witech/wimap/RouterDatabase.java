@@ -99,10 +99,10 @@ public class RouterDatabase {
     r.SetID(cursor.getInt(0));
     r.SetSSID(cursor.getString(1));
     r.SetUID(cursor.getString(2));
-    r.SetPower(cursor.getInt(3));
-    r.SetX(cursor.getInt(4));
-    r.SetY(cursor.getInt(5));
-    r.SetZ(cursor.getInt(6));
+    r.SetPower(cursor.getDouble(3));
+    r.SetX(cursor.getDouble(4));
+    r.SetY(cursor.getDouble(5));
+    r.SetZ(cursor.getDouble(6));
     return r;
   }
   public void ForceReset()

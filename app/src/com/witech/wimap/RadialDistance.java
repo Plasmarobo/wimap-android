@@ -1,24 +1,23 @@
 package com.witech.wimap;
 
-public class LinearDistance {
+public class RadialDistance {
 	private double x;
 	private double y;
 	private double z;
 	private double d;
-	public LinearDistance(float x, float y, float z, float d)
+	public RadialDistance(float x, float y, float z, float d)
 	{
 		this.x = x;
 		this.y = y;
 		this.d = d;
 	}
 	
-	public LinearDistance(int nominal, int valued, float attn, float x, float y, float z)
+	public RadialDistance(double x, double y, double z, double d)
 	{
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		double relative_strength = Math.abs(nominal)/Math.abs(valued);
-		d = Math.sqrt(relative_strength);
+		this.d = d;
 	}
 	
 	public double GetDistance()

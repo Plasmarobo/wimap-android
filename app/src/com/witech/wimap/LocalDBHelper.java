@@ -21,7 +21,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
   // Database creation sql statement
   private static final String DATABASE_CREATE = "create table "
       + TABLE_ROUTERS + "(id integer primary key autoincrement, " + COLUMN_SSID
-      + " text not null, " + COLUMN_UID + " text not null, " + COLUMN_POWER + " text not null," + COLUMN_X + " integer," + COLUMN_Y + " integer, " + COLUMN_Z + "integer);";
+      + " text not null, " + COLUMN_UID + " text not null, " + COLUMN_POWER + " double not null," + COLUMN_X + " double," + COLUMN_Y + " double, " + COLUMN_Z + "double);";
 
   public LocalDBHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,7 +29,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase database) {
-    database.execSQL("create table router_info (id integer primary key autoincrement, ssid text not null, uid text not null, power integer, x integer, y integer, z integer);");
+    database.execSQL("create table router_info (id integer primary key autoincrement, ssid text not null, uid text not null, power double, x double, y double, z double);");
   }
 
   @Override
