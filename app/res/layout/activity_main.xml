@@ -9,12 +9,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo512" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:onClick="ClearDB"
+        android:text="@string/ClearCalibration" />
+
     <Button
         android:id="@+id/startscan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:onClick="initScan"
         android:text="@string/scantext" />
 
@@ -22,17 +37,8 @@
         android:id="@+id/startcal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/startscan"
-        android:layout_centerHorizontal="true"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/imageView1"
         android:text="@string/Calibrate" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/startcal"
-        android:layout_alignRight="@+id/startcal"
-        android:onClick="ClearDB"
-        android:text="@string/ClearCalibration" />
 
 </RelativeLayout>

@@ -129,7 +129,7 @@ public class ScanListActivity extends Activity {
 		Log.i("List", "click");
 		View row = (View)button.getParent();
 		ListView list = (ListView) row.getParent();
-		Intent edit_router = new Intent(list.getContext(), AddRouter.class);
+		Intent edit_router = new Intent(list.getContext(), EditRouter.class);
 		TextView frequency = (TextView)row.findViewById(R.id.freq);
 		TextView power = (TextView)row.findViewById(R.id.power);
 		TextView ssid = (TextView)row.findViewById(R.id.ssid);

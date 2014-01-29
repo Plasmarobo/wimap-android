@@ -10,5 +10,6 @@
     <string name="Edit">Edit</string>
     <string name="ClearCalibration">Clear Calibration</string>
     <string name="AvatarDesc">Avatar</string>
+    <string name="AppDesc">Interior Navigation and Information</string>
 
 </resources>
