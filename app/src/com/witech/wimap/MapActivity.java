@@ -15,7 +15,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class MapActivity extends Activity {
 	private WifiManager wifi_man;
@@ -23,8 +22,6 @@ public class MapActivity extends Activity {
 	private List<ScanResult> wifi_list;
 	private Timer timer;
 	private List<Router> routers;
-	private double user_x;
-	private double user_y;
 	private ImageView map;
 	private ImageView icon;
 	
@@ -55,18 +52,14 @@ public class MapActivity extends Activity {
 				}
 			}
 			//Try a weighted average algorithm
-			user_x = 0;
-			user_y = 0;
-			
-			
 			
 			if(ld.size() > 3)
 			{
-				
-				Log.i("USER_X", Double.toString(user_x));
-				Log.i("USER_Y", Double.toString(user_y));
-				icon.setX((float)user_x);
-				icon.setY((float)user_y);
+				Intersect point = new Intersect(ld);
+				Log.i("USER_X", Double.toString(point.GetX()));
+				Log.i("USER_Y", Double.toString(point.GetY()));
+				icon.setX((float)point.GetX());
+				icon.setY((float)point.GetY());
 				icon.bringToFront();
 				icon.setBackgroundResource(R.drawable.man32);
 			}else{

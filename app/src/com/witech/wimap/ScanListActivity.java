@@ -138,7 +138,7 @@ public class ScanListActivity extends Activity {
 		TextView power = (TextView)row.findViewById(R.id.power);
 		TextView ssid = (TextView)row.findViewById(R.id.ssid);
 		TextView uid = (TextView)row.findViewById(R.id.uid);
-		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), 0);
+		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), null);
 		edit_router.putExtra("dBm",Integer.parseInt((String) power.getText()));
 		startActivityForResult(edit_router, EDITROUTER);
 	}
