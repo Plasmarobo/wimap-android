@@ -33,6 +33,16 @@ public class Router {
 		this.uid = uid;
 		this.power = (c*Math.pow(10,(close.level/20)))/(4*Math.PI*close.frequency);//Distance initializer of 1
 	}
+	public Router(double x, double y, double z, String ssid, String uid, double level, double frequency)
+	{
+		this.id = 0;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.ssid = ssid;
+		this.uid = uid;
+		this.power = (c*Math.pow(10,(level/20)))/(4*Math.PI*frequency);//Distance initializer of 1
+	}
 	public int GetID() { return id;}
 	public void SetID(int id) { this.id = id;}
 	
@@ -49,6 +59,7 @@ public class Router {
 	public void SetSSID(String ssid) { this.ssid = ssid;}
 	public void SetUID(String uid) { this.uid = uid;}
 	public void SetPower(double power) { this.power = power;}
+	public void SetPower(double power, double freq) {this.power = (c*Math.pow(10,(power/20)))/(4*Math.PI*freq);}
 	public void PowerFromScan(ScanResult scan) { this.power = (c*Math.pow(10,(scan.level/20)))/(4*Math.PI*scan.frequency);}
 	
 	public double GetFDSPLDistance(ScanResult scan)

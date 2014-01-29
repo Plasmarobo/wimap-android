@@ -8,5 +8,7 @@
     <string name="Calibrate">Start Calibration</string>
     <string name="AddPoint">Add Router</string>
     <string name="Edit">Edit</string>
+    <string name="ClearCalibration">Clear Calibration</string>
+    <string name="AvatarDesc">Avatar</string>
 
 </resources>

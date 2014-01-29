@@ -15,15 +15,6 @@ public class RouterDatabase {
   // Database fields
   private SQLiteDatabase database;
   private LocalDBHelper dbHelper;
-  private String[] allColumns = { "id",
-		  LocalDBHelper.COLUMN_SSID,
-		  LocalDBHelper.COLUMN_UID,
-		  LocalDBHelper.COLUMN_POWER,
-		  LocalDBHelper.COLUMN_X,
-		  LocalDBHelper.COLUMN_Y,
-		  LocalDBHelper.COLUMN_Z
-		  };
-
   public RouterDatabase(Context context) {
     dbHelper = new LocalDBHelper(context);
   }

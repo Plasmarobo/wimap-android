@@ -1,8 +1,6 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,9 +16,6 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,10 +112,10 @@ public class ScanListActivity extends Activity {
 		{
 			if(resultCode == RESULT_OK)
 			{
-				rt.SetX(data.getIntExtra("X", 0));
-				rt.SetY(data.getIntExtra("Y", 0));
-				rt.SetZ(data.getIntExtra("Z", 0));
-				rt.SetPower(data.getIntExtra("dBm", 0));
+				rt.SetX(data.getDoubleExtra("X", 0));
+				rt.SetY(data.getDoubleExtra("Y", 0));
+				rt.SetZ(data.getDoubleExtra("Z", 0));
+				rt.SetPower((double)data.getIntExtra("dBm", -90), data.getDoubleExtra("freq", 2400));
 				db.open();
 				db.WriteRouter(rt);
 				db.close();
@@ -135,11 +130,15 @@ public class ScanListActivity extends Activity {
 		View row = (View)button.getParent();
 		ListView list = (ListView) row.getParent();
 		Intent edit_router = new Intent(list.getContext(), AddRouter.class);
+		TextView frequency = (TextView)row.findViewById(R.id.freq);
 		TextView power = (TextView)row.findViewById(R.id.power);
 		TextView ssid = (TextView)row.findViewById(R.id.ssid);
 		TextView uid = (TextView)row.findViewById(R.id.uid);
-		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), null);
-		edit_router.putExtra("dBm",Integer.parseInt((String) power.getText()));
+		int p = Integer.parseInt((String)power.getText());
+		double f = Double.parseDouble((String)frequency.getText());
+		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, f);
+		edit_router.putExtra("dBm",p);
+		edit_router.putExtra("freq", f);
 		startActivityForResult(edit_router, EDITROUTER);
 	}
 	

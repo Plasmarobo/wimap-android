@@ -33,6 +33,6 @@
         android:layout_above="@+id/startcal"
         android:layout_alignRight="@+id/startcal"
         android:onClick="ClearDB"
-        android:text="Clear Calibration" />
+        android:text="@string/ClearCalibration" />
 
 </RelativeLayout>

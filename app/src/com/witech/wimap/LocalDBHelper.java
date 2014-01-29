@@ -18,11 +18,6 @@ public class LocalDBHelper extends SQLiteOpenHelper {
   private static final String DATABASE_NAME = "room.db";
   private static final int DATABASE_VERSION = 2;
 
-  // Database creation sql statement
-  private static final String DATABASE_CREATE = "create table "
-      + TABLE_ROUTERS + "(id integer primary key autoincrement, " + COLUMN_SSID
-      + " text not null, " + COLUMN_UID + " text not null, " + COLUMN_POWER + " double not null," + COLUMN_X + " double," + COLUMN_Y + " double, " + COLUMN_Z + "double);";
-
   public LocalDBHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
   }

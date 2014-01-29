@@ -44,6 +44,7 @@ public final class R {
         public static final int edit_b=0x7f090016;
         public static final int edit_dBm=0x7f09000e;
         public static final int frame=0x7f090011;
+        public static final int freq=0x7f09000f;
         public static final int map_image=0x7f090012;
         public static final int power=0x7f090017;
         public static final int scan_list=0x7f090014;
@@ -53,7 +54,6 @@ public final class R {
         public static final int ssid=0x7f090018;
         public static final int startcal=0x7f090002;
         public static final int startscan=0x7f090001;
-        public static final int textView1=0x7f09000f;
         public static final int uid=0x7f090019;
         public static final int xbar=0x7f090007;
         public static final int ybar=0x7f09000a;
@@ -77,7 +77,9 @@ public final class R {
     }
     public static final class string {
         public static final int AddPoint=0x7f060005;
+        public static final int AvatarDesc=0x7f060008;
         public static final int Calibrate=0x7f060004;
+        public static final int ClearCalibration=0x7f060007;
         public static final int Edit=0x7f060006;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;

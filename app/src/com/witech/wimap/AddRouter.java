@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 public class AddRouter extends Activity {
 	private static final int RESULT_CANCEL = 0;
+	private double f;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -27,6 +28,7 @@ public class AddRouter extends Activity {
 		ed_x.setText("512");
 		ed_y.setText("286");
 		ed_z.setText("128");
+		this.f = data.getDoubleExtra("freq", 2400);
 		ed_dbm.setText(Integer.toString(Math.abs((data.getIntExtra("dBm", 75)))));
 		sb_x.setMax(1024);
 		sb_x.setProgress(512);
@@ -54,9 +56,10 @@ public class AddRouter extends Activity {
 		EditText ed_z = (EditText) form.findViewById(R.id.edit_Z);
 		EditText ed_dbm = (EditText) form.findViewById(R.id.edit_dBm);
 		result.putExtra("dBm", Integer.parseInt(ed_dbm.getText().toString()));
-		result.putExtra("X", Integer.parseInt(ed_x.getText().toString()));
-		result.putExtra("Y", Integer.parseInt(ed_y.getText().toString()));
-		result.putExtra("Z", Integer.parseInt(ed_z.getText().toString()));
+		result.putExtra("freq", this.f);
+		result.putExtra("X", Double.parseDouble(ed_x.getText().toString()));
+		result.putExtra("Y", Double.parseDouble(ed_y.getText().toString()));
+		result.putExtra("Z", Double.parseDouble(ed_z.getText().toString()));
 		setResult(RESULT_OK, result);
 		finish();
 	}
