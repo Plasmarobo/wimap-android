@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
 	
 	class WifiReciever extends BroadcastReceiver
 	{
+		@Override
 		public void onReceive(Context c, Intent intent)
 		{
 			Log.i("MainActivity", "Got Scan results");
@@ -60,7 +61,8 @@ public class MainActivity extends Activity {
         Button cal = (Button) findViewById(R.id.startcal);
         Button scan = (Button) findViewById(R.id.startscan);
         cal.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
             	//unregisterReceiver(wifi_rec);
             	//Intent listIntent = new Intent(v.getContext(), ScanListActivity.class);
     			//Log.i("MainActivity", "Starting Activity");
@@ -70,7 +72,8 @@ public class MainActivity extends Activity {
             }
         });
         scan.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
             	startActivity(new Intent(v.getContext(), MapActivity.class));
             }
         });

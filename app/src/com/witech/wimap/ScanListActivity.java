@@ -32,6 +32,7 @@ public class ScanListActivity extends Activity {
 	
 	class WifiReciever extends BroadcastReceiver
 	{
+		@Override
 		public void onReceive(Context c, Intent intent)
 		{
 			Log.i("ScanListActivity", "Scan Results updated");
@@ -84,6 +85,7 @@ public class ScanListActivity extends Activity {
 				
 			}}, 0, 5000);
 	}
+	@Override
 	protected void onResume()
 	{
 		wifi_man.startScan();
@@ -99,6 +101,7 @@ public class ScanListActivity extends Activity {
 		registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		super.onResume();
 	}
+	@Override
 	protected void onPause()
 	{
 		timer.cancel();
@@ -106,6 +109,7 @@ public class ScanListActivity extends Activity {
 		unregisterReceiver(wifi_rec);
 		super.onPause();
 	}
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		if(requestCode == EDITROUTER)
@@ -115,7 +119,7 @@ public class ScanListActivity extends Activity {
 				rt.SetX(data.getDoubleExtra("X", 0));
 				rt.SetY(data.getDoubleExtra("Y", 0));
 				rt.SetZ(data.getDoubleExtra("Z", 0));
-				rt.SetPower((double)data.getIntExtra("dBm", -90), data.getIntExtra("freq", 2400));
+				rt.SetPower(data.getIntExtra("dBm", -90), data.getIntExtra("freq", 2400));
 				db.open();
 				db.WriteRouter(rt);
 				db.close();

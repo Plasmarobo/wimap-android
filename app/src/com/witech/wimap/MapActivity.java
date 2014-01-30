@@ -15,8 +15,9 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+
+import com.witech.wimap.Intersect;
 
 public class MapActivity extends Activity {
 	private float meters_to_pixels_x;
@@ -31,6 +32,7 @@ public class MapActivity extends Activity {
 	
 	class WifiReciever extends BroadcastReceiver
 	{
+		@Override
 		public void onReceive(Context c, Intent intent)
 		{
 			Log.i("ScanListActivity", "Scan Results updated");
@@ -63,7 +65,7 @@ public class MapActivity extends Activity {
 				Intersect point = new Intersect(ld);
 				Log.i("USER_X", Double.toString(point.GetX()));
 				Log.i("USER_Y", Double.toString(point.GetY()));
-				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
 		        params.leftMargin = (int) point.GetX(); //XCOORD
 		        params.topMargin = (int) point.GetY(); //YCOORD
 		        icon.setLayoutParams(params);
@@ -104,19 +106,21 @@ public class MapActivity extends Activity {
         registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         timer = new Timer("ScanInterval", true);
         timer.scheduleAtFixedRate(new WifiScanner(), 0, 3000);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = map.getWidth()/2; //XCOORD
         params.topMargin = map.getHeight()/2; //YCOORD
         icon.setLayoutParams(params);
         //icon.setX(map.getWidth()/2);
         //icon.setY(map.getHeight()/2);
     }
+	@Override
 	protected void onResume()
 	{
 		timer = new Timer("ScanInterval", true);
         timer.scheduleAtFixedRate(new WifiScanner(), 0, 3000);
 		super.onResume();
 	}
+	@Override
 	protected void onPause()
 	{
 		timer.cancel();
