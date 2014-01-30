@@ -1,6 +1,5 @@
 package com.witech.wimap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,14 +36,14 @@ public class ScanListActivity extends Activity {
 		{
 			Log.i("ScanListActivity", "Scan Results updated");
 			wifi_list = wifi_man.getScanResults();
-			List<BasicResult> list = new ArrayList<BasicResult>();
+			adapter.clear();
+			
 			for(int i = 0; i < wifi_list.size(); ++i)
 			{
-				list.add(new BasicResult(wifi_list.get(i)));
+				//adapter.add(new BasicResult(wifi_list.get(i)));
+				adapter.add(new BasicResult(wifi_list.get(i)));
 			}
-			
-			adapter.clear();
-			adapter.addAll(list);
+			adapter.sort();
 			adapter.notifyDataSetChanged();
 			//wifi_man.startScan();
 		}
@@ -68,7 +67,8 @@ public class ScanListActivity extends Activity {
 			int[] power = viewintent.getIntArrayExtra("powers");
 			String[] ssid = viewintent.getStringArrayExtra("ssids");
 			String[] uids = viewintent.getStringArrayExtra("uids");
-			adapter = new ScanListAdapter(this, ssid, uids, power);
+			int[] freq = viewintent.getIntArrayExtra("freqs");
+			adapter = new ScanListAdapter(this, ssid, uids, power, freq);
 		}else adapter = new ScanListAdapter(this);
 		listview.setAdapter(adapter);
 
@@ -115,7 +115,7 @@ public class ScanListActivity extends Activity {
 				rt.SetX(data.getDoubleExtra("X", 0));
 				rt.SetY(data.getDoubleExtra("Y", 0));
 				rt.SetZ(data.getDoubleExtra("Z", 0));
-				rt.SetPower((double)data.getIntExtra("dBm", -90), data.getDoubleExtra("freq", 2400));
+				rt.SetPower((double)data.getIntExtra("dBm", -90), data.getIntExtra("freq", 2400));
 				db.open();
 				db.WriteRouter(rt);
 				db.close();
@@ -135,8 +135,8 @@ public class ScanListActivity extends Activity {
 		TextView ssid = (TextView)row.findViewById(R.id.ssid);
 		TextView uid = (TextView)row.findViewById(R.id.uid);
 		int p = Integer.parseInt((String)power.getText());
-		double f = Double.parseDouble((String)frequency.getText());
-		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, f);
+		int f = Integer.parseInt((String)frequency.getText());
+		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, (double)f);
 		edit_router.putExtra("dBm",p);
 		edit_router.putExtra("freq", f);
 		startActivityForResult(edit_router, EDITROUTER);

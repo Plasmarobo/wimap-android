@@ -34,7 +34,7 @@
             android:label="@string/scan_name">         
         </activity>
          <activity
-            android:name="com.witech.wimap.AddRouter"
+            android:name="com.witech.wimap.EditRouter"
             android:label="@string/scan_name">         
         </activity>
     </application>

@@ -31,18 +31,21 @@ public class MainActivity extends Activity {
 			int [] powers = new int[wifi_list.size()];
 			String[] ssids = new String[wifi_list.size()];
 			String[] uids = new String[wifi_list.size()];
+			int [] freqs = new int[wifi_list.size()];
 			for(int i = 0; i < wifi_list.size(); ++i)
 			{
 				ScanResult sr = wifi_list.get(i);
 				powers[i] = sr.level;
 				ssids[i] = sr.SSID;
 				uids[i] = sr.BSSID;
+				freqs[i] = sr.frequency;
 			}
 			Log.i("MainActivity", "Preparing Intent");
 			Intent listIntent = new Intent(c, ScanListActivity.class);
 			listIntent.putExtra("powers", powers);
 			listIntent.putExtra("ssids", ssids);
 			listIntent.putExtra("uids", uids);
+			listIntent.putExtra("freqs", freqs);
 			//ListView scan_list = (ListView) findViewById(R.id.scan_list);
 			Log.i("MainActivity", "Starting Activity");
 			startActivity(listIntent);

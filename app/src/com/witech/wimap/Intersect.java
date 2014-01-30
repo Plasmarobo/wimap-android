@@ -19,45 +19,47 @@ public class Intersect {
 		if(L.size() >= 3)
 		{
 		double r;
+		double wr = 0.0;
 		for(int i = 0; i < L.size(); ++i)
 		{
 			r = 1/(Math.pow(L.get(i).GetDistance(),2.0));
-	
+			
 			this.x += L.get(i).GetX()*r;
 			this.y += L.get(i).GetY()*r;
 			this.z += L.get(i).GetZ()*r;
+			wr += r;
 		}
-		this.x = this.x/L.size();
-		this.y = this.y/L.size();
-		this.z = this.z/L.size();
+		this.x = (this.x/L.size())/wr;
+		this.y = (this.y/L.size())/wr;
+		this.z = (this.z/L.size())/wr;
 		//Perform nonlinear least squares algorithm
 		
 		Matrix A = new Matrix(3, L.size(), 0.0);
-		Matrix B = new Matrix(1, L.size(), 0.0);
+		Matrix B = new Matrix(L.size(), 1, 0.0);
 		Matrix lambda = new Matrix(3,1, 0.0);
+		lambda.set(0, 0, this.x);
+		lambda.set(1, 0, this.y);
+		lambda.set(2, 0, this.z);
 		//K is the number of iterations before we settle
 		for(int k = 0; k < 10; ++k)
 		{
-			lambda.set(0, 0, this.x);
-			lambda.set(1, 0, this.y);
-			lambda.set(2, 0, this.z);
 			//Populate with equations
 			//Perform derivatives
 			for(int i = 0; i < L.size(); ++i)
 			{
-				//Derivatives
 				double a = L.get(i).GetX();
 				double b = L.get(i).GetY();
 				double c = L.get(i).GetZ();
 				A.set(0, i, df(lambda.get(0, 0), a));
 				A.set(1, i, df(lambda.get(1, 0), b));
 				A.set(2, i, df(lambda.get(2, 0), c));
-				//r^2 equation
-				B.set(0, i, eq(lambda.get(0, 0), a, lambda.get(1, 0), b, lambda.get(2, 0), c, L.get(i).GetDistance(), 1/(Math.pow(L.get(i).GetDistance(),2))));
+				B.set(i, 0, eq(lambda.get(0, 0), a, lambda.get(1, 0), b, lambda.get(2, 0), c, L.get(i).GetDistance(), 1/(Math.pow(L.get(i).GetDistance(),2))));
 			}
+			if(A.det() == 0)
+				break;
 			Matrix Aprime = A.transpose().times(A);
 			Matrix Bprime = A.transpose().times(B);
-			lambda = Aprime.solve(Bprime);
+			lambda = lambda.plus(Aprime.solve(Bprime));
 		}
 		this.x = lambda.get(0, 0);
 		this.y = lambda.get(1, 0);

@@ -2,7 +2,6 @@ package com.witech.wimap;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.witech.wimap.R;
@@ -21,7 +20,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	private final Context context;
 	private ArrayList<BasicResult> values;
 	
-	public ScanListAdapter(Context context, String[] ssids, String[] uids, int[] powers)
+	public ScanListAdapter(Context context, String[] ssids, String[] uids, int[] powers, int[] freqs)
 	{
 		super(context, R.layout.scan_list_item);
 		values = new ArrayList<BasicResult>();
@@ -31,14 +30,14 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 		if(size > powers.length) size = powers.length; 
 		for(int i = 0; i < size; ++i)
 		{
-			values.add(new BasicResult(powers[i], ssids[i], uids[i]));
+			values.add(new BasicResult(powers[i], ssids[i], uids[i], freqs[i]));
 		}
 	}
 	
 	public ScanListAdapter(Context context, List<ScanResult> list)
 	{
 		super(context, R.layout.scan_list_item);
-		values = new ArrayList<BasicResult>();
+		values = new ArrayList<BasicResult>(list.size());
 		this.context = context;
 		for(int i = 0; i < list.size(); ++i)
 		{
@@ -57,33 +56,33 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View v = inflater.inflate(R.layout.scan_list_item, parent, false);
+		View v;
+		if(convertView == null)
+			v = inflater.inflate(R.layout.scan_list_item, parent, false);
+		else
+			v = convertView;
 		TextView ssid = (TextView) v.findViewById(R.id.ssid);
 		TextView uid = (TextView) v.findViewById(R.id.uid);
 		TextView power = (TextView) v.findViewById(R.id.power);
+		TextView freq = (TextView) v.findViewById(R.id.freq);
 		if(position < values.size())
 		{
 			BasicResult br = values.get(position);
 			ssid.setText(br.GetSSID());
 			uid.setText(br.GetUID());
 			power.setText(Integer.toString(br.GetPower()));
-		}
+			freq.setText(Integer.toString(br.GetFreq()));
+		}else return null;
 		return v;
 	}
 	@Override
-	public void notifyDataSetChanged()
+	public int getCount()
 	{
-		Collections.sort(values, new Comparator<BasicResult>(){
-		@Override
-		public int compare(BasicResult a, BasicResult b)
-		{
-			if(Math.abs(a.GetPower()) > Math.abs(b.GetPower()))
-				return 1;
-			else
-				return 0;
-		}
-		});
-		super.notifyDataSetChanged();
+		return values.size();
+	}
+
+	public void sort() {
+		Collections.sort(values);
 	}
 	
 
