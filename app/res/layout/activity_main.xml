@@ -45,4 +45,13 @@
         android:layout_alignParentLeft="true"
         android:text="@string/Calibrate" />
 
+    <Button
+        android:id="@+id/dbpull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="PullDB"
+        android:text="Pull DB" />
+
 </RelativeLayout>

@@ -47,12 +47,12 @@ public class MapActivity extends Activity {
 				{
 					for(int j = 0; j < routers.size(); ++j)
 					{
-						Router rt = routers.get(j);
+						AndroidRouter rt = (AndroidRouter) routers.get(j);
 						if(rt == null)
 							continue;
 						if(sr.BSSID.equals(rt.GetUID()))
 						{
-							ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), (rt.GetComparativeDistance(sr) + rt.GetFDSPLDistance(sr))/2.0));
+							ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetAverageDistance(sr)));
 							break;
 						}
 					}
@@ -62,6 +62,7 @@ public class MapActivity extends Activity {
 			
 			if(ld.size() >= 3)
 			{
+				//Guess at last known point (improve this)
 				Intersect point = new Intersect(ld, icon.getX(), icon.getY(), 128);
 				Log.i("USER_X", Double.toString(point.GetX()));
 				Log.i("USER_Y", Double.toString(point.GetY()));

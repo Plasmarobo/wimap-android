@@ -26,12 +26,22 @@ public class RouterDatabase {
   public void close() {
     dbHelper.close();
   }
+  public void cacheList(List<Router> l)
+  {
+	  ForceReset();
+	  for(int i = 0; i < l.size(); ++i)
+	  {
+		  WriteRouter(l.get(i));
+	  }
+  }
 
   public void WriteRouter(Router r) {
     ContentValues values = new ContentValues();
     values.put(LocalDBHelper.COLUMN_SSID, r.GetSSID());
     values.put(LocalDBHelper.COLUMN_UID, r.GetUID());
     values.put(LocalDBHelper.COLUMN_POWER, r.GetPower());
+    values.put(LocalDBHelper.COLUMN_FREQ, r.GetFreq());
+    values.put(LocalDBHelper.COLUMN_SITE_ID,  r.GetSiteID());
     values.put(LocalDBHelper.COLUMN_X, r.GetX());
     values.put(LocalDBHelper.COLUMN_Y, r.GetY());
     values.put(LocalDBHelper.COLUMN_Z, r.GetZ());
@@ -62,7 +72,7 @@ public class RouterDatabase {
   public Router getRouterByUID(String uid)
   {
 	  
-	  Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS + " WHERE SSID=?", new String[] {uid});
+	  Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS + " WHERE UID=?", new String[] {uid});
 	  cursor.moveToFirst();
 	  return cursorToRouter(cursor);
   }
@@ -90,14 +100,16 @@ public class RouterDatabase {
     r.SetID(cursor.getInt(0));
     r.SetSSID(cursor.getString(1));
     r.SetUID(cursor.getString(2));
-    r.SetPower(cursor.getDouble(3));
-    r.SetX(cursor.getDouble(4));
-    r.SetY(cursor.getDouble(5));
-    r.SetZ(cursor.getDouble(6));
+    r.SetSiteID(cursor.getInt(3));
+    r.SetPower(cursor.getDouble(4));
+    r.SetFreq(cursor.getDouble(5));
+    r.SetX(cursor.getDouble(6));
+    r.SetY(cursor.getDouble(7));
+    r.SetZ(cursor.getDouble(8));
     return r;
   }
   public void ForceReset()
   {
-	  dbHelper.onUpgrade(database, 0, 2);
+	  dbHelper.onUpgrade(database, 0, 3);
   }
 } 

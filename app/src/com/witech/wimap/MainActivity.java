@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
 	private WifiManager wifi_man;
 	private WifiReciever wifi_rec;
 	private List<ScanResult> wifi_list;
+	private static final int FETCH = 27;
 	
 	class WifiReciever extends BroadcastReceiver
 	{
@@ -102,6 +103,11 @@ public class MainActivity extends Activity {
          wifi_man.startScan();
          Toast.makeText(this,"Scanning Area", Toast.LENGTH_SHORT).show();
     }
+    public void PullDB(View v)
+    {
+    	startActivity(new Intent(v.getContext(), FetchRouterActivity.class));
+    }
+    
     public void ClearDB(View v)
     {
     	RouterDatabase db = new RouterDatabase(v.getContext());

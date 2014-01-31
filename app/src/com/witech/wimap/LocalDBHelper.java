@@ -10,13 +10,15 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 	public static final String TABLE_ROUTERS = "router_info";
 	public static final String COLUMN_SSID = "ssid";
 	public static final String COLUMN_UID = "uid";
+	public static final String COLUMN_SITE_ID = "site_id";
 	public static final String COLUMN_POWER = "power";
+	public static final String COLUMN_FREQ = "freq";
 	public static final String COLUMN_X = "x";
 	public static final String COLUMN_Y = "y";
 	public static final String COLUMN_Z = "z";
 	
   private static final String DATABASE_NAME = "room.db";
-  private static final int DATABASE_VERSION = 2;
+  private static final int DATABASE_VERSION = 3;
 
   public LocalDBHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,7 +26,16 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase database) {
-    database.execSQL("create table router_info (id integer primary key autoincrement, ssid text not null, uid text not null, power double, x double, y double, z double);");
+    database.execSQL("create table "+TABLE_ROUTERS+
+  " (id integer primary key autoincrement, "+ 
+  COLUMN_SSID +" text not null, "+
+  COLUMN_UID +" text not null, "+
+  COLUMN_SITE_ID + " integer not null, "+
+  COLUMN_POWER +" double not null, "+
+  COLUMN_FREQ + "double not null, "+
+  COLUMN_X + " double not null, "+
+  COLUMN_Y + " double not null, "+
+  COLUMN_Z + " double not null );");
   }
 
   @Override
