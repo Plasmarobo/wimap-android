@@ -12,73 +12,52 @@ public class Intersect {
 	private double y;
 	private double z;
 	
-	public Intersect(List<RadialDistance> L)
+	public Intersect(List<RadialDistance> L, double x, double y, double z)
 	{
-		//parameters mx, my, mz
-		//variables r, x, y, z
-		//function r^2 = x^2+y^2+z^2
-		//Weight via 1/r^2
-		//Guess
-		if(L.size() >= 3)
-		{
-		double r;
-		double wr = 0.0;
-		for(int i = 0; i < L.size(); ++i)
-		{
-			r = 1/(Math.pow(L.get(i).GetDistance(),2.0));
-			
-			this.x += L.get(i).GetX()*r;
-			this.y += L.get(i).GetY()*r;
-			this.z += L.get(i).GetZ()*r;
-			wr += r;
-		}
-		this.x = (this.x/L.size())/wr;
-		this.y = (this.y/L.size())/wr;
-		this.z = (this.z/L.size())/wr;
-		//Perform nonlinear least squares algorithm
+		Matrix guess = new Matrix(3,1);
+		Matrix j = new Matrix(L.size(), 3);
+		Matrix res = new Matrix(L.size(), 1);
+		Matrix jt;
+		//Initial Guess
 		
-		Matrix A = new Matrix(3, L.size(), 0.0);
-		Matrix B = new Matrix(L.size(), 1, 0.0);
-		Matrix lambda = new Matrix(3,1, 0.0);
-		lambda.set(0, 0, this.x);
-		lambda.set(1, 0, this.y);
-		lambda.set(2, 0, this.z);
-		//K is the number of iterations before we settle
-		for(int k = 0; k < 10; ++k)
+		guess.set(0, 0, x);
+		guess.set(1, 0, y);
+		guess.set(2, 0, z);
+		double r_square = 6.0;
+		while(r_square > 5)
 		{
-			//Populate with equations
-			//Perform derivatives
+			//Setup Matrices
 			for(int i = 0; i < L.size(); ++i)
 			{
-				double a = L.get(i).GetX();
-				double b = L.get(i).GetY();
-				double c = L.get(i).GetZ();
-				A.set(0, i, df(lambda.get(0, 0), a));
-				A.set(1, i, df(lambda.get(1, 0), b));
-				A.set(2, i, df(lambda.get(2, 0), c));
-				B.set(i, 0, eq(lambda.get(0, 0), a, lambda.get(1, 0), b, lambda.get(2, 0), c, L.get(i).GetDistance(), 1/(Math.pow(L.get(i).GetDistance(),2))));
+				RadialDistance r = L.get(i);
+				j.set(i, 0, derivative(guess.get(0,0), r.GetX()));
+				j.set(i, 1, derivative(guess.get(1,0), r.GetY()));
+				j.set(i, 2, derivative(guess.get(2,0), r.GetZ()));
+				res.set(i, 0, residual(guess.get(0, 0), r.GetX(), guess.get(1, 0), r.GetY(), guess.get(2,0), r.GetZ(), r.GetDistance()));
 			}
-			//if(A.det() == 0)
-			//{
-			//	return;
-			//}
-			Matrix Aprime = A.transpose().times(A);
-			Matrix Bprime = A.transpose().times(B);
-			lambda = lambda.plus(Aprime.solve(Bprime));
+			//Perform Gaussian-Newton Elimination
+			jt = j.transpose();
+			Matrix inv = jt.times(j);
+			if(inv.det() == 0)
+				break;
+			inv = inv.inverse();
+			Matrix rr = inv.times(jt);
+			rr = rr.times(res);
+			guess.minusEquals(rr);
+			r_square = 0.0;
+			for(int i = 0; i < L.size(); ++i)
+				r_square += Math.pow(residual(guess.get(0,0), L.get(i).GetX(), guess.get(1,0), L.get(i).GetY(), guess.get(2, 0), L.get(i).GetZ(), L.get(i).GetDistance()),2);
 		}
-		this.x = lambda.get(0, 0);
-		this.y = lambda.get(1, 0);
-		this.z = lambda.get(2, 0);
-		}
+		
 	}
 	
-	private double df(double a, double x)
+	private double derivative(double a, double x)
 	{
-		return 2*a*(a+x);
+		return 2*(x+a);
 	}
-	private double eq(double a, double x, double b, double y, double c, double z, double r, double w)
+	private double residual(double a, double x, double b, double y, double c, double z, double r)
 	{
-		return Math.pow(w*(Math.pow(r, 2.0) - (Math.pow(x+a, 2) + Math.pow(y+b, 2) + Math.pow(z+c, 2))),2);
+		return (Math.pow(r, 2.0) - (Math.pow(x+a, 2) + Math.pow(y+b, 2) + Math.pow(z+c, 2)));
 	}
 	public double GetX()
 	{
