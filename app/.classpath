@@ -8,5 +8,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="/home/austen/wimap-android/slib/Jama-1.0.3.jar"/>
 	<classpathentry kind="var" path="JRE_LIB"/>
+	<classpathentry kind="lib" path="/home/austen/wimap-android/slib/google-http/google-http-java-client/libs/httpclient-4.0.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -89,46 +89,52 @@ public class Intersect_Test extends JApplet {
         //Graphics2D outpanel = (Graphics2D) g;
         BufferedImage bImg = new BufferedImage(this.getWidth(), this.getWidth(), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = bImg.createGraphics();
-        g2.setPaint (bg);
-        g2.fillRect ( 0, 0, bImg.getWidth(), bImg.getHeight() );
+        
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Dimension d = getSize();
         l = new ArrayList<RadialDistance>(5);
-        int size = (int) (Math.random()*12)+3;
-        for(int i = 0; i < size; ++i)
+        for(int v = 0; v < 10; ++v)
         {
-        	l.add(new RadialDistance(Math.random()*1024, Math.random()*1024, 128, (Math.random()+1)*100));
-        }
+        	g2.setPaint (bg);
+            g2.fillRect ( 0, 0, bImg.getWidth(), bImg.getHeight() );
+        	int size = (int) (Math.random()*12)+3;
+        	l.clear();
+        	for(int i = 0; i < size; ++i)
+        	{
+        		l.add(new RadialDistance(Math.random()*1024, Math.random()*1024, 128, 200+(Math.random())*1800));
+        	}
         
         
         
-        double avg_x = 0.0;
-        double avg_y = 0.0;
-        double avg_z = 0.0;
-        for(int j = 0; j < l.size(); ++j)
-        {
-        	g2.setColor(new Color((float)l.get(j).GetDistance()/200, (float).5 ,(float).5));
-        	g2.drawOval((int)l.get(j).GetX()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetY()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetDistance(), (int)l.get(j).GetDistance());
-        	g2.setColor(fg);
-        	g2.drawOval((int)l.get(j).GetX()-1, (int)l.get(j).GetY()-1, 2, 2);
-        	avg_x += l.get(j).GetX();
-        	avg_y += l.get(j).GetY();
-        	avg_z += l.get(j).GetZ();
-        }
-        avg_x/=l.size();
-        avg_y/=l.size();
-        avg_z/=l.size();
-        i = new Intersect(l, avg_x, avg_y, avg_z);
-        g2.setColor(Color.green);
-        g2.fillOval((int)i.GetX()-5, (int)i.GetY()-5, 10, 10);
-        save(bImg, "RandomTest.png");
-        g.drawImage(bImg, 0, 0, null);
-        try {
-			Thread.sleep(4000);
-		} catch (InterruptedException e) {
+        	double avg_x = 0.0;
+        	double avg_y = 0.0;
+        	double avg_z = 0.0;
+        	for(int j = 0; j < l.size(); ++j)
+        	{
+        		g2.setColor(new Color((float)l.get(j).GetDistance()/2000, (float).5 ,(float).5));
+        		g2.drawOval((int)l.get(j).GetX()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetY()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetDistance(), (int)l.get(j).GetDistance());
+        		g2.setColor(fg);
+        		g2.drawOval((int)l.get(j).GetX()-1, (int)l.get(j).GetY()-1, 2, 2);
+        		avg_x += l.get(j).GetX();
+        		avg_y += l.get(j).GetY();
+        		avg_z += l.get(j).GetZ();
+        	}
+        	avg_x/=l.size();
+        	avg_y/=l.size();
+        	avg_z/=l.size();
+        	i = new Intersect(l, avg_x, avg_y, avg_z);
+        	g2.setColor(Color.green);
+        	g2.fillOval((int)i.GetX()-5, (int)i.GetY()-5, 10, 10);
+        	save(bImg, "RandomTest" + v + ".png");
+        	g.drawImage(bImg, 0, 0, null);
+        	
+        	try {
+        		Thread.sleep(4000);
+        	} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        		e.printStackTrace();
+        	}
+        }
         l.clear();
         l.add(new RadialDistance(0,0,128,100));
         l.add(new RadialDistance(1024,0,128,100));

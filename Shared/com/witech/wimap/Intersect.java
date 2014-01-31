@@ -15,18 +15,23 @@ public class Intersect {
 	
 	public Intersect(List<RadialDistance> L, double x, double y, double z)
 	{
+		this(L, x, y, z, 0.00001);
+	}
+	
+	public Intersect(List<RadialDistance> L, double x, double y, double z, double accuracy)
+	{
 		Matrix guess = new Matrix(3,1);
 		Matrix j = new Matrix(L.size(), 3);
 		Matrix delta_y = new Matrix(L.size(), 1, 0.0);
 		Matrix delta_guess = new Matrix(3,1, 0.0);
-		Matrix residuals;
+		Matrix residuals; //Use this to figure out how "accurate" we are
 		//Initial Guess
 		
 		guess.set(0, 0, x);
 		guess.set(1, 0, y);
 		guess.set(2, 0, z);
 		double delta_guess_sum=150;
-		while(delta_guess_sum > 0.00001)
+		while(delta_guess_sum > accuracy)
 		{
 			//Setup Matrices
 			

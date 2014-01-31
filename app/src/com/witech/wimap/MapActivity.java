@@ -62,7 +62,7 @@ public class MapActivity extends Activity {
 			
 			if(ld.size() >= 3)
 			{
-				Intersect point = new Intersect(ld);
+				Intersect point = new Intersect(ld, icon.getX(), icon.getY(), 128);
 				Log.i("USER_X", Double.toString(point.GetX()));
 				Log.i("USER_Y", Double.toString(point.GetY()));
 				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
