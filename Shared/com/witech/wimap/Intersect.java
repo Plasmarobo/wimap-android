@@ -6,6 +6,7 @@ import java.util.List;
 import com.witech.wimap.RadialDistance;
 
 import Jama.Matrix;
+import Jama.QRDecomposition;
 
 public class Intersect {
 	private double x;
@@ -16,46 +17,47 @@ public class Intersect {
 	{
 		Matrix guess = new Matrix(3,1);
 		Matrix j = new Matrix(L.size(), 3);
-		Matrix res = new Matrix(L.size(), 1);
-		Matrix jt;
+		Matrix delta_y = new Matrix(L.size(), 1, 0.0);
+		Matrix delta_guess = new Matrix(3,1, 0.0);
+		Matrix residuals;
 		//Initial Guess
 		
 		guess.set(0, 0, x);
 		guess.set(1, 0, y);
 		guess.set(2, 0, z);
-		double r_square = 6.0;
-		while(r_square > 5)
+		double delta_guess_sum=150;
+		while(delta_guess_sum > 0.00001)
 		{
 			//Setup Matrices
+			
 			for(int i = 0; i < L.size(); ++i)
 			{
 				RadialDistance r = L.get(i);
-				j.set(i, 0, derivative(guess.get(0,0), r.GetX()));
-				j.set(i, 1, derivative(guess.get(1,0), r.GetY()));
-				j.set(i, 2, derivative(guess.get(2,0), r.GetZ()));
-				res.set(i, 0, residual(guess.get(0, 0), r.GetX(), guess.get(1, 0), r.GetY(), guess.get(2,0), r.GetZ(), r.GetDistance()));
+				j.set(i, 0, deriv(guess.get(0,0), r.GetX()));
+				j.set(i, 1, deriv(guess.get(1,0), r.GetY()));
+				j.set(i, 2, deriv(guess.get(2,0), r.GetZ()));
+				delta_y.set(i, 0, funct(guess.get(0, 0), r.GetX(), guess.get(1, 0), r.GetY(), guess.get(2,0), r.GetZ(), r.GetDistance()));
+				residuals = delta_y.getMatrix(i, i, 0,0).minus(j.getMatrix(i, i, 0, 2).times(delta_guess));
 			}
-			//Perform Gaussian-Newton Elimination
-			jt = j.transpose();
-			Matrix inv = jt.times(j);
-			if(inv.det() == 0)
-				break;
-			inv = inv.inverse();
-			Matrix rr = inv.times(jt);
-			rr = rr.times(res);
-			guess.minusEquals(rr);
-			r_square = 0.0;
-			for(int i = 0; i < L.size(); ++i)
-				r_square += Math.pow(residual(guess.get(0,0), L.get(i).GetX(), guess.get(1,0), L.get(i).GetY(), guess.get(2, 0), L.get(i).GetZ(), L.get(i).GetDistance()),2);
+			QRDecomposition qr = new QRDecomposition(j);
+			Matrix QTdelta_y = qr.getQ().transpose().times(delta_y);
+			Matrix Rn = qr.getR(); 
+			//RnB = QTY
+			delta_guess = QTdelta_y.solve(Rn).transpose();
+			delta_guess_sum = delta_guess.get(0,0) + delta_guess.get(1,0) + delta_guess.get(2,0);
+			guess.plusEquals(delta_guess);
 		}
+		this.x = guess.get(0, 0);
+		this.y = guess.get(1, 0);
+		this.z = guess.get(2, 0);
 		
 	}
 	
-	private double derivative(double a, double x)
+	private double deriv(double a, double x)
 	{
 		return 2*(x+a);
 	}
-	private double residual(double a, double x, double b, double y, double c, double z, double r)
+	private double funct(double a, double x, double b, double y, double c, double z, double r)
 	{
 		return (Math.pow(r, 2.0) - (Math.pow(x+a, 2) + Math.pow(y+b, 2) + Math.pow(z+c, 2)));
 	}

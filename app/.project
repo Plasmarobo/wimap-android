@@ -34,7 +34,7 @@
 		<link>
 			<name>Shared</name>
 			<type>2</type>
-			<location>C:/Users/austen/Documents/GitHub/wimap-android/Shared</location>
+			<locationURI>WORKSPACE_LOC/Shared</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
