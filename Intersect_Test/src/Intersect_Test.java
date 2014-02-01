@@ -93,7 +93,7 @@ public class Intersect_Test extends JApplet {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Dimension d = getSize();
         l = new ArrayList<RadialDistance>(5);
-        for(int v = 0; v < 10; ++v)
+        for(int v = 0; v < 2; ++v)
         {
         	g2.setPaint (bg);
             g2.fillRect ( 0, 0, bImg.getWidth(), bImg.getHeight() );
@@ -101,7 +101,7 @@ public class Intersect_Test extends JApplet {
         	l.clear();
         	for(int i = 0; i < size; ++i)
         	{
-        		l.add(new RadialDistance(Math.random()*1024, Math.random()*1024, 128, 200+(Math.random())*1800));
+        		l.add(new RadialDistance(Math.random()*512, Math.random()*512, 128, 10+(Math.random())*246));
         	}
         
         
@@ -111,7 +111,7 @@ public class Intersect_Test extends JApplet {
         	double avg_z = 0.0;
         	for(int j = 0; j < l.size(); ++j)
         	{
-        		g2.setColor(new Color((float)l.get(j).GetDistance()/2000, (float).5 ,(float).5));
+        		g2.setColor(new Color((float)l.get(j).GetDistance()/256, (float).5 ,(float).5));
         		g2.drawOval((int)l.get(j).GetX()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetY()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetDistance(), (int)l.get(j).GetDistance());
         		g2.setColor(fg);
         		g2.drawOval((int)l.get(j).GetX()-1, (int)l.get(j).GetY()-1, 2, 2);
@@ -125,11 +125,12 @@ public class Intersect_Test extends JApplet {
         	i = new Intersect(l, avg_x, avg_y, avg_z);
         	g2.setColor(Color.green);
         	g2.fillOval((int)i.GetX()-5, (int)i.GetY()-5, 10, 10);
+        	System.out.println("X: " + i.GetX() + " Y: " + i.GetY());
         	save(bImg, "RandomTest" + v + ".png");
         	g.drawImage(bImg, 0, 0, null);
         	
         	try {
-        		Thread.sleep(4000);
+        		Thread.sleep(500);
         	} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
         		e.printStackTrace();
@@ -137,9 +138,9 @@ public class Intersect_Test extends JApplet {
         }
         l.clear();
         l.add(new RadialDistance(0,0,128,100));
-        l.add(new RadialDistance(1024,0,128,100));
-        l.add(new RadialDistance(0,1024,128,100));
-        l.add(new RadialDistance(1024,1024,128,100));
+        l.add(new RadialDistance(512,0,128,100));
+        l.add(new RadialDistance(0,512,128,100));
+        l.add(new RadialDistance(512,512,128,100));
         g2.setPaint (bg);
         g2.fillRect ( 0, 0, bImg.getWidth(), bImg.getHeight() );
        
@@ -152,9 +153,10 @@ public class Intersect_Test extends JApplet {
         	
         }
         
-        i = new Intersect(l,512, 512, 128);
+        i = new Intersect(l,200, 200, 128);
         g2.setColor(Color.green);
         g2.fillOval((int)i.GetX()-5, (int)i.GetY()-5, 10, 10);
+        System.out.println("X: " + i.GetX() + " Y: " + i.GetY());
         save(bImg, "FixedTest.png");
         g.drawImage(bImg, 0, 0, null);
         try {
@@ -187,7 +189,7 @@ public class Intersect_Test extends JApplet {
         f.getContentPane().add("Center", applet);
         applet.init();
         f.pack();
-        f.setSize(new Dimension(1024,1024));
+        f.setSize(new Dimension(512,512));
         f.setVisible(true);
     }
 }

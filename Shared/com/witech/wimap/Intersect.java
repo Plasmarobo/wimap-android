@@ -15,7 +15,7 @@ public class Intersect {
 	
 	public Intersect(List<RadialDistance> L, double x, double y, double z)
 	{
-		this(L, x, y, z, 0.00001);
+		this(L, x, y, z, 1E-8);
 	}
 	
 	public Intersect(List<RadialDistance> L, double x, double y, double z, double accuracy)
@@ -41,15 +41,19 @@ public class Intersect {
 				j.set(i, 0, deriv(guess.get(0,0), r.GetX()));
 				j.set(i, 1, deriv(guess.get(1,0), r.GetY()));
 				j.set(i, 2, deriv(guess.get(2,0), r.GetZ()));
-				delta_y.set(i, 0, funct(guess.get(0, 0), r.GetX(), guess.get(1, 0), r.GetY(), guess.get(2,0), r.GetZ(), r.GetDistance()));
-				residuals = delta_y.getMatrix(i, i, 0,0).minus(j.getMatrix(i, i, 0, 2).times(delta_guess));
+				delta_y.set(i, 0, Math.pow(r.GetDistance(), 2) - funct(guess.get(0, 0), r.GetX(), guess.get(1, 0), r.GetY(), guess.get(2,0), r.GetZ()));
 			}
+			residuals = delta_y.minus(j.times(delta_guess));
 			QRDecomposition qr = new QRDecomposition(j);
 			Matrix QTdelta_y = qr.getQ().transpose().times(delta_y);
 			Matrix Rn = qr.getR(); 
 			//RnB = QTY
-			delta_guess = QTdelta_y.solve(Rn).transpose();
-			delta_guess_sum = delta_guess.get(0,0) + delta_guess.get(1,0) + delta_guess.get(2,0);
+			delta_guess = QTdelta_y.solve(Rn);
+			delta_guess = delta_guess.transpose();
+			delta_guess.set(0, 0, 1/delta_guess.get(0,0));
+			delta_guess.set(1, 0, 1/delta_guess.get(1,0));
+			delta_guess.set(2, 0, 1/delta_guess.get(2,0));
+			delta_guess_sum = Math.abs(delta_guess.get(0,0) + delta_guess.get(1,0) + delta_guess.get(2,0));
 			guess.plusEquals(delta_guess);
 		}
 		this.x = guess.get(0, 0);
@@ -60,11 +64,11 @@ public class Intersect {
 	
 	private double deriv(double a, double x)
 	{
-		return 2*(x+a);
+		return 2*(a-x);
 	}
-	private double funct(double a, double x, double b, double y, double c, double z, double r)
+	private double funct(double a, double x, double b, double y, double c, double z)
 	{
-		return (Math.pow(r, 2.0) - (Math.pow(x+a, 2) + Math.pow(y+b, 2) + Math.pow(z+c, 2)));
+		return (Math.pow(a-x, 2) + Math.pow(b-y, 2) + Math.pow(c-z, 2));
 	}
 	public double GetX()
 	{
