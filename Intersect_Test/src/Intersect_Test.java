@@ -137,16 +137,16 @@ public class Intersect_Test extends JApplet {
         	}
         }
         l.clear();
-        l.add(new RadialDistance(0,0,128,100));
-        l.add(new RadialDistance(512,0,128,100));
-        l.add(new RadialDistance(0,512,128,100));
-        l.add(new RadialDistance(512,512,128,100));
+        l.add(new RadialDistance(0,0,128,550));
+        l.add(new RadialDistance(512,0,128,550));
+        l.add(new RadialDistance(0,512,128,550));
+        l.add(new RadialDistance(512,512,128,550));
         g2.setPaint (bg);
         g2.fillRect ( 0, 0, bImg.getWidth(), bImg.getHeight() );
        
         for(int j = 0; j < l.size(); ++j)
         {
-        	g2.setColor(new Color((float)l.get(j).GetDistance()/200, (float).5 ,(float)0.5));
+        	g2.setColor(new Color((float)l.get(j).GetDistance()/550, (float).5 ,(float)0.5));
         	g2.drawOval((int)l.get(j).GetX()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetY()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetDistance(), (int)l.get(j).GetDistance());
         	g2.setColor(fg);
         	g2.drawOval((int)l.get(j).GetX()-1, (int)l.get(j).GetY()-1, 2, 2);
@@ -165,6 +165,40 @@ public class Intersect_Test extends JApplet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        l.clear();
+        l.add(new RadialDistance(475060,1096300,4670,5940.893));
+        l.add(new RadialDistance(481500,1094900,4694,2420.883));
+        l.add(new RadialDistance(482230,1088430,4831,5087.666));
+        l.add(new RadialDistance(478050,1087810,4775,5545.271));
+        l.add(new RadialDistance(471430,1088580,4752,9643.044));
+        l.add(new RadialDistance(468720,1091240,4803, 11417.270));
+        l.add(new RadialDistance(467400,1093980,4705, 12638.110));
+        l.add(new RadialDistance(468730,1097340,4747, 12077.030));
+        g2.setPaint (bg);
+        g2.fillRect ( 0, 0, bImg.getWidth(), bImg.getHeight() );
+       
+        for(int j = 0; j < l.size(); ++j)
+        {
+        	g2.setColor(new Color((float)l.get(j).GetDistance()/13000, (float).5 ,(float)0.5));
+        	g2.drawOval((int)l.get(j).GetX()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetY()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetDistance(), (int)l.get(j).GetDistance());
+        	g2.setColor(fg);
+        	g2.drawOval((int)l.get(j).GetX()-1, (int)l.get(j).GetY()-1, 2, 2);
+        	
+        }
+        
+        i = new Intersect(l,200, 200, 128);
+        g2.setColor(Color.green);
+        g2.fillOval((int)i.GetX()-5, (int)i.GetY()-5, 10, 10);
+        System.out.println("X: " + i.GetX() + " Y: " + i.GetY());
+        save(bImg, "FixedTest.png");
+        g.drawImage(bImg, 0, 0, null);
+        try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         System.exit(0);
     }
     public void save(BufferedImage bImg, String file)
