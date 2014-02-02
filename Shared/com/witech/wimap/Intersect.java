@@ -60,90 +60,67 @@ public class Intersect {
 					};
 			A.setRow(i-1,row);
 		}
-		RealMatrix AtA = A.transpose().multiply(A);
-		double guess_data[][] = {{0.0},{0.0},{0.0}};
-		RealMatrix guess = MatrixUtils.createRealMatrix(guess_data);
+		double guess_data[][] = {{x},{y},{z}};
+		RealMatrix guess;// = MatrixUtils.createRealMatrix(guess_data);
 		DecompositionSolver decomp;
 		try {
-			QRDecomposition sd = new QRDecomposition(AtA);
-			decomp = sd.getSolver();
-			guess = decomp.getInverse().multiply(A.transpose().multiply(b));
-		}catch(SingularMatrixException ea)
-		{
 			QRDecomposition sd = new QRDecomposition(A);
 			decomp = sd.getSolver();
+			guess = decomp.solve(b);
+		}catch(SingularMatrixException ea){
+			SingularValueDecomposition svd = new SingularValueDecomposition(A);
+			decomp = svd.getSolver();
 			try{
 				guess = decomp.solve(b);
-				//guess = qr.getR().solve(qr.getQ().transpose().times(b));
-			}catch(SingularMatrixException eb)
-			{
-				SingularValueDecomposition svd = new SingularValueDecomposition(A);
-				decomp = svd.getSolver();
-				try{
-					guess = decomp.solve(b);
-				}catch(SingularMatrixException ec){
-					
-				}
+			}catch(SingularMatrixException ec){
+				guess = MatrixUtils.createRealMatrix(guess_data);
 			}
-		
 		}
 		int iteration_limit = 100000;
 		//Matrix R = guess;
-		double jtjstore[][]={{0.0, 0.0, 0.0},{0.0, 0.0, 0.0},{0.0, 0.0, 0.0}};
-		RealMatrix JtJ = MatrixUtils.createRealMatrix(jtjstore);
-		double jtfstore[][]={{0.0},{0.0},{0.0}};
-		RealMatrix Jtf = MatrixUtils.createRealMatrix(jtfstore);
+		RealMatrix delta_y = MatrixUtils.createRealMatrix(L.size(), 1);
+		RealMatrix J = MatrixUtils.createRealMatrix(L.size(), 3);
 		for(int k = 0; k < iteration_limit; ++k)
 		{
 			//Setup
 			for(int i = 0; i < L.size(); ++i)
 			{
 				iter = L.get(i);
-				double field[][] = 
-					{
-						{
-							df(Math.pow(guess.getEntry(0,0)-iter.GetX(),2), guess, iter),
-							df((guess.getEntry(0,0)-iter.GetX())*(guess.getEntry(1, 0)-iter.GetY()), guess, iter),
-							df((guess.getEntry(0,0)-iter.GetX())*(guess.getEntry(2,0)-iter.GetZ()), guess, iter),
-						},
-						{
-							df((guess.getEntry(0,0)-iter.GetX())*(guess.getEntry(1, 0)-iter.GetY()), guess, iter),
-							df(Math.pow(guess.getEntry(1,0)-iter.GetY(),2), guess, iter),
-							df((guess.getEntry(1,0)-iter.GetY())*(guess.getEntry(2,0)-iter.GetZ()), guess, iter),
-						},
-						{	
-							df((guess.getEntry(0,0)-iter.GetX())*(guess.getEntry(2,0)-iter.GetZ()), guess, iter),
-							df((guess.getEntry(1,0)-iter.GetY())*(guess.getEntry(2,0)-iter.GetZ()), guess, iter),
-							df(Math.pow(guess.getEntry(2,0)-iter.GetZ(),2), guess, iter),
-						},
-					};
+				J.setRow(i, 
+						new double[]{
+					df(guess.getEntry(0, 0)-iter.GetX(), guess, iter),
+					df(guess.getEntry(1, 0)-iter.GetY(), guess, iter),
+					df(guess.getEntry(2, 0)-iter.GetZ(), guess, iter)
+						});
+				delta_y.setRow(i, new double[]{
+					iter.GetDistance() - funct(guess, iter),	
+				});
 				
-				JtJ.add(JtJ.add(MatrixUtils.createRealMatrix(field)));
-				double f[][] =
-					{
-						{df((guess.getEntry(0,0)-iter.GetX())*funct(guess,iter), guess, iter)},
-						{df((guess.getEntry(1,0)-iter.GetY())*funct(guess,iter), guess, iter)},
-						{df((guess.getEntry(2,0)-iter.GetZ())*funct(guess,iter), guess, iter)}
-					};
-				Jtf.add(Jtf.add(MatrixUtils.createRealMatrix(f)));		
+						
 			}
 			//Get next aproximate
-			double r_data[][] = {{0.0},{0.0},{0.0}};
-			RealMatrix R = MatrixUtils.createRealMatrix(r_data);
-			
-			QRDecomposition qr = new QRDecomposition(JtJ);
+			double ng_data[][] = {{0.0},{0.0},{0.0}};
+			RealMatrix next_guess = MatrixUtils.createRealMatrix(ng_data);
+			RealMatrix Qtdy;
+			RealMatrix Rn;
+			QRDecomposition qr = new QRDecomposition(J);
+			Qtdy = qr.getQT().multiply(delta_y);
+			Rn = qr.getR();
 			try{
-				R = guess.subtract(qr.getSolver().getInverse().multiply(Jtf));
+				DecompositionSolver solver = new QRDecomposition(Rn).getSolver();
+				next_guess = solver.solve(Qtdy);
 			}catch(SingularMatrixException ec)
 			{
-				
+				DecompositionSolver solver = new SingularValueDecomposition(Rn).getSolver();
+				next_guess = solver.solve(Qtdy);
 			}
-			double difference_sum = ((guess.getEntry(0, 0) - R.getEntry(0, 0)) + (guess.getEntry(1, 0) - R.getEntry(1, 0)) + (guess.getEntry(2,0) - R.getEntry(2,0)));
+			double difference_sum = ((guess.getEntry(0, 0) - next_guess.getEntry(0, 0)) + (guess.getEntry(1, 0) - next_guess.getEntry(1, 0)) + (guess.getEntry(2,0) - next_guess.getEntry(2,0)));
 			if(difference_sum < accuracy)
 			{
+				
 				break;
 			}
-			guess = R;
+			guess = guess.add(next_guess);
 		}
 		this.x = guess.getEntry(0,0);
 		this.y = guess.getEntry(1,0);
@@ -153,7 +130,7 @@ public class Intersect {
 
 	private double df(double value, RealMatrix guess, RadialDistance R)
 	{
-		return value/Math.pow(funct(guess, R) + R.GetDistance(), 2);
+		return value/(Math.pow(R.GetX()-guess.getEntry(0, 0), 2)+Math.pow(R.GetY()-guess.getEntry(2,0), 2)+Math.pow(R.GetZ()-guess.getEntry(2,0), 2));
 	}
 	private double funct(RealMatrix xyz, RadialDistance R)
 	{
@@ -161,7 +138,7 @@ public class Intersect {
 	}
 	private double funct(double x, double y, double z, RadialDistance R)
 	{
-		return Math.sqrt((Math.pow(x-R.GetX(), 2) + Math.pow(y-R.GetY(), 2) + Math.pow(z-R.GetZ(), 2)))-R.GetDistance();
+		return Math.sqrt((Math.pow(x-R.GetX(), 2) + Math.pow(y-R.GetY(), 2) + Math.pow(z-R.GetZ(), 2)));
 	}
 	public double GetX()
 	{
