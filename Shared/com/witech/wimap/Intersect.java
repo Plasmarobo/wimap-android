@@ -4,20 +4,17 @@ package com.witech.wimap;
 import java.util.List;
 
 
+import org.apache.commons.math3.analysis.DifferentiableMultivariateVectorFunction;
 import org.apache.commons.math3.analysis.MultivariateMatrixFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
 import org.apache.commons.math3.optim.InitialGuess;
 import org.apache.commons.math3.optim.MaxEval;
 import org.apache.commons.math3.optim.PointVectorValuePair;
-import org.apache.commons.math3.optim.SimpleBounds;
-import org.apache.commons.math3.optim.SimpleValueChecker;
-import org.apache.commons.math3.optim.SimpleVectorValueChecker;
 import org.apache.commons.math3.optim.nonlinear.vector.ModelFunction;
 import org.apache.commons.math3.optim.nonlinear.vector.ModelFunctionJacobian;
 import org.apache.commons.math3.optim.nonlinear.vector.Target;
 import org.apache.commons.math3.optim.nonlinear.vector.Weight;
 import org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizer;
-import org.apache.commons.math3.optim.nonlinear.vector.jacobian.GaussNewtonOptimizer;
 
 
 public class Intersect {
@@ -36,7 +33,7 @@ public class Intersect {
 	public Intersect(List<RadialDistance> L, double x, double y, double z, double accuracy)
 	{
 		InitialGuess guess = new InitialGuess(new double[]{x,y,z});
-		SimpleBounds limits = new SimpleBounds(new double[]{0.0, 0.0, 0.0}, new double[]{2000000,2000000,2000000});
+		//SimpleBounds limits = new SimpleBounds(null, null);
 		double r_vector[] = new double[L.size()];
 		double w_vector[] = new double[L.size()];
 		for(int i = 0; i < L.size(); ++i)
@@ -51,9 +48,9 @@ public class Intersect {
 		ModelFunction sphere_model = new ModelFunction(sphere_function);
 		MultivariateMatrixFunction sphere_jacobian = new SphereJacobian(L);
 		ModelFunctionJacobian model_jacobian = new ModelFunctionJacobian(sphere_jacobian);
-		GaussNewtonOptimizer minimizer = new GaussNewtonOptimizer(new SimpleVectorValueChecker(0.01, 1));
-		//LevenbergMarquardtOptimizer minimizer = new LevenbergMarquardtOptimizer();
-		PointVectorValuePair sln = minimizer.optimize(new MaxEval(10000), guess, limits, target,weight, sphere_model, model_jacobian);
+		//GaussNewtonOptimizer minimizer = new GaussNewtonOptimizer(new SimpleVectorValueChecker(0.01, 1));
+		LevenbergMarquardtOptimizer minimizer = new LevenbergMarquardtOptimizer();
+		PointVectorValuePair sln = minimizer.optimize(new MaxEval(1000000), guess, null, target,weight, sphere_model, model_jacobian);
 		double solution[] = sln.getPoint();
 		this.x = solution[0];
 		this.y = solution[1];
@@ -63,7 +60,7 @@ public class Intersect {
 		this.y_conf = confidence[1];
 		this.z_conf = confidence[2];
 	}
-	private class SphereFunction implements MultivariateVectorFunction
+	private class SphereFunction implements DifferentiableMultivariateVectorFunction
 	{
 		protected List<RadialDistance> data;
 		public SphereFunction(List<RadialDistance> data)
@@ -71,20 +68,25 @@ public class Intersect {
 			this.data = data;
 		}
 		@Override
-		public double[] value(double[] args) throws IllegalArgumentException {
+		public double[] value(double[] point) throws IllegalArgumentException {
 			//args x, xi, y, yi, z, zi
 			double result[] = new double[data.size()];
 			for(int i = 0; i < data.size(); ++i)
 				{
 				RadialDistance iter = data.get(i);
 				result[i] = Math.sqrt(
-					Math.pow(args[0]-iter.GetX(),2)+
-					Math.pow(args[1]-iter.GetY(),2)+
-					Math.pow(args[2]-iter.GetZ(),2)
+					Math.pow(point[0]-iter.GetX(),2)+
+					Math.pow(point[1]-iter.GetY(),2)+
+					Math.pow(point[2]-iter.GetZ(),2)
 					);
 				}	
 			return result;
 		}
+		@Override
+		public MultivariateMatrixFunction jacobian() {
+			return new SphereJacobian(data);
+		}
+		
 	}
 	private class SphereJacobian implements MultivariateMatrixFunction
 	{

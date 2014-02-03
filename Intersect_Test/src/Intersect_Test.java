@@ -105,7 +105,7 @@ public class Intersect_Test extends JApplet {
     {
     	g2.setColor(Color.green);
     	g2.fillOval((int)i.x-5, (int)i.y-5, 10, 10);
-    	System.out.println("X: " + i.x + " Y: " + i.x);
+    	System.out.println("X: " + i.x + " Y: " + i.y);
     	save(bImg, name + ".png");
     	g.drawImage(bImg, 0, 0, null);
     }
@@ -131,7 +131,7 @@ public class Intersect_Test extends JApplet {
         l.add(new RadialDistance(468730,1097340,4747, 12077.030));
         drawTest(l, 13000);
         i = new Intersect(l,200, 200, 128);
-        if(Math.abs(i.x-48000) < 100)
+        if(Math.abs(i.x-480000) < 100)
         	System.out.println("X within tolerance");
         if(Math.abs(i.y-1093000) < 100)
         	System.out.println("Y within tolerance");
