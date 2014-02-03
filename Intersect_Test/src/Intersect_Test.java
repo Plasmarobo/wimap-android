@@ -94,7 +94,7 @@ public class Intersect_Test extends JApplet {
     {
     	for(int j = 0; j < l.size(); ++j)
     	{
-    		g2.setColor(new Color((float)l.get(j).GetDistance()/256, (float).5 ,(float).5));
+    		g2.setColor(new Color((float) ((float)l.get(j).GetDistance()/max), (float).5 ,(float).5));
     		g2.drawOval((int)l.get(j).GetX()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetY()-(int)l.get(j).GetDistance()/2, (int)l.get(j).GetDistance(), (int)l.get(j).GetDistance());
     		g2.setColor(fg);
     		g2.drawOval((int)l.get(j).GetX()-1, (int)l.get(j).GetY()-1, 2, 2);
@@ -120,17 +120,6 @@ public class Intersect_Test extends JApplet {
     public void paint(Graphics g) {
         
         l = new ArrayList<RadialDistance>(5);
-        
-        
-        newTest(l);
-        l.add(new RadialDistance(0,0,128,550));
-        l.add(new RadialDistance(512,0,128,550));
-        l.add(new RadialDistance(0,512,128,550));
-        l.add(new RadialDistance(512,512,128,550));
-        drawTest(l, 550);
-        i = new Intersect(l,200, 200, 128);
-        finishTest("cornertest", i,g);
-        
         newTest(l);
         l.add(new RadialDistance(475060,1096300,4670,5940.893));
         l.add(new RadialDistance(481500,1094900,4694,2420.883));
@@ -142,7 +131,24 @@ public class Intersect_Test extends JApplet {
         l.add(new RadialDistance(468730,1097340,4747, 12077.030));
         drawTest(l, 13000);
         i = new Intersect(l,200, 200, 128);
+        if(Math.abs(i.GetX()-48000) < 100)
+        	System.out.println("X within tolerance");
+        if(Math.abs(i.GetY()-1093000) < 100)
+        	System.out.println("Y within tolerance");
+        if(Math.abs(i.GetZ()-4535) < 100)
+        	System.out.println("Z within tolerance");
         finishTest("datatest", i, g);
+        
+        newTest(l);
+        l.add(new RadialDistance(0,0,128,720));
+        l.add(new RadialDistance(512,0,128,720));
+        l.add(new RadialDistance(0,512,128,720));
+        l.add(new RadialDistance(512,512,128,720));
+        drawTest(l, 750);
+        i = new Intersect(l,200, 200, 128);
+        finishTest("cornertest", i,g);
+        
+        
         
         for(int v = 0; v < 2; ++v)
         {
