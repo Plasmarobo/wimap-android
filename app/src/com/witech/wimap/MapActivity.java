@@ -27,7 +27,7 @@ public class MapActivity extends Activity {
 	private WifiReciever wifi_rec;
 	private List<ScanResult> wifi_list;
 	private Timer timer;
-	private List<Router> routers;
+	private List<AndroidRouter> routers;
 	private ImageView map;
 	private ImageView icon;
 	

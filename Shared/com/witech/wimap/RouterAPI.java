@@ -47,7 +47,7 @@ public class RouterAPI {
 	
 	//private HttpClient httpclient;
 	public static final String ROUTERS_URI = "http://www.wimapnav.com/api/v1/routers";
-	private static List<Router> cache;
+	private static List<AndroidRouter> cache;
 	
 	public static HttpResponse PerformGet()
 	{
@@ -66,7 +66,7 @@ public class RouterAPI {
 		}
 		return null;
 	}
-	public static List<Router> JsonToCache(String json_str)
+	public static List<AndroidRouter> JsonToCache(String json_str)
 	{
 		try {
 			JSONArray routers_json = new JSONArray(json_str);
@@ -74,7 +74,7 @@ public class RouterAPI {
 			for(int i = 0; i < routers_json.length(); ++i)
 			{
 				JSONObject router_json = routers_json.getJSONObject(i);
-				Router model = new Router(
+				AndroidRouter model = new AndroidRouter(
 						router_json.getDouble(tag_x), 
 						router_json.getDouble(tag_y),
 						router_json.getDouble(tag_z),
@@ -92,7 +92,7 @@ public class RouterAPI {
 		return cache;
 	}
 	
-	public static List<Router> JsonToCache(HttpResponse resp, Integer progress)
+	public static List<AndroidRouter> JsonToCache(HttpResponse resp, Integer progress)
 	{
 
 		InputStream inputStream = null;
@@ -178,11 +178,11 @@ public class RouterAPI {
 		}
 		return false;
 	}
-	public List<Router> getRoutersBySSID(String ssid)
+	public List<AndroidRouter> getRoutersBySSID(String ssid)
 	{
 		return cache;
 	}
-	public List<Router> getRoutersByVenue(String venue)
+	public List<AndroidRouter> getRoutersByVenue(String venue)
 	{
 		return cache;
 	}

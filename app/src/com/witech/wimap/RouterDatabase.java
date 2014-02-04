@@ -26,7 +26,7 @@ public class RouterDatabase {
   public void close() {
     dbHelper.close();
   }
-  public void cacheList(List<Router> l)
+  public void cacheList(List<AndroidRouter> l)
   {
 	  ForceReset();
 	  for(int i = 0; i < l.size(); ++i)
@@ -35,7 +35,7 @@ public class RouterDatabase {
 	  }
   }
 
-  public void WriteRouter(Router r) {
+  public void WriteRouter(AndroidRouter r) {
     ContentValues values = new ContentValues();
     values.put(LocalDBHelper.COLUMN_SSID, r.GetSSID());
     values.put(LocalDBHelper.COLUMN_UID, r.GetUID());
@@ -49,19 +49,19 @@ public class RouterDatabase {
     database.insert(LocalDBHelper.TABLE_ROUTERS, null, values);
   }
 
-  public void RemoveRouter(Router r) {
+  public void RemoveRouter(AndroidRouter r) {
     long id = r.GetID();
    	Log.i("RouterDatabase", "Router deleted with id: " + id);
     database.delete(LocalDBHelper.TABLE_ROUTERS, "id"
         + " = " + id, null);
   }
-  public List<Router> getRoutersBySSID(String ssid)
+  public List<AndroidRouter> getRoutersBySSID(String ssid)
   {
-	  List<Router> routers = new ArrayList<Router>();
+	  List<AndroidRouter> routers = new ArrayList<AndroidRouter>();
 	  Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS + " WHERE SSID=?", new String[] {ssid});
 	  cursor.moveToFirst();
 	  while (!cursor.isAfterLast()) {
-	      Router r = cursorToRouter(cursor);
+	      AndroidRouter r = cursorToRouter(cursor);
 	      routers.add(r);
 	      cursor.moveToNext();
 	    }
@@ -69,7 +69,7 @@ public class RouterDatabase {
 	    cursor.close();
 	    return routers;
   }
-  public Router getRouterByUID(String uid)
+  public AndroidRouter getRouterByUID(String uid)
   {
 	  
 	  Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS + " WHERE UID=?", new String[] {uid});
@@ -77,8 +77,8 @@ public class RouterDatabase {
 	  return cursorToRouter(cursor);
   }
 
-  public List<Router> getAllRouters() {
-    List<Router> routers = new ArrayList<Router>();
+  public List<AndroidRouter> getAllRouters() {
+    List<AndroidRouter> routers = new ArrayList<AndroidRouter>();
 
     //Cursor cursor = database.query(LocalDBHelper.TABLE_ROUTERS,
     //    allColumns, null, null, null, null, null);
@@ -86,7 +86,7 @@ public class RouterDatabase {
 
     cursor.moveToFirst();
     while (!cursor.isAfterLast()) {
-      Router r = cursorToRouter(cursor);
+      AndroidRouter r = cursorToRouter(cursor);
       routers.add(r);
       cursor.moveToNext();
     }
@@ -95,8 +95,8 @@ public class RouterDatabase {
     return routers;
   }
 
-  private Router cursorToRouter(Cursor cursor) {
-    Router r = new Router();
+  private AndroidRouter cursorToRouter(Cursor cursor) {
+    AndroidRouter r = new AndroidRouter();
     r.SetID(cursor.getInt(0));
     r.SetSSID(cursor.getString(1));
     r.SetUID(cursor.getString(2));

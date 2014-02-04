@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class PushRouterActivity extends Activity {
-	public class PushRouterTask extends AsyncTask<List<Router>, Integer, List<Router>> {
+	public class PushRouterTask extends AsyncTask<List<AndroidRouter>, Integer, List<AndroidRouter>> {
 		protected Integer prog; 
 		protected View progressIndicator;
 		
@@ -31,12 +31,8 @@ public class PushRouterActivity extends Activity {
 			prog = Integer.valueOf(0);
 		}
 		@Override
-		protected List<Router> doInBackground(List<Router>... l) {
-			List<Router> li;
-			RouterDatabase db = new RouterDatabase(getBaseContext());
-			db.open();
-			li = db.getAllRouters();
-			db.close();
+		protected List<AndroidRouter> doInBackground(List<AndroidRouter>... l) {
+			List<AndroidRouter> li = l[0];
 			
 			try{
 				for(int i = 0; i < li.size(); ++i)
@@ -57,7 +53,7 @@ public class PushRouterActivity extends Activity {
 	        //setProgressPercent(progress[0]);
 	    }
 		@Override
-	    protected void onPostExecute(List<Router> result) {
+	    protected void onPostExecute(List<AndroidRouter> result) {
 			saveAndExit(result);
 	        Toast.makeText(getBaseContext(), "Region Updated", Toast.LENGTH_SHORT).show();
 	    }
@@ -69,13 +65,17 @@ public class PushRouterActivity extends Activity {
 		{
 			super.onCreate(savedInstance);
 			setContentView(R.layout.activity_fetch); 
-			List<Router> l = new ArrayList<Router>();
+			List<AndroidRouter> l;
+			RouterDatabase db = new RouterDatabase(getBaseContext());
+			db.open();
+			l = db.getAllRouters();
+			db.close();
 			ProgressBar p = (ProgressBar) findViewById(R.id.progress);
 			p.setProgress(0);
 			new PushRouterTask(p).execute(l);
 		}
 		
-		protected void saveAndExit(List<Router> l)
+		protected void saveAndExit(List<AndroidRouter> result)
 		{
 			setResult(RESULT_OK, new Intent());
 			finish();

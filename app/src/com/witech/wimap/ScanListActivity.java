@@ -25,7 +25,7 @@ public class ScanListActivity extends Activity {
 	private WifiReciever wifi_rec;
 	private List<ScanResult> wifi_list;
 	private ScanListAdapter adapter;
-	private Router rt;
+	private AndroidRouter rt;
 	private RouterDatabase db;
 	private Timer timer;
 	static final int EDITROUTER = 1;
@@ -140,7 +140,7 @@ public class ScanListActivity extends Activity {
 		TextView uid = (TextView)row.findViewById(R.id.uid);
 		int p = Integer.parseInt((String)power.getText());
 		int f = Integer.parseInt((String)frequency.getText());
-		rt = new Router(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, (double)f);
+		rt = new AndroidRouter(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, (double)f);
 		edit_router.putExtra("dBm",p);
 		edit_router.putExtra("freq", f);
 		startActivityForResult(edit_router, EDITROUTER);

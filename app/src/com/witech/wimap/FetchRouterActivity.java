@@ -20,7 +20,7 @@ import org.apache.http.HttpResponse;
 
 public class FetchRouterActivity extends Activity {
 
-public class FetchRouterTask extends AsyncTask<List<Router>, Integer, List<Router>> {
+public class FetchRouterTask extends AsyncTask<List<AndroidRouter>, Integer, List<AndroidRouter>> {
 	protected Integer prog; 
 	protected View progressIndicator;
 	
@@ -39,8 +39,8 @@ public class FetchRouterTask extends AsyncTask<List<Router>, Integer, List<Route
 		prog = Integer.valueOf(0);
 	}
 	@Override
-	protected List<Router> doInBackground(List<Router>... l) {
-		List<Router> li = l[0];
+	protected List<AndroidRouter> doInBackground(List<AndroidRouter>... l) {
+		List<AndroidRouter> li = l[0];
 		HttpResponse resp = RouterAPI.PerformGet();
 		InputStream inputStream = null;
 		String json_str = "";
@@ -78,7 +78,7 @@ public class FetchRouterTask extends AsyncTask<List<Router>, Integer, List<Route
         //setProgressPercent(progress[0]);
     }
 	@Override
-    protected void onPostExecute(List<Router> result) {
+    protected void onPostExecute(List<AndroidRouter> result) {
 		saveAndExit(result);
         Toast.makeText(getBaseContext(), "Region Updated", Toast.LENGTH_SHORT).show();
     }
@@ -90,11 +90,11 @@ public class FetchRouterTask extends AsyncTask<List<Router>, Integer, List<Route
 	{
 		super.onCreate(savedInstance);
 		setContentView(R.layout.activity_fetch); 
-		List<Router> l = new ArrayList<Router>();
+		List<AndroidRouter> l = new ArrayList<AndroidRouter>();
 		new FetchRouterTask(findViewById(R.id.progress)).execute(l);
 	}
 	
-	protected void saveAndExit(List<Router> l)
+	protected void saveAndExit(List<AndroidRouter> l)
 	{
 		RouterDatabase db = new RouterDatabase(this);
 		db.open();

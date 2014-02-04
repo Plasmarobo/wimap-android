@@ -7,7 +7,10 @@ import com.witech.wimap.Router;
 
 public class AndroidRouter extends Router {
 	
-	
+	public AndroidRouter()
+	{
+		super();
+	}
 	public AndroidRouter(double x, double y, double z, ScanResult r)
 	{
 		this.id = 0;
@@ -18,6 +21,10 @@ public class AndroidRouter extends Router {
 		this.uid = r.BSSID;
 		this.freq = r.frequency;
 		this.power = r.level;//Distance initializer of 1
+	}
+	public AndroidRouter(double double1, double double2, double double3,
+			String string, String string2, double double4, double double5) {
+		super(double1, double2, double3, string, string2, double4, double5);
 	}
 	public void PowerFromScan(ScanResult scan) 
 	{ 
