@@ -1,15 +1,13 @@
 package com.witech.wimap;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
-
 import com.witech.wimap.BasicResult;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -20,35 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class ScanListActivity extends Activity {
-	private WifiManager wifi_man;
-	private WifiReciever wifi_rec;
-	private List<ScanResult> wifi_list;
+public class ScanListActivity extends Activity implements ScanListConsumer{
+	private ScanReceiver scan_manager;
 	private ScanListAdapter adapter;
 	private AndroidRouter rt;
 	private RouterDatabase db;
-	private Timer timer;
 	static final int EDITROUTER = 1;
 	
-	class WifiReciever extends BroadcastReceiver
-	{
-		@Override
-		public void onReceive(Context c, Intent intent)
-		{
-			Log.i("ScanListActivity", "Scan Results updated");
-			wifi_list = wifi_man.getScanResults();
-			adapter.clear();
-			
-			for(int i = 0; i < wifi_list.size(); ++i)
-			{
-				//adapter.add(new BasicResult(wifi_list.get(i)));
-				adapter.add(new BasicResult(wifi_list.get(i)));
-			}
-			adapter.sort();
-			adapter.notifyDataSetChanged();
-			//wifi_man.startScan();
-		}
-	}
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -58,9 +35,8 @@ public class ScanListActivity extends Activity {
 		setContentView(R.layout.scan_list);
 		
 		db = new RouterDatabase(this);
-		db.open();
-		//rt = new BasicResult(0, null, null);
-		timer = new Timer();
+		
+		new Timer();
 		final ListView listview = (ListView) findViewById(R.id.scan_list);
 		Intent viewintent = getIntent();
 		if(viewintent.hasExtra("powers") && viewintent.hasExtra("ssids") && viewintent.hasExtra("uids"))
@@ -72,41 +48,21 @@ public class ScanListActivity extends Activity {
 			adapter = new ScanListAdapter(this, ssid, uids, power, freq);
 		}else adapter = new ScanListAdapter(this);
 		listview.setAdapter(adapter);
-
-		wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        wifi_rec = new WifiReciever();
-        registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifi_man.startScan();
-        timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				wifi_man.startScan();
-				
-			}}, 0, 5000);
+		adapter.setNotifyOnChange(false);
+		
+		scan_manager = new ScanReceiver(this, (WifiManager) getSystemService(Context.WIFI_SERVICE), 500, this, 10);
+        scan_manager.start();
 	}
 	@Override
 	protected void onResume()
 	{
-		wifi_man.startScan();
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				wifi_man.startScan();
-				
-			}}, 0, 5000);
-		db.open();
-		registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		scan_manager.start();
 		super.onResume();
 	}
 	@Override
 	protected void onPause()
 	{
-		timer.cancel();
-		db.close();
-		unregisterReceiver(wifi_rec);
+		scan_manager.stop();
 		super.onPause();
 	}
 	@Override
@@ -144,6 +100,35 @@ public class ScanListActivity extends Activity {
 		edit_router.putExtra("dBm",p);
 		edit_router.putExtra("freq", f);
 		startActivityForResult(edit_router, EDITROUTER);
+	}
+	@Override
+	public void onScanResult(List<ScanResult> l) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onScanAggrigate(List<ScanResult>[] l, int aggrigate) {
+		Map<String, BasicResult> wifi_map = new HashMap<String,BasicResult>();
+		for(int i = 0; i < aggrigate; ++i)
+		{
+			List<ScanResult> scan = l[aggrigate];
+			for(int j = 0; j < scan.size(); ++i)
+			{
+				BasicResult br = new BasicResult(scan.get(i));
+				if(wifi_map.containsKey(br.GetUID()))
+					wifi_map.get(br.GetUID()).Merge(br);
+				else
+					wifi_map.put(br.GetUID(), br);
+			}
+		}	
+		List<BasicResult> wifi_list = (List<BasicResult>) wifi_map.values();
+		adapter.clear();
+		for(int i = 0; i < wifi_list.size(); ++i)
+		{
+			adapter.add(wifi_list.get(i).Average(aggrigate));
+		}
+		adapter.sort();
+		adapter.notifyDataSetChanged();
 	}
 	
 	

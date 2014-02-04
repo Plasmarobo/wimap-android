@@ -69,6 +69,24 @@ public class BasicResult implements Comparable<BasicResult> {
 			return 0;
 		else return 1;
 	}
+	
+	public String toString()
+	{
+		return this.ssid + "|" + this.uid + "|" + this.power;
+	}
+
+	public void Merge(BasicResult br) {
+		this.power += br.power;
+		if(this.freq != br.freq)
+		{
+			//Throw Exception! But really we don't care!
+		}
+	}
+	public BasicResult Average(double dividend)
+	{
+		this.power /= dividend;
+		return this;
+	}
 
 	
 }

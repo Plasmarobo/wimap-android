@@ -23,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 
 
@@ -70,7 +72,7 @@ public class RouterAPI {
 	{
 		try {
 			JSONArray routers_json = new JSONArray(json_str);
-			cache.clear();
+			cache = new ArrayList<AndroidRouter>();
 			for(int i = 0; i < routers_json.length(); ++i)
 			{
 				JSONObject router_json = routers_json.getJSONObject(i);
@@ -152,12 +154,13 @@ public class RouterAPI {
 			router_json.put("ssid", r.GetSSID());
 			router_json.put("uid", r.GetUID());
 			router_json.put("power", r.GetPower());
-			router_json.put("freq", r.GetFreq());
+			router_json.put("frequency", r.GetFreq());
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		arguments.add(new BasicNameValuePair("router", Double.toString(r.GetPower())));
+		arguments.add(new BasicNameValuePair("router", router_json.toString()));
+		Log.i("POST:", arguments.toString());
 		try {
 			req.setEntity(new UrlEncodedFormEntity(arguments));
 		} catch (UnsupportedEncodingException e) {

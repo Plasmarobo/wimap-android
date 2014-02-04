@@ -225,7 +225,7 @@ public class EditRouter extends Activity {
 		EditText ed_y = (EditText) form.findViewById(R.id.edit_Y);
 		EditText ed_z = (EditText) form.findViewById(R.id.edit_Z);
 		EditText ed_dbm = (EditText) form.findViewById(R.id.edit_dBm);
-		result.putExtra("dBm", Integer.parseInt(ed_dbm.getText().toString()));
+		result.putExtra("dBm", -Integer.parseInt(ed_dbm.getText().toString()));
 		result.putExtra("freq", this.f);
 		result.putExtra("X", Double.parseDouble(ed_x.getText().toString()));
 		result.putExtra("Y", Double.parseDouble(ed_y.getText().toString()));

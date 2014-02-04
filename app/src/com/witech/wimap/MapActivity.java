@@ -1,94 +1,28 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
+import java.util.Map;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.witech.wimap.Intersect;
 
-public class MapActivity extends Activity {
+public class MapActivity extends Activity implements ScanListConsumer {
 	private float meters_to_pixels_x;
 	private float meters_to_pixels_y;
-	private WifiManager wifi_man;
-	private WifiReciever wifi_rec;
-	private List<ScanResult> wifi_list;
-	private Timer timer;
+	ScanReceiver scan_receiver;
 	private List<AndroidRouter> routers;
 	private ImageView map;
 	private ImageView icon;
 	
-	class WifiReciever extends BroadcastReceiver
-	{
-		@Override
-		public void onReceive(Context c, Intent intent)
-		{
-			Log.i("ScanListActivity", "Scan Results updated");
-			wifi_list = wifi_man.getScanResults();
-			if(wifi_list.size() > 4)
-			{
-			List<RadialDistance> ld = new ArrayList<RadialDistance>();
-			for(int i = 0; i < wifi_list.size(); ++i)
-			{
-				ScanResult sr = wifi_list.get(i);
-				if(sr.level > -90)
-				{
-					for(int j = 0; j < routers.size(); ++j)
-					{
-						AndroidRouter rt = (AndroidRouter) routers.get(j);
-						if(rt == null)
-							continue;
-						if(sr.BSSID.equals(rt.GetUID()))
-						{
-							ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetAverageDistance(sr)));
-							break;
-						}
-					}
-				}
-			}
-			//Try a weighted average algorithm
-			
-			if(ld.size() >= 4)
-			{
-				//Guess at last known point (improve this)
-				Intersect point = new Intersect(ld, icon.getX(), icon.getY(), 128);
-				Log.i("USER_X", Double.toString(point.x));
-				Log.i("USER_Y", Double.toString(point.y));
-				Log.i("USER_Z", Double.toString(point.z));
-				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
-		        params.leftMargin = (int) point.x; //XCOORD
-		        params.topMargin = (int) point.y; //YCOORD
-		        icon.setLayoutParams(params);
-				icon.setBackgroundResource(R.drawable.man32);
-			}else{
-				icon.setBackgroundResource(R.drawable.lost32);
-			}
-			
-			}
-			
-		}
-	}
 	
-	class WifiScanner extends TimerTask {
-		@Override
-		public void run()
-		{
-			wifi_man.startScan();
-		}
-	}
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +38,8 @@ public class MapActivity extends Activity {
         //Fix this for production
         routers = db.getAllRouters();
         db.close();
-        wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        wifi_rec = new WifiReciever();
-        registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 5000);
+        scan_receiver = new ScanReceiver(this, (WifiManager) getSystemService(Context.WIFI_SERVICE), 500, this, 10);
+        scan_receiver.start();
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = map.getWidth()/2; //XCOORD
         params.topMargin = map.getHeight()/2; //YCOORD
@@ -117,14 +48,80 @@ public class MapActivity extends Activity {
 	@Override
 	protected void onResume()
 	{
-		timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 3000);
+		scan_receiver.start();
 		super.onResume();
 	}
 	@Override
 	protected void onPause()
 	{
-		timer.cancel();
+		scan_receiver.stop();
 		super.onPause();
+	}
+	@Override
+	public void onScanResult(List<ScanResult> l) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onScanAggrigate(List<ScanResult>[] l, int aggrigate) {
+		Map<String, BasicResult> wifi_map = new HashMap<String,BasicResult>();
+		for(int i = 0; i < aggrigate; ++i)
+		{
+			List<ScanResult> scan = l[aggrigate];
+			for(int j = 0; j < scan.size(); ++i)
+			{
+				BasicResult br = new BasicResult(scan.get(i));
+				if(wifi_map.containsKey(br.GetUID()))
+					wifi_map.get(br.GetUID()).Merge(br);
+				else
+					wifi_map.put(br.GetUID(), br);
+			}
+		}	
+		List<BasicResult> wifi_list = (List<BasicResult>) wifi_map.values();
+		for(int i = 0; i < wifi_list.size(); ++i)
+		{
+			wifi_list.get(i).Average(aggrigate);
+		}
+		if(wifi_list.size() > 4)
+		{
+		List<RadialDistance> ld = new ArrayList<RadialDistance>();
+		for(int i = 0; i < wifi_list.size(); ++i)
+		{
+			BasicResult sr = wifi_list.get(i);
+			if(sr.GetPower() > -90)
+			{
+				for(int j = 0; j < routers.size(); ++j)
+				{
+					AndroidRouter rt = (AndroidRouter) routers.get(j);
+					if(rt == null)
+						continue;
+					if(sr.GetUID().equals(rt.GetUID()))
+					{
+						ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetAverageDistance(sr)));
+						break;
+					}
+				}
+			}
+		}
+		//Try a weighted average algorithm
+		
+		if(ld.size() >= 4)
+		{
+			//Guess at last known point (improve this)
+			Intersect point = new Intersect(ld, icon.getX(), icon.getY(), 128);
+			Log.i("USER_X", Double.toString(point.x));
+			Log.i("USER_Y", Double.toString(point.y));
+			Log.i("USER_Z", Double.toString(point.z));
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
+	        params.leftMargin = (int) point.x; //XCOORD
+	        params.topMargin = (int) point.y; //YCOORD
+	        icon.setLayoutParams(params);
+			icon.setBackgroundResource(R.drawable.man32);
+		}else{
+			icon.setBackgroundResource(R.drawable.lost32);
+		}
+		
+		}
+		
 	}
 }

@@ -80,6 +80,18 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	{
 		return values.size();
 	}
+	
+	@Override
+	public void add(BasicResult br)
+	{
+		values.add(br);
+	}
+	
+	public void clear()
+	{
+		values.clear();
+	}
+	
 
 	public void sort() {
 		Collections.sort(values);
