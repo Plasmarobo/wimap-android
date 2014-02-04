@@ -21,7 +21,6 @@ public class MainActivity extends Activity {
 	private WifiManager wifi_man;
 	private WifiReciever wifi_rec;
 	private List<ScanResult> wifi_list;
-	private static final int FETCH = 27;
 	
 	class WifiReciever extends BroadcastReceiver
 	{
@@ -106,6 +105,11 @@ public class MainActivity extends Activity {
     public void PullDB(View v)
     {
     	startActivity(new Intent(v.getContext(), FetchRouterActivity.class));
+    }
+    
+    public void UploadDB(View v)
+    {
+    	startActivity(new Intent(v.getContext(), PushRouterActivity.class));
     }
     
     public void ClearDB(View v)

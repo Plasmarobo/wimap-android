@@ -17,7 +17,6 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 
 public class FetchRouterActivity extends Activity {
 
@@ -86,6 +85,7 @@ public class FetchRouterTask extends AsyncTask<List<Router>, Integer, List<Route
 
 }
 
+	@SuppressWarnings("unchecked")
 	protected void onCreate(Bundle savedInstance)
 	{
 		super.onCreate(savedInstance);

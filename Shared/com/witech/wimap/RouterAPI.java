@@ -138,7 +138,7 @@ public class RouterAPI {
 		
 	}
 	
-	public boolean Store(Router r)
+	public static boolean Store(Router r)
 	{
 		HttpPost req = new HttpPost(RouterAPI.ROUTERS_URI);
 		List<NameValuePair> arguments = new ArrayList<NameValuePair>();

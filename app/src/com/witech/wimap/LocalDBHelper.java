@@ -12,13 +12,13 @@ public class LocalDBHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_UID = "uid";
 	public static final String COLUMN_SITE_ID = "site_id";
 	public static final String COLUMN_POWER = "power";
-	public static final String COLUMN_FREQ = "freq";
+	public static final String COLUMN_FREQ = "frequency";
 	public static final String COLUMN_X = "x";
 	public static final String COLUMN_Y = "y";
 	public static final String COLUMN_Z = "z";
 	
   private static final String DATABASE_NAME = "room.db";
-  private static final int DATABASE_VERSION = 3;
+  private static final int DATABASE_VERSION = 5;
 
   public LocalDBHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,7 +32,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
   COLUMN_UID +" text not null, "+
   COLUMN_SITE_ID + " integer not null, "+
   COLUMN_POWER +" double not null, "+
-  COLUMN_FREQ + "double not null, "+
+  COLUMN_FREQ + " double not null, "+
   COLUMN_X + " double not null, "+
   COLUMN_Y + " double not null, "+
   COLUMN_Z + " double not null );");
@@ -43,7 +43,7 @@ public class LocalDBHelper extends SQLiteOpenHelper {
     Log.w(LocalDBHelper.class.getName(),
         "Upgrading database from version " + oldVersion + " to "
             + newVersion + ", which will destroy all old data");
-    db.execSQL("DROP TABLE IF EXISTS router_info");
+    db.execSQL("DROP TABLE IF EXISTS " + TABLE_ROUTERS);
     onCreate(db);
   }
 

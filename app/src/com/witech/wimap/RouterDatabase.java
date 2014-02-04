@@ -110,6 +110,6 @@ public class RouterDatabase {
   }
   public void ForceReset()
   {
-	  dbHelper.onUpgrade(database, 0, 3);
+	  dbHelper.onUpgrade(database, 0, 5);
   }
 } 

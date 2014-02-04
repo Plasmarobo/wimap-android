@@ -41,6 +41,10 @@
             android:name="com.witech.wimap.FetchRouterActivity"
             android:label="@string/scan_name">
         </activity>
+        <activity
+            android:name="com.witech.wimap.PushRouterActivity"
+            android:label="@string/scan_name">
+        </activity>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.witech.wimap.Intersect;
 
@@ -37,7 +38,7 @@ public class MapActivity extends Activity {
 		{
 			Log.i("ScanListActivity", "Scan Results updated");
 			wifi_list = wifi_man.getScanResults();
-			if(wifi_list.size() > 2)
+			if(wifi_list.size() > 4)
 			{
 			List<RadialDistance> ld = new ArrayList<RadialDistance>();
 			for(int i = 0; i < wifi_list.size(); ++i)
@@ -60,15 +61,16 @@ public class MapActivity extends Activity {
 			}
 			//Try a weighted average algorithm
 			
-			if(ld.size() >= 3)
+			if(ld.size() >= 4)
 			{
 				//Guess at last known point (improve this)
 				Intersect point = new Intersect(ld, icon.getX(), icon.getY(), 128);
-				Log.i("USER_X", Double.toString(point.GetX()));
-				Log.i("USER_Y", Double.toString(point.GetY()));
+				Log.i("USER_X", Double.toString(point.x));
+				Log.i("USER_Y", Double.toString(point.y));
+				Log.i("USER_Z", Double.toString(point.z));
 				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
-		        params.leftMargin = (int) point.GetX(); //XCOORD
-		        params.topMargin = (int) point.GetY(); //YCOORD
+		        params.leftMargin = (int) point.x; //XCOORD
+		        params.topMargin = (int) point.y; //YCOORD
 		        icon.setLayoutParams(params);
 				icon.setBackgroundResource(R.drawable.man32);
 			}else{
@@ -106,13 +108,11 @@ public class MapActivity extends Activity {
         wifi_rec = new WifiReciever();
         registerReceiver(wifi_rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         timer = new Timer("ScanInterval", true);
-        timer.scheduleAtFixedRate(new WifiScanner(), 0, 3000);
+        timer.scheduleAtFixedRate(new WifiScanner(), 0, 5000);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = map.getWidth()/2; //XCOORD
         params.topMargin = map.getHeight()/2; //YCOORD
         icon.setLayoutParams(params);
-        //icon.setX(map.getWidth()/2);
-        //icon.setY(map.getHeight()/2);
     }
 	@Override
 	protected void onResume()
