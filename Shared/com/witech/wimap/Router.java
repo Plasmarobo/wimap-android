@@ -21,7 +21,7 @@ public class Router {
 		site_id = 1;
 		ssid = "MySetting";
 		uid = "MyMAC";
-		power = 10^(-75/20);
+		power = -90;
 		freq = 2400;
 	}
 	public Router(double x, double y, double z, String ssid, String uid, double dBm, double freq)
@@ -40,7 +40,7 @@ public class Router {
 		this.uid = uid;
 		this.site_id = site_id;
 		this.freq = frequency;
-		this.power = (c*Math.pow(10,(dBm/20)))/(4*Math.PI*frequency);//Distance initializer of 1
+		this.power = dBm; //Distance initializer of 1
 	}
 	public int GetID() { return id;}
 	public void SetID(int id) { this.id = id;}
@@ -61,14 +61,15 @@ public class Router {
 	public void SetUID(String uid) { this.uid = uid;}
 	public void SetPower(double power) { this.power = power;}
 	public void SetFreq(double freq) {this.freq = freq;}
-	public void SetPower(double power, double freq) {this.freq = freq; this.power = (c*Math.pow(10,(power/20)))/(4*Math.PI*freq);}
+	public void SetPower(double power, double freq) {this.freq = freq; this.power = power;}
 	
-	public static double GetFDSPLDistance(double power, double frequency)
+	public static double GetFDSPLDistance(double dBm, double frequency)
 	{
 		//Compute free space path loss
 		//loss(dBm)= 20.0*log10(df) -27.55221678
 		//double distance = scan.frequency*Math.pow(10.0,(scan.level+27.55221678)/20.0);
-		return frequency*Math.pow(10.0,(power+27.55221678)/20.0); //mW
+		return Math.pow(10, ((27.55 - (20 * Math.log10(frequency)) - (dBm-30))/20));
+		//return frequency*Math.pow(10.0,(power+27.55221678)/20.0); //mW
 	}
 	
 	

@@ -16,23 +16,27 @@ public class AndroidRouter extends Router {
 		this.z = z;
 		this.ssid = r.SSID;
 		this.uid = r.BSSID;
-		this.power = (c*Math.pow(10,(r.level/20)))/(4*Math.PI*r.frequency);//Distance initializer of 1
+		this.freq = r.frequency;
+		this.power = r.level;//Distance initializer of 1
 	}
 	public void PowerFromScan(ScanResult scan) 
 	{ 
-		this.power = (c*Math.pow(10,(scan.level/20)))/(4*Math.PI*scan.frequency);
+		this.power = scan.level;
+		this.freq = scan.frequency;
 	}
 	public double GetComparativeDistance(ScanResult scan)
 	{
-		double sample = (c*Math.pow(10,(scan.level/20)))/(4*Math.PI*scan.frequency);//Distance initializer of 1
-		//sample=power/r^2
-		return Math.sqrt(power/sample); 
+		//Ratio between 1m power and measured power
+		double power_loss = this.power - scan.level;
+		//Should return aproximate distance in M
+		return Math.pow(10, ((27.55 - (20 * Math.log10(freq)) - (power_loss-30))/20));
 	}
 	public double GetAverageDistance(ScanResult scan)
 	{
-		double distance =
-		Router.GetFDSPLDistance(scan.level, this.freq)+
-		this.GetComparativeDistance(scan);
+		double distance =(
+				Router.GetFDSPLDistance(scan.level, this.freq)+
+				this.GetComparativeDistance(scan)
+				);
 		return distance/2;
 	}
 
