@@ -1,8 +1,10 @@
 package com.witech.wimap;
 
 import android.net.wifi.ScanResult;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class BasicResult implements Comparable<BasicResult> {
+public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	private int power;
 	private int freq;
 	private String ssid;
@@ -14,6 +16,13 @@ public class BasicResult implements Comparable<BasicResult> {
 		this.ssid = "Error";
 		this.uid = "Error";
 		this.freq = 2400;
+	}
+	public BasicResult(Parcel in)
+	{
+		this.power = in.readInt();
+		this.freq = in.readInt();
+		this.ssid = in.readString();
+		this.uid = in.readString();
 	}
 	
 	public BasicResult(int power, String ssid, String uid, int freq)
@@ -30,6 +39,13 @@ public class BasicResult implements Comparable<BasicResult> {
 		ssid = result.SSID;
 		uid = result.BSSID;
 		freq = result.frequency;
+	}
+	public BasicResult(BasicResult rhs)
+	{
+		this.power = rhs.power;
+		this.ssid = rhs.ssid;
+		this.uid = rhs.uid;
+		this.freq = rhs.freq;
 	}
 	
 	public int GetPower()
@@ -111,6 +127,29 @@ public class BasicResult implements Comparable<BasicResult> {
 		this.power += (-100);
 		return this;
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeInt(power);
+		out.writeInt(freq);
+		out.writeString(ssid);
+		out.writeString(uid);
+		
+	}
+	public static final Parcelable.Creator<BasicResult> CREATOR = new Parcelable.Creator<BasicResult>() {
+		public BasicResult createFromParcel(Parcel in) {
+			return new BasicResult(in);
+		}
+		public BasicResult[] newArray(int size) {
+			return new BasicResult[size];
+		}
+	};
 
 	
 }

@@ -56,13 +56,9 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 		startActivityForResult(new Intent(c, SelectRouterActivity.class), SELECTROUTER);
 	}
 	
+	
 	@Override
-	public void onScanResult(List<ScanResult> l) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onScanAggrigate(List<HashMap<String, ScanResult>> l, int aggrigate) {
+	public void onScanAggrigate(List<HashMap<String, BasicResult>> l, int aggrigate) {
 		if(current == null)
 			return;
 		List<BasicResult> wifi_list = (List<BasicResult>) scan_manager.AverageAggrigate();

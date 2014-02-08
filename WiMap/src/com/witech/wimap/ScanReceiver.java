@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,45 +23,47 @@ public class ScanReceiver extends BroadcastReceiver
 {
 	protected ScanListConsumer callback;
 	
-	protected List<HashMap<String, ScanResult>> aggrigator;
+	protected List<HashMap<String, BasicResult>> aggrigator;
 	protected WifiManager wifi_man;
 	protected Timer timer;
-	protected Activity parent;
+	protected Context parent;
 	protected long rate;
 	protected int aggrigate;
 	protected int aggrigate_index;
+	protected boolean stopped;
 	
 	
-	public ScanReceiver(Activity parent, WifiManager wifi_man, long rate, ScanListConsumer callback)
+	public ScanReceiver(Context service, WifiManager wifi_man, long rate, ScanListConsumer callback)
 	{
-		this(parent, wifi_man, rate, callback, 0);
+		this(service, wifi_man, rate, callback, 5);
 	}
 
-	public ScanReceiver(Activity parent, WifiManager wifi_man, long rate, ScanListConsumer callback, int aggrigate)
+	public ScanReceiver(Context parent, WifiManager wifi_man, long rate, ScanListConsumer callback, int aggrigate)
 	{
 		super();
+		//this.parent = parent;
 		this.parent = parent;
 		this.wifi_man = wifi_man;
 		this.callback = callback;
 		//this.timer = new Timer();
 		this.rate = rate;
 		this.aggrigate = aggrigate;
-		aggrigator = new ArrayList<HashMap<String,ScanResult>>();
+		aggrigator = new ArrayList<HashMap<String,BasicResult>>();
 		for(int i = 0; i < aggrigate; ++i)
 		{
-			aggrigator.add(new HashMap<String, ScanResult>());
+			aggrigator.add(new HashMap<String, BasicResult>());
 		}
 		this.aggrigate_index = 0;
 	}
+
 	@Override
 	public void onReceive(Context c, Intent intent)
 	{
 		Log.d("ScanReceiver", "Scan Results updated");
 		List<ScanResult> wifi_list = wifi_man.getScanResults();
-		callback.onScanResult(wifi_list);
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{
-			aggrigator.get(aggrigate_index).put(wifi_list.get(i).BSSID, wifi_list.get(i));
+			aggrigator.get(aggrigate_index).put(new String(wifi_list.get(i).BSSID), new BasicResult(wifi_list.get(i)));
 		}
 		++aggrigate_index;
 		Log.d("ScanReceiver", "Aggrigate index: "+aggrigate_index);
@@ -80,6 +83,7 @@ public class ScanReceiver extends BroadcastReceiver
 	
 	public void start()
 	{
+		stopped = false;
 		timer = new Timer();
 		parent.registerReceiver(this, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		wifi_man.startScan();
@@ -87,40 +91,47 @@ public class ScanReceiver extends BroadcastReceiver
 	
 	public void stop()
 	{
+		stopped = true;
 		parent.unregisterReceiver(this);
 		timer.cancel();
 	}
+	public boolean isStopped()
+	{
+		return stopped;
+	}
+	
 	public List<BasicResult> AverageAggrigate()
 	{
 		Map<String, BasicResult> wifi_map = new HashMap<String,BasicResult>();
 		int i;
 		for(i = 0; i < aggrigate; ++i)
 		{
-			HashMap<String, ScanResult> scan_map = aggrigator.get(i);
+			HashMap<String, BasicResult> scan_map = aggrigator.get(i);
 			//Merge appropriate
 			Iterator<Entry<String, BasicResult>> it = wifi_map.entrySet().iterator();
 		    while (it.hasNext()) {
 		        HashMap.Entry pair = (HashMap.Entry)it.next();
 		        if(scan_map.containsKey(pair.getKey()))
 		        {
-		        	((BasicResult)pair.getValue()).Merge(new BasicResult(scan_map.get(pair.getKey())));
-		        	it.remove();
+		        	((BasicResult)pair.getValue()).Merge((BasicResult)scan_map.get(pair.getKey()));
+		        	scan_map.remove(pair.getKey());
 		        }else{
 		        	((BasicResult)pair.getValue()).CompensateForMiss();
+		        	scan_map.remove(pair.getKey());
 		        }
 		        
 		    }
-		    Iterator<Entry<String, ScanResult>> miss = scan_map.entrySet().iterator();
+		    Iterator<Entry<String, BasicResult>> miss = scan_map.entrySet().iterator();
 		    while(miss.hasNext())
 		    {
 		    	HashMap.Entry pair = (HashMap.Entry)miss.next();
-		    	wifi_map.put((String)pair.getKey(), ((new BasicResult((ScanResult)pair.getValue()).CompensateForMisses(i))));
+		    	wifi_map.put((String)pair.getKey(), (((BasicResult)pair.getValue()).CompensateForMisses(i)));
 		    }
 		}
 		List<BasicResult> aggrigates = new ArrayList<BasicResult>(wifi_map.values());
 		for(int j = 0; j < aggrigates.size(); ++j)
 		{
-			aggrigates.get(j).Average(i);
+			aggrigates.get(j).Average(aggrigate);
 		}
 		return aggrigates;
 	}

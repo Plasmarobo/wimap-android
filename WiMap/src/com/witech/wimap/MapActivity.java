@@ -52,13 +52,9 @@ public class MapActivity extends Activity implements ScanListConsumer {
 		scan_receiver.stop();
 		super.onPause();
 	}
+	
 	@Override
-	public void onScanResult(List<ScanResult> l) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onScanAggrigate(List<HashMap<String, ScanResult>> l, int aggrigate) {
+	public void onScanAggrigate(List<HashMap<String, BasicResult>> l, int aggrigate) {
 		List<BasicResult> wifi_list = (List<BasicResult>) scan_receiver.AverageAggrigate();
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{

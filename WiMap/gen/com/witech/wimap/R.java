@@ -235,7 +235,7 @@ containing a value of this type.
         public static final int TextView01=0x7f05001a;
         public static final int TextView02=0x7f050017;
         public static final int TextView03=0x7f050014;
-        public static final int action_settings=0x7f050029;
+        public static final int action_settings=0x7f050028;
         public static final int avatar=0x7f050021;
         public static final int button1=0x7f050009;
         public static final int button2=0x7f05000c;
@@ -247,7 +247,6 @@ containing a value of this type.
         public static final int edit_X=0x7f050013;
         public static final int edit_Y=0x7f050016;
         public static final int edit_Z=0x7f050019;
-        public static final int edit_b=0x7f050025;
         public static final int edit_dBm=0x7f05001c;
         public static final int frame=0x7f05001f;
         public static final int freq=0x7f05001d;
@@ -256,7 +255,7 @@ containing a value of this type.
         public static final int map_image=0x7f050020;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int power=0x7f050026;
+        public static final int power=0x7f050025;
         public static final int progress=0x7f050005;
         public static final int routermac=0x7f050012;
         public static final int routername=0x7f050011;
@@ -264,13 +263,13 @@ containing a value of this type.
         public static final int scan_list=0x7f050023;
         public static final int scan_list_item=0x7f050024;
         public static final int splash_view=0x7f050006;
-        public static final int ssid=0x7f050027;
+        public static final int ssid=0x7f050026;
         public static final int startcal=0x7f05000a;
         public static final int startscan=0x7f050007;
         public static final int terrain=0x7f050003;
         public static final int textView3=0x7f05000d;
         public static final int textView4=0x7f050010;
-        public static final int uid=0x7f050028;
+        public static final int uid=0x7f050027;
         public static final int xbar=0x7f050015;
         public static final int ybar=0x7f050018;
         public static final int zbar=0x7f05001b;

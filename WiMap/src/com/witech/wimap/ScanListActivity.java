@@ -1,25 +1,38 @@
 package com.witech.wimap;
 
-import java.util.HashMap;
 import java.util.List;
 import com.witech.wimap.BasicResult;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
 
-public abstract class ScanListActivity extends Activity implements ScanListConsumer{
-	protected ScanReceiver scan_manager;
+public abstract class ScanListActivity extends Activity{
 	protected ScanListAdapter adapter;
 	protected AndroidRouter rt;
 	protected ListView listview;
-	
-	
+	protected class AggrigateReceiver extends BroadcastReceiver
+	{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			List<BasicResult> wifi_list = intent.getParcelableArrayListExtra(ScanService.EXTENDED_DATA);
+			adapter.clear();
+			for(int i = 0; i < wifi_list.size(); ++i)
+			{
+				adapter.add(wifi_list.get(i));
+			}
+			adapter.sort();
+			adapter.notifyDataSetChanged();
+		}
+		
+	}
+	protected AggrigateReceiver aggrigate_receiver;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -40,41 +53,22 @@ public abstract class ScanListActivity extends Activity implements ScanListConsu
 		}else adapter = new ScanListAdapter(this);
 		listview.setAdapter(adapter);
 		adapter.setNotifyOnChange(false);
-		
-		scan_manager = new ScanReceiver(this, (WifiManager) getSystemService(Context.WIFI_SERVICE), 100, this, 4);
-        scan_manager.start();
+		registerReceiver(aggrigate_receiver, new IntentFilter(com.witech.wimap.ScanService.BROADCAST_ACTION));
 	}
 	@Override
 	protected void onResume()
 	{
-		scan_manager.start();
+		registerReceiver(aggrigate_receiver, new IntentFilter(com.witech.wimap.ScanService.BROADCAST_ACTION));
 		super.onResume();
 	}
 	@Override
 	protected void onPause()
 	{
-		scan_manager.stop();
+		unregisterReceiver(aggrigate_receiver);
 		super.onPause();
 	}
 
-	@Override
-	public void onScanResult(List<ScanResult> l) {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	@Override
-	public void onScanAggrigate(List<HashMap<String,ScanResult>> l, int aggrigate) {
-		
-		List<BasicResult> wifi_list = scan_manager.AverageAggrigate();
-		adapter.clear();
-		for(int i = 0; i < wifi_list.size(); ++i)
-		{
-			adapter.add(wifi_list.get(i).Average(aggrigate));
-		}
-		adapter.sort();
-		adapter.notifyDataSetChanged();
-	}
 	
 	
 	
