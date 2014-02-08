@@ -8,6 +8,14 @@ public class BasicResult implements Comparable<BasicResult> {
 	private String ssid;
 	private String uid;
 	
+	public BasicResult()
+	{
+		this.power = -100;
+		this.ssid = "Error";
+		this.uid = "Error";
+		this.freq = 2400;
+	}
+	
 	public BasicResult(int power, String ssid, String uid, int freq)
 	{
 		this.power = power;
@@ -84,7 +92,18 @@ public class BasicResult implements Comparable<BasicResult> {
 	}
 	public BasicResult Average(double dividend)
 	{
-		this.power /= dividend;
+		if(dividend != 0)
+		{
+			this.power /= dividend;
+		}
+		return this;
+	}
+	public BasicResult CompensateForMisses(double misses)
+	{
+		if(misses > 0)
+		{
+			this.power += (-100*misses);
+		}
 		return this;
 	}
 

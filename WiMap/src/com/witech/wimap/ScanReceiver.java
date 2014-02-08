@@ -3,8 +3,10 @@ package com.witech.wimap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,7 +23,7 @@ public class ScanReceiver extends BroadcastReceiver
 {
 	protected ScanListConsumer callback;
 	
-	protected List<List<ScanResult>> aggrigator;
+	protected List<HashMap<String, ScanResult>> aggrigator;
 	protected WifiManager wifi_man;
 	protected Timer timer;
 	protected Activity parent;
@@ -44,10 +46,10 @@ public class ScanReceiver extends BroadcastReceiver
 		//this.timer = new Timer();
 		this.rate = rate;
 		this.aggrigate = aggrigate;
-		aggrigator = new ArrayList<List<ScanResult>>();
+		aggrigator = new ArrayList<HashMap<String,ScanResult>>();
 		for(int i = 0; i < aggrigate; ++i)
 		{
-			aggrigator.add(new ArrayList<ScanResult>());
+			aggrigator.add(new HashMap<String, ScanResult>());
 		}
 		this.aggrigate_index = 0;
 	}
@@ -57,8 +59,10 @@ public class ScanReceiver extends BroadcastReceiver
 		Log.d("ScanReceiver", "Scan Results updated");
 		List<ScanResult> wifi_list = wifi_man.getScanResults();
 		callback.onScanResult(wifi_list);
-		
-		aggrigator.get(aggrigate_index).addAll(wifi_list);
+		for(int i = 0; i < wifi_list.size(); ++i)
+		{
+			aggrigator.get(aggrigate_index).put(wifi_list.get(i).BSSID, wifi_list.get(i));
+		}
 		++aggrigate_index;
 		Log.d("ScanReceiver", "Aggrigate index: "+aggrigate_index);
 		if(aggrigate_index >= aggrigate)
@@ -90,18 +94,37 @@ public class ScanReceiver extends BroadcastReceiver
 	public List<BasicResult> AverageAggrigate()
 	{
 		Map<String, BasicResult> wifi_map = new HashMap<String,BasicResult>();
-		for(int i = 0; i < aggrigate; ++i)
+		int i;
+		for(i = 0; i < aggrigate; ++i)
 		{
-			List<ScanResult> scan = aggrigator.get(i);
-			for(int j = 0; j < scan.size(); ++j)
-			{
-				BasicResult br = new BasicResult(scan.get(j));
-				if(wifi_map.containsKey(br.GetUID()))
-					wifi_map.get(br.GetUID()).Merge(br);
-				else
-					wifi_map.put(br.GetUID(), br.Average(i));
-			}
-		}	
-		return new ArrayList<BasicResult>(wifi_map.values());
+			HashMap<String, ScanResult> scan_map = aggrigator.get(i);
+			//Merge appropriate
+			Iterator it = wifi_map.entrySet().iterator();
+		    while (it.hasNext()) {
+		        HashMap.Entry pair = (HashMap.Entry)it.next();
+		        if(scan_map.containsKey(pair.getKey()))
+		        {
+		        	((BasicResult)pair.getValue()).Merge((BasicResult)scan_map.get(pair.getKey()));
+		        }else{
+		        	
+		        }
+		        
+		    }
+			
+			//for(int j = 0; j < scan.size(); ++j)
+			//{
+			//	BasicResult br = new BasicResult(scan.get(j));
+			//	if(wifi_map.containsKey(br.GetUID()))
+			//		wifi_map.get(br.GetUID()).Merge(br);
+			//	else
+			//		wifi_map.put(br.GetUID(), br.CompensateForMisses(i+1));
+			//}
+		}
+		List<BasicResult> aggrigates = new ArrayList<BasicResult>(wifi_map.values());
+		for(int j = 0; j < aggrigates.size(); ++j)
+		{
+			aggrigates.get(j).Average(i);
+		}
+		return aggrigates;
 	}
 }

@@ -1,6 +1,7 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import android.app.Activity;
 import android.content.Context;
@@ -61,7 +62,7 @@ public class MapActivity extends Activity implements ScanListConsumer {
 		
 	}
 	@Override
-	public void onScanAggrigate(List<List<ScanResult>> l, int aggrigate) {
+	public void onScanAggrigate(List<HashMap<String, ScanResult>> l, int aggrigate) {
 		List<BasicResult> wifi_list = (List<BasicResult>) scan_receiver.AverageAggrigate();
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{

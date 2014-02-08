@@ -40,11 +40,12 @@ public class AndroidRouter extends Router {
 	}
 	public double GetAverageDistance(BasicResult sr)
 	{
-		double distance =(
-				Router.GetFDSPLDistance(sr.GetPower(), sr.GetFreq())+
-				this.GetComparativeDistance(sr)
-				);
-		return distance/2;
+		//double distance =(
+		//		Router.GetFDSPLDistance(sr.GetPower(), sr.GetFreq())+
+		//		this.GetComparativeDistance(sr)
+		//		);
+		//return distance/2;
+		return this.GetComparativeDistance(sr);
 	}
 	public String toString()
 	{
