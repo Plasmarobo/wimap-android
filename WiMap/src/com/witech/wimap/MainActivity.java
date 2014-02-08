@@ -10,8 +10,6 @@ import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.witech.wimap.ScanListActivity;
-
 public class MainActivity extends Activity {
 	
 	

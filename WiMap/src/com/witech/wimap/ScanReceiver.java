@@ -1,12 +1,11 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -99,26 +98,24 @@ public class ScanReceiver extends BroadcastReceiver
 		{
 			HashMap<String, ScanResult> scan_map = aggrigator.get(i);
 			//Merge appropriate
-			Iterator it = wifi_map.entrySet().iterator();
+			Iterator<Entry<String, BasicResult>> it = wifi_map.entrySet().iterator();
 		    while (it.hasNext()) {
 		        HashMap.Entry pair = (HashMap.Entry)it.next();
 		        if(scan_map.containsKey(pair.getKey()))
 		        {
-		        	((BasicResult)pair.getValue()).Merge((BasicResult)scan_map.get(pair.getKey()));
+		        	((BasicResult)pair.getValue()).Merge(new BasicResult(scan_map.get(pair.getKey())));
+		        	it.remove();
 		        }else{
-		        	
+		        	((BasicResult)pair.getValue()).CompensateForMiss();
 		        }
 		        
 		    }
-			
-			//for(int j = 0; j < scan.size(); ++j)
-			//{
-			//	BasicResult br = new BasicResult(scan.get(j));
-			//	if(wifi_map.containsKey(br.GetUID()))
-			//		wifi_map.get(br.GetUID()).Merge(br);
-			//	else
-			//		wifi_map.put(br.GetUID(), br.CompensateForMisses(i+1));
-			//}
+		    Iterator<Entry<String, ScanResult>> miss = scan_map.entrySet().iterator();
+		    while(miss.hasNext())
+		    {
+		    	HashMap.Entry pair = (HashMap.Entry)miss.next();
+		    	wifi_map.put((String)pair.getKey(), ((new BasicResult((ScanResult)pair.getValue()).CompensateForMisses(i))));
+		    }
 		}
 		List<BasicResult> aggrigates = new ArrayList<BasicResult>(wifi_map.values());
 		for(int j = 0; j < aggrigates.size(); ++j)

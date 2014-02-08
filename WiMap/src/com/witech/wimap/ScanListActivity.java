@@ -1,5 +1,6 @@
 package com.witech.wimap;
 
+import java.util.HashMap;
 import java.util.List;
 import com.witech.wimap.BasicResult;
 import android.app.Activity;
@@ -63,7 +64,7 @@ public abstract class ScanListActivity extends Activity implements ScanListConsu
 	}
 	
 	@Override
-	public void onScanAggrigate(List<List<ScanResult>> l, int aggrigate) {
+	public void onScanAggrigate(List<HashMap<String,ScanResult>> l, int aggrigate) {
 		
 		List<BasicResult> wifi_list = scan_manager.AverageAggrigate();
 		adapter.clear();

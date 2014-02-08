@@ -106,6 +106,11 @@ public class BasicResult implements Comparable<BasicResult> {
 		}
 		return this;
 	}
+	public BasicResult CompensateForMiss()
+	{
+		this.power += (-100);
+		return this;
+	}
 
 	
 }

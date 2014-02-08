@@ -1,6 +1,7 @@
 package com.witech.wimap;
 
 import java.util.List;
+import java.util.HashMap;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -61,7 +62,7 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 		
 	}
 	@Override
-	public void onScanAggrigate(List<List<ScanResult>> l, int aggrigate) {
+	public void onScanAggrigate(List<HashMap<String, ScanResult>> l, int aggrigate) {
 		if(current == null)
 			return;
 		List<BasicResult> wifi_list = (List<BasicResult>) scan_manager.AverageAggrigate();

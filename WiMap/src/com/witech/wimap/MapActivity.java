@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import com.witech.wimap.Intersect;
 
 public class MapActivity extends Activity implements ScanListConsumer {
-	private float meters_to_pixels_x;
-	private float meters_to_pixels_y;
 	ScanReceiver scan_receiver;
 	private List<AndroidRouter> routers;
 	private ImageView map;
@@ -28,8 +26,6 @@ public class MapActivity extends Activity implements ScanListConsumer {
     	Log.v("MapActivity", "Created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.floorplan);  
-        meters_to_pixels_x = 30/1024;
-        meters_to_pixels_y = 10/560;
         map = (ImageView) findViewById(R.id.map_image);
         icon = (ImageView) findViewById(R.id.avatar);
         RouterDatabase db = new RouterDatabase(this);
