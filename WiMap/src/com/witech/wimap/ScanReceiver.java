@@ -9,14 +9,14 @@ import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
-import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.util.Log;
 
 public class ScanReceiver extends BroadcastReceiver
@@ -27,23 +27,23 @@ public class ScanReceiver extends BroadcastReceiver
 	protected WifiManager wifi_man;
 	protected Timer timer;
 	protected Context parent;
-	protected long rate;
+	protected int rate;
 	protected int aggrigate;
 	protected int aggrigate_index;
 	protected boolean stopped;
 	
 	
-	public ScanReceiver(Context service, WifiManager wifi_man, long rate, ScanListConsumer callback)
+	public ScanReceiver(Context service, int rate, ScanListConsumer callback)
 	{
-		this(service, wifi_man, rate, callback, 5);
+		this(service, rate, callback, 5);
 	}
 
-	public ScanReceiver(Context parent, WifiManager wifi_man, long rate, ScanListConsumer callback, int aggrigate)
+	public ScanReceiver(Context parent,int rate, ScanListConsumer callback, int aggrigate)
 	{
 		super();
 		//this.parent = parent;
 		this.parent = parent;
-		this.wifi_man = wifi_man;
+		this.wifi_man = (WifiManager) parent.getSystemService(Context.WIFI_SERVICE);
 		this.callback = callback;
 		//this.timer = new Timer();
 		this.rate = rate;
@@ -59,17 +59,22 @@ public class ScanReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(Context c, Intent intent)
 	{
+		PendingResult instance = null;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+			instance = this.goAsync();
 		Log.d("ScanReceiver", "Scan Results updated");
 		List<ScanResult> wifi_list = wifi_man.getScanResults();
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{
+			Log.v("ScanResult:", wifi_list.get(i).SSID );
 			aggrigator.get(aggrigate_index).put(new String(wifi_list.get(i).BSSID), new BasicResult(wifi_list.get(i)));
 		}
 		++aggrigate_index;
 		Log.d("ScanReceiver", "Aggrigate index: "+aggrigate_index);
 		if(aggrigate_index >= aggrigate)
 		{
-			callback.onScanAggrigate(aggrigator, aggrigate);
+			Log.d("ScanReceiver", "Scan Aggrigate updated");
+			callback.onScanAggrigate(this.AverageAggrigate());
 			aggrigate_index = 0;
 		}
 		timer.schedule(new TimerTask(){
@@ -78,6 +83,8 @@ public class ScanReceiver extends BroadcastReceiver
 				wifi_man.startScan();
 			}
 		}, rate);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+			instance.finish();
 		
 	}
 	

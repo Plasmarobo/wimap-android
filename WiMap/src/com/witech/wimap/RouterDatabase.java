@@ -59,6 +59,8 @@ public class RouterDatabase {
   {
 	  List<AndroidRouter> routers = new ArrayList<AndroidRouter>();
 	  Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS + " WHERE SSID=?", new String[] {ssid});
+	  if(cursor.getCount() < 1)
+		  return null;
 	  cursor.moveToFirst();
 	  while (!cursor.isAfterLast()) {
 	      AndroidRouter r = cursorToRouter(cursor);
@@ -73,8 +75,12 @@ public class RouterDatabase {
   {
 	  
 	  Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS + " WHERE UID=?", new String[] {uid});
-	  cursor.moveToFirst();
-	  return cursorToRouter(cursor);
+	  if(cursor.getCount() > 0)
+	  {
+		  cursor.moveToFirst();
+		  return cursorToRouter(cursor);
+	  }
+	  return null;
   }
 
   public List<AndroidRouter> getAllRouters() {
@@ -83,7 +89,8 @@ public class RouterDatabase {
     //Cursor cursor = database.query(LocalDBHelper.TABLE_ROUTERS,
     //    allColumns, null, null, null, null, null);
     Cursor cursor = database.rawQuery("SELECT * FROM " + LocalDBHelper.TABLE_ROUTERS, null);
-
+    if(cursor.getCount() < 1)
+    	return null;
     cursor.moveToFirst();
     while (!cursor.isAfterLast()) {
       AndroidRouter r = cursorToRouter(cursor);

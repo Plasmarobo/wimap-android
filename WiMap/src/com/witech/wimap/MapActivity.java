@@ -1,12 +1,8 @@
 package com.witech.wimap;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import android.app.Activity;
-import android.content.Context;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -26,6 +22,7 @@ public class MapActivity extends Activity implements ScanListConsumer {
     	Log.v("MapActivity", "Created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.floorplan);  
+        
         map = (ImageView) findViewById(R.id.map_image);
         icon = (ImageView) findViewById(R.id.avatar);
         RouterDatabase db = new RouterDatabase(this);
@@ -33,7 +30,7 @@ public class MapActivity extends Activity implements ScanListConsumer {
         //Fix this for production
         routers = db.getAllRouters();
         db.close();
-        scan_receiver = new ScanReceiver(this, (WifiManager) getSystemService(Context.WIFI_SERVICE), 500, this, 10);
+        scan_receiver = new ScanReceiver(this, 500, this);
         scan_receiver.start();
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = map.getWidth()/2; //XCOORD
@@ -54,12 +51,8 @@ public class MapActivity extends Activity implements ScanListConsumer {
 	}
 	
 	@Override
-	public void onScanAggrigate(List<HashMap<String, BasicResult>> l, int aggrigate) {
-		List<BasicResult> wifi_list = (List<BasicResult>) scan_receiver.AverageAggrigate();
-		for(int i = 0; i < wifi_list.size(); ++i)
-		{
-			wifi_list.get(i).Average(aggrigate);
-		}
+	public void onScanAggrigate(List<BasicResult> wifi_list) {
+		
 		if(wifi_list.size() > 4)
 		{
 		List<RadialDistance> ld = new ArrayList<RadialDistance>();

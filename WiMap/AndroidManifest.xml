@@ -54,10 +54,7 @@
             android:name="com.witech.wimap.PushRouterActivity"
             android:label="@string/pushrouter_name">
         </activity>
-         <service
-            android:name=".ScanService"
-            android:exported="false"
-            />
+        
     </application>
 
 </manifest>

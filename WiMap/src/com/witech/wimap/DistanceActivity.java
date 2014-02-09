@@ -1,12 +1,9 @@
 package com.witech.wimap;
 
 import java.util.List;
-import java.util.HashMap;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +27,7 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.distance_view); 
 		db = new RouterDatabase(this);
-		scan_manager = new ScanReceiver(this, (WifiManager) getSystemService(Context.WIFI_SERVICE), 1000, this, 10);
+		scan_manager = new ScanReceiver(this, 500, this);
 		scan_manager.start();
 		startSelection(getBaseContext());
 	}
@@ -38,6 +35,7 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 	protected void onResume()
 	{
 		scan_manager.start();
+		setContentView(R.layout.distance_view); 
 		super.onResume();
 	}
 	@Override
@@ -58,10 +56,9 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 	
 	
 	@Override
-	public void onScanAggrigate(List<HashMap<String, BasicResult>> l, int aggrigate) {
+	public void onScanAggrigate(List<BasicResult> wifi_list) {
 		if(current == null)
 			return;
-		List<BasicResult> wifi_list = (List<BasicResult>) scan_manager.AverageAggrigate();
 		BasicResult r = null;
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{
@@ -76,7 +73,11 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 		TextView distance = (TextView) findViewById(R.id.distance);
 		distance.setText(Double.toString(current.GetAverageDistance(r)));
 		TextView dBm = (TextView) findViewById(R.id.dBm);
-		dBm.setText(r.GetPower());	
+		dBm.setText(Integer.toString(r.GetPower()));
+		TextView routername = (TextView) findViewById(R.id.routername);
+		routername.setText(new String(current.GetSSID()));
+		TextView routermac = (TextView) findViewById(R.id.routermac);
+		routermac.setText(new String(current.GetUID()));
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -98,11 +99,11 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 				power = data.getIntExtra("dBm", -90);
 				frequency = data.getIntExtra("freq", 2400);
 				TextView routername = (TextView) findViewById(R.id.routername);
-				routername.setText(ssid);
+				routername.setText(new String(ssid));
 				TextView routermac = (TextView) findViewById(R.id.routermac);
-				routermac.setText(uid);
+				routermac.setText(new String(uid));
 				TextView dBm = (TextView) findViewById(R.id.dBm);
-				dBm.setText(power);
+				dBm.setText(Integer.toString(power));
 				BasicResult br = new BasicResult(power, ssid, uid, (int) frequency);
 				TextView distance = (TextView) findViewById(R.id.distance);
 				double distance_val = current.GetAverageDistance(br);
@@ -111,4 +112,5 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 			
 		}
 	}
+
 }

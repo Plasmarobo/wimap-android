@@ -36,7 +36,7 @@ import android.util.Log;
 
 public class RouterAPI {
 
-	private final String API_KEY = "";
+	private static final String API_KEY = "";
 	
 	public static final String tag_x = "x";
 	public static final String tag_y = "y";
@@ -53,6 +53,7 @@ public class RouterAPI {
 	
 	public static HttpResponse PerformGet()
 	{
+		Log.d("GET", "APIKEY: " + API_KEY);
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpGet req = new HttpGet(ROUTERS_URI);
 		try {
