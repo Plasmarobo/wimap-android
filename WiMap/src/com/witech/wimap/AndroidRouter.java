@@ -36,7 +36,7 @@ public class AndroidRouter extends Router {
 		//Ratio between 1m power and measured power
 		double power_loss = this.power - sr.GetPower();
 		//Should return aproximate distance in M
-		return 1/Math.pow(10, ((27.55 - (20 * Math.log10(freq)) - (power_loss-30))/20));
+		return 1+Math.pow(10, ((27.55 - (20 * Math.log10(freq)) - (power_loss-30))/20));
 	}
 	public double GetAverageDistance(BasicResult sr)
 	{
