@@ -30,6 +30,7 @@ public class ScanReceiver extends BroadcastReceiver
 	protected int rate;
 	protected int aggrigate;
 	protected int aggrigate_index;
+	protected static List<BasicResult> cached_result;
 	protected boolean stopped;
 	
 	
@@ -140,6 +141,13 @@ public class ScanReceiver extends BroadcastReceiver
 		{
 			aggrigates.get(j).Average(aggrigate);
 		}
+		cached_result = aggrigates;
 		return aggrigates;
+	}
+	public List<BasicResult> getCachedResults()
+	{
+		if(cached_result == null)
+			return new ArrayList<BasicResult>();
+		return cached_result;
 	}
 }

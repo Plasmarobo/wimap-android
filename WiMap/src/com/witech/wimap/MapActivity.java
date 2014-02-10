@@ -36,6 +36,7 @@ public class MapActivity extends Activity implements ScanListConsumer {
         params.leftMargin = map.getWidth()/2; //XCOORD
         params.topMargin = map.getHeight()/2; //YCOORD
         icon.setLayoutParams(params);
+        onScanAggrigate(scan_receiver.getCachedResults());
     }
 	@Override
 	protected void onResume()

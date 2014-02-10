@@ -30,7 +30,7 @@ public class CalibrateActivity extends ScanListActivity {
 				int f = Integer.parseInt((String)frequency.getText());
 				rt = new AndroidRouter(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, (double)f);
 				edit_router.putExtra("dBm",p);
-				edit_router.putExtra("freq", f);
+				edit_router.putExtra("frequency", (int) f);
 				startActivityForResult(edit_router, EDITROUTER);
 			}
 		});
@@ -46,7 +46,7 @@ public class CalibrateActivity extends ScanListActivity {
 				rt.SetX(data.getDoubleExtra("X", 0));
 				rt.SetY(data.getDoubleExtra("Y", 0));
 				rt.SetZ(data.getDoubleExtra("Z", 0));
-				rt.SetPower(data.getIntExtra("dBm", -90), data.getIntExtra("freq", 2400));
+				rt.SetPower(data.getIntExtra("dBm", -90), data.getIntExtra("frequency", 2400));
 				db.open();
 				db.WriteRouter(rt);
 				db.close();

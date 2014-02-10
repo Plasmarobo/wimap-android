@@ -37,6 +37,7 @@ public abstract class ScanListActivity extends Activity implements ScanListConsu
 		adapter.setNotifyOnChange(false);
 		this.aggrigate_receiver = new ScanReceiver(this, 500, this);
 		aggrigate_receiver.start();
+		onScanAggrigate(aggrigate_receiver.getCachedResults());
 	}
 	@Override
 	protected void onResume()
