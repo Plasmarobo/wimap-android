@@ -26,15 +26,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 
-
-
-
-
-
-
-
-
-public class RouterAPI {
+public class RouterAPI implements HTTPInterface{
 
 	private static final String API_KEY = "";
 	
@@ -51,6 +43,14 @@ public class RouterAPI {
 	public static final String ROUTERS_URI = "http://www.wimapnav.com/api/v1/routers";
 	private static List<AndroidRouter> cache;
 	
+	public static List<AndroidRouter> PullRouters()
+	{
+		return JsonToCache(PerformGet(), 0);
+	}
+	public static List<AndroidRouter> Routers()
+	{
+		return cache;	
+	}
 	public static HttpResponse PerformGet()
 	{
 		Log.d("GET", "APIKEY: " + API_KEY);
@@ -104,7 +104,7 @@ public class RouterAPI {
 			HttpEntity entity = resp.getEntity();
 			Header h = resp.getFirstHeader("Content-length");
 			Integer total = Integer.parseInt(h.getValue());
-			Integer bytes_read = new Integer(0);
+			Integer bytes_read = Integer.valueOf(0);
 			inputStream = entity.getContent();
 			// json is UTF-8 by default
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
@@ -132,7 +132,7 @@ public class RouterAPI {
 	}
 	public RouterAPI()
 	{
-		this(new Integer(0));
+		this(Integer.valueOf(0));
 	}
 	
 	public RouterAPI(Integer progress)
@@ -193,6 +193,16 @@ public class RouterAPI {
 	public Router getRouterByUID(String uid)
 	{
 		return cache.get(0);
+	}
+
+	@Override
+	public boolean PerformRequest(Integer progress) {
+		HttpResponse resp = PerformGet();
+		if(resp == null)
+			return false;
+		else
+			JsonToCache(resp, progress);
+		return true;
 	}
 	
 

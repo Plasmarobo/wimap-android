@@ -20,5 +20,6 @@
     <string name="map_name">Locator</string>
     <string name="METERS_FROM">meters from</string>
     <string name="YOU_ARE">You are</string>
+    <string name="ScanService">WiMap Scan Service</string>
 
 </resources>

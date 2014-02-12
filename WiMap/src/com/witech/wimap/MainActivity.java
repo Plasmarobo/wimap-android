@@ -1,5 +1,7 @@
 package com.witech.wimap;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +20,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
     	Log.v("MainActivity", "Created");
         super.onCreate(savedInstanceState);
+        WiMapServiceSubscriber.cache = new ArrayList<BasicResult>();
+        new Thread(new Runnable() {
+            public void run() {
+            	startService(new Intent(getBaseContext(),WiMapService.class));
+            }
+        }).start();
         setContentView(R.layout.activity_main);  
         Button cal = (Button) findViewById(R.id.startcal);
         Button scan = (Button) findViewById(R.id.startscan);

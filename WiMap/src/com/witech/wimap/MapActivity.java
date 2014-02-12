@@ -2,15 +2,13 @@ package com.witech.wimap;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.witech.wimap.Intersect;
 
-public class MapActivity extends Activity implements ScanListConsumer {
-	ScanReceiver scan_receiver;
+public class MapActivity extends WiMapServiceSubscriber {
 	private List<AndroidRouter> routers;
 	private ImageView map;
 	private ImageView icon;
@@ -30,26 +28,13 @@ public class MapActivity extends Activity implements ScanListConsumer {
         //Fix this for production
         routers = db.getAllRouters();
         db.close();
-        scan_receiver = new ScanReceiver(this, 500, this);
-        scan_receiver.start();
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = map.getWidth()/2; //XCOORD
         params.topMargin = map.getHeight()/2; //YCOORD
         icon.setLayoutParams(params);
-        onScanAggrigate(scan_receiver.getCachedResults());
+        onScanAggrigate(cache);
     }
-	@Override
-	protected void onResume()
-	{
-		scan_receiver.start();
-		super.onResume();
-	}
-	@Override
-	protected void onPause()
-	{
-		scan_receiver.stop();
-		super.onPause();
-	}
+	
 	
 	@Override
 	public void onScanAggrigate(List<BasicResult> wifi_list) {

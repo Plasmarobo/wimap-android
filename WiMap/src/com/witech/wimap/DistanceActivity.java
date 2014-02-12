@@ -1,7 +1,6 @@
 package com.witech.wimap;
 
 import java.util.List;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class DistanceActivity extends Activity implements ScanListConsumer {
-	private ScanReceiver scan_manager;
+public class DistanceActivity extends WiMapServiceSubscriber {
 	private final static int SELECTROUTER = 7;
 	private String ssid;
 	private String uid;
@@ -27,23 +25,10 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.distance_view); 
 		db = new RouterDatabase(this);
-		scan_manager = new ScanReceiver(this, 500, this);
-		scan_manager.start();
 		startSelection(getBaseContext());
 	}
 	
-	protected void onResume()
-	{
-		scan_manager.start();
-		setContentView(R.layout.distance_view); 
-		super.onResume();
-	}
-	@Override
-	protected void onPause()
-	{
-		scan_manager.stop();
-		super.onPause();
-	}
+	
 	public void startSelection(View v)
 	{
 		startSelection(v.getContext());
@@ -74,10 +59,6 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 		distance.setText(Double.toString(current.GetAverageDistance(r)));
 		TextView dBm = (TextView) findViewById(R.id.dBm);
 		dBm.setText(Integer.toString(r.GetPower()));
-		TextView routername = (TextView) findViewById(R.id.routername);
-		routername.setText(new String(current.GetSSID()));
-		TextView routermac = (TextView) findViewById(R.id.routermac);
-		routermac.setText(new String(current.GetUID()));
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -102,14 +83,8 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 				routername.setText(new String(ssid));
 				TextView routermac = (TextView) findViewById(R.id.routermac);
 				routermac.setText(new String(uid));
-				TextView dBm = (TextView) findViewById(R.id.dBm);
-				dBm.setText(Integer.toString(power));
-				BasicResult br = new BasicResult(power, ssid, uid, (int) frequency);
-				TextView distance = (TextView) findViewById(R.id.distance);
-				double distance_val = current.GetAverageDistance(br);
-				distance.setText(Double.toString(distance_val));
 				findViewById(R.id.distance_root).invalidate();
-				onScanAggrigate(scan_manager.getCachedResults());
+				onScanAggrigate(cache);
 			}
 			
 		}

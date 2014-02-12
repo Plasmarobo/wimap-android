@@ -25,6 +25,21 @@ public class Intersect {
 	public double y_conf;
 	public double z_conf;
 	
+	public Intersect()
+	{ 
+		z = y =  x = 0.0;
+		z_conf = y_conf = x_conf = 0.0;
+	}
+	public Intersect(Intersect p)
+	{
+		this.x = p.x;
+		this.y = p.y;
+		this.z = p.z;
+		this.x_conf = p.x_conf;
+		this.y_conf = p.y_conf;
+		this.z_conf = p.z_conf;
+	}
+	
 	public Intersect(List<RadialDistance> L, double x, double y, double z)
 	{
 		this(L, x, y, z, 1E-8);

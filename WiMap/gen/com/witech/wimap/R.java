@@ -226,11 +226,12 @@ containing a value of this type.
         public static final int ic_plusone_small_off_client=0x7f02001c;
         public static final int ic_plusone_standard_off_client=0x7f02001d;
         public static final int ic_plusone_tall_off_client=0x7f02001e;
-        public static final int logo512=0x7f02001f;
-        public static final int lost32=0x7f020020;
-        public static final int man16=0x7f020021;
-        public static final int man32=0x7f020022;
-        public static final int man_large=0x7f020023;
+        public static final int ic_target=0x7f02001f;
+        public static final int logo512=0x7f020020;
+        public static final int lost32=0x7f020021;
+        public static final int man16=0x7f020022;
+        public static final int man32=0x7f020023;
+        public static final int man_large=0x7f020024;
     }
     public static final class id {
         public static final int TextView01=0x7f05001b;
@@ -302,6 +303,7 @@ containing a value of this type.
         public static final int ClearCalibration=0x7f060021;
         public static final int Edit=0x7f060020;
         public static final int METERS_FROM=0x7f06002b;
+        public static final int ScanService=0x7f06002d;
         public static final int YOU_ARE=0x7f06002c;
         public static final int action_settings=0x7f06001b;
         public static final int app_name=0x7f06001a;

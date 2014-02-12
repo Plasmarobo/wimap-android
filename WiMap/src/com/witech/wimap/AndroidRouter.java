@@ -38,7 +38,7 @@ public class AndroidRouter extends Router {
 		//Should return aproximate distance in M
 		
 		double exp = (relative_strength - 20*Math.log10(this.freq) + 27.55)/20.0;
-	    return 1+Math.pow(10.0, exp);
+	    return 1+(1/Math.pow(10.0, exp));
 	}
 	public double GetAverageDistance(BasicResult sr)
 	{
