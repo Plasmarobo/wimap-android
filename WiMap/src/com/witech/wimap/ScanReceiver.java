@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
 import android.os.Build;
 import android.util.Log;
 
@@ -25,6 +26,7 @@ public class ScanReceiver extends BroadcastReceiver
 	
 	protected List<HashMap<String, BasicResult>> aggrigator;
 	protected WifiManager wifi_man;
+	protected WifiLock lock;
 	protected Timer timer;
 	protected Context parent;
 	protected int rate;
@@ -81,7 +83,7 @@ public class ScanReceiver extends BroadcastReceiver
 		timer.schedule(new TimerTask(){
 			@Override
 			public void run() {
-				wifi_man.startScan();
+				while(!wifi_man.startScan()){Log.e("WIFI_ERROR", "SCAN PREVENTED");}
 			}
 		}, rate);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
@@ -91,15 +93,21 @@ public class ScanReceiver extends BroadcastReceiver
 	
 	public void start()
 	{
+		Log.v("Wifi Scanner", "Starting Scanner");
 		stopped = false;
 		timer = new Timer();
 		parent.registerReceiver(this, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-		wifi_man.startScan();
+		lock = wifi_man.createWifiLock(WifiManager.WIFI_MODE_SCAN_ONLY, "WiMap Scanner");
+		lock.acquire();
+		while(!wifi_man.startScan()){Log.e("WIFI_ERROR", "SCAN PREVENTED");}
+		
 	}
 	
 	public void stop()
 	{
+		Log.v("Wifi Scanner", "Stopping Scanner");
 		stopped = true;
+		lock.release();
 		parent.unregisterReceiver(this);
 		timer.cancel();
 	}

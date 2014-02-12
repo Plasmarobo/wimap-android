@@ -18,5 +18,7 @@
     <string name="pushrouter_name">Uploading Router...</string>
     <string name="fetchrouter_name">Downloading Routers...</string>
     <string name="map_name">Locator</string>
+    <string name="METERS_FROM">meters from</string>
+    <string name="YOU_ARE">You are</string>
 
 </resources>

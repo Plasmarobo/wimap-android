@@ -98,16 +98,17 @@ public class DistanceActivity extends Activity implements ScanListConsumer {
 				}
 				power = data.getIntExtra("dBm", -90);
 				frequency = data.getIntExtra("freq", 2400);
-//				TextView routername = (TextView) findViewById(R.id.routername);
-//				routername.setText(new String(ssid));
-//				TextView routermac = (TextView) findViewById(R.id.routermac);
-//				routermac.setText(new String(uid));
-//				TextView dBm = (TextView) findViewById(R.id.dBm);
-//				dBm.setText(Integer.toString(power));
-//				BasicResult br = new BasicResult(power, ssid, uid, (int) frequency);
-//				TextView distance = (TextView) findViewById(R.id.distance);
-//				double distance_val = current.GetAverageDistance(br);
-//				distance.setText(Double.toString(distance_val));
+				TextView routername = (TextView) findViewById(R.id.routername);
+				routername.setText(new String(ssid));
+				TextView routermac = (TextView) findViewById(R.id.routermac);
+				routermac.setText(new String(uid));
+				TextView dBm = (TextView) findViewById(R.id.dBm);
+				dBm.setText(Integer.toString(power));
+				BasicResult br = new BasicResult(power, ssid, uid, (int) frequency);
+				TextView distance = (TextView) findViewById(R.id.distance);
+				double distance_val = current.GetAverageDistance(br);
+				distance.setText(Double.toString(distance_val));
+				findViewById(R.id.distance_root).invalidate();
 				onScanAggrigate(scan_manager.getCachedResults());
 			}
 			

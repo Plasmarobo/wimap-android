@@ -34,9 +34,10 @@ public class AndroidRouter extends Router {
 	public double GetComparativeDistance(BasicResult sr)
 	{
 		//Ratio between 1m power and measured power
-		double relative_strength = sr.GetPower()-this.power-30;
+		double relative_strength = (sr.GetPower()-30)-(this.power-30);
 		//Should return aproximate distance in M
-		double exp = (27.55 - (20 * Math.log10(freq)) - relative_strength) / 20.0;
+		
+		double exp = (relative_strength - 20*Math.log10(this.freq) + 27.55)/20.0;
 	    return 1+Math.pow(10.0, exp);
 	}
 	public double GetAverageDistance(BasicResult sr)

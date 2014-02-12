@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/Black" >
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/distance_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:background="@color/Black"
         android:orientation="vertical" >
 
         <TextView
@@ -15,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="You are"
+            android:text="@string/YOU_ARE"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/White" />
 
@@ -24,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="42"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/White"
             android:textSize="@dimen/HalfScreenTextVertical" />
@@ -34,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="(-75)"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/Gray" />
 
@@ -43,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="meters from"
+            android:text="@string/METERS_FROM"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/White" />
 
@@ -53,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:onClick="startSelection"
-            android:text="Somenetwork"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/White" />
 
@@ -62,10 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="(00:00:00:00:00:00)"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/Gray" />
 
     </LinearLayout>
 
-</FrameLayout>
