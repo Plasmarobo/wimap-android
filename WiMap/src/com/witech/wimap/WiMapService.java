@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Map.Entry;
+import java.util.concurrent.CountDownLatch;
 
 import android.app.Notification;
 import android.app.Service;
@@ -129,9 +130,10 @@ public class WiMapService extends Service{
 					//Fuuuuuuck, somethings fucked up! POWERCYCLE WIFI
 					while(wifi_man.isWifiEnabled())
 					{
+						Log.e("WiMap Service", "Turning off Wifi");
 						wifi_man.setWifiEnabled(false);
 						try {
-							wifi_man.wait(5000);
+							Thread.sleep(5000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -139,14 +141,16 @@ public class WiMapService extends Service{
 					}
 					while(!wifi_man.isWifiEnabled())
 					{
+						Log.e("WiMap Service", "Turning on Wifi");
 						wifi_man.setWifiEnabled(true);
 						try {
-							wifi_man.wait(5000);
-						} catch (InterruptedException e1) {
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							e.printStackTrace();
 						}
 					}
+					WiMapService.last_scan_timestamp = System.currentTimeMillis();
 					wifi_man.startScan();
 				}
 				
@@ -226,6 +230,8 @@ public class WiMapService extends Service{
         intent.putParcelableArrayListExtra(WiMapService.AGGRIGATE_DATA, aggrigates);
         sendBroadcast(intent);
         List<AndroidRouter> routers = RouterAPI.Routers();
+        if(routers == null)
+        	return;
         if(last_aggrigate.size() > 4)
 		{
         	List<RadialDistance> ld = new ArrayList<RadialDistance>();
