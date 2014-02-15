@@ -41,6 +41,10 @@
             android:label="@string/distance_name">
         </activity>
         <activity 
+            android:name="com.witech.wimap.BeaconActivity"
+            android:label="@string/beacon_name">
+        </activity>
+        <activity 
             android:name="com.witech.wimap.CalibrateActivity"
             android:label="@string/calibrate_name">
         </activity>

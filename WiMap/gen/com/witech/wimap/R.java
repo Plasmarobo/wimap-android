@@ -234,48 +234,54 @@ containing a value of this type.
         public static final int man_large=0x7f020024;
     }
     public static final class id {
-        public static final int TextView01=0x7f05001b;
-        public static final int TextView02=0x7f050018;
-        public static final int TextView03=0x7f050015;
-        public static final int action_settings=0x7f050029;
-        public static final int avatar=0x7f050022;
+        public static final int TextView01=0x7f050021;
+        public static final int TextView02=0x7f05001e;
+        public static final int TextView03=0x7f05001b;
+        public static final int action_settings=0x7f05002f;
+        public static final int avatar=0x7f050028;
+        public static final int beacon_root=0x7f05000e;
         public static final int button1=0x7f050009;
         public static final int button2=0x7f05000c;
-        public static final int container=0x7f050023;
-        public static final int dBm=0x7f050010;
-        public static final int dBmbar=0x7f05001f;
+        public static final int button3=0x7f05000d;
+        public static final int container=0x7f050029;
+        public static final int dBm=0x7f050016;
+        public static final int dBmbar=0x7f050025;
         public static final int dbpull=0x7f05000b;
-        public static final int distance=0x7f05000f;
-        public static final int distance_root=0x7f05000d;
-        public static final int edit_X=0x7f050014;
-        public static final int edit_Y=0x7f050017;
-        public static final int edit_Z=0x7f05001a;
-        public static final int edit_dBm=0x7f05001d;
-        public static final int frame=0x7f050020;
-        public static final int freq=0x7f05001e;
+        public static final int dist=0x7f050010;
+        public static final int distance=0x7f050015;
+        public static final int distance_root=0x7f050014;
+        public static final int distslider=0x7f050011;
+        public static final int edit_X=0x7f05001a;
+        public static final int edit_Y=0x7f05001d;
+        public static final int edit_Z=0x7f050020;
+        public static final int edit_dBm=0x7f050023;
+        public static final int frame=0x7f050026;
+        public static final int freq=0x7f050024;
         public static final int hybrid=0x7f050004;
         public static final int logo=0x7f050008;
-        public static final int map_image=0x7f050021;
+        public static final int map_image=0x7f050027;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int power=0x7f050026;
+        public static final int power=0x7f05002c;
+        public static final int power_beacon=0x7f05000f;
         public static final int progress=0x7f050005;
-        public static final int routermac=0x7f050013;
-        public static final int routername=0x7f050012;
+        public static final int routermac=0x7f050019;
+        public static final int routername=0x7f050018;
         public static final int satellite=0x7f050002;
-        public static final int scan_list=0x7f050024;
-        public static final int scan_list_item=0x7f050025;
+        public static final int scan_list=0x7f05002a;
+        public static final int scan_list_item=0x7f05002b;
         public static final int splash_view=0x7f050006;
-        public static final int ssid=0x7f050027;
+        public static final int ssid=0x7f05002d;
+        public static final int ssid_beacon=0x7f050012;
         public static final int startcal=0x7f05000a;
         public static final int startscan=0x7f050007;
         public static final int terrain=0x7f050003;
-        public static final int textView3=0x7f05000e;
-        public static final int textView4=0x7f050011;
-        public static final int uid=0x7f050028;
-        public static final int xbar=0x7f050016;
-        public static final int ybar=0x7f050019;
-        public static final int zbar=0x7f05001c;
+        public static final int textView4=0x7f050017;
+        public static final int uid=0x7f05002e;
+        public static final int uid_beacon=0x7f050013;
+        public static final int xbar=0x7f05001c;
+        public static final int ybar=0x7f05001f;
+        public static final int zbar=0x7f050022;
     }
     public static final class integer {
         public static final int EditRouterGrid=0x7f070001;
@@ -285,12 +291,13 @@ containing a value of this type.
     public static final class layout {
         public static final int activity_fetch=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int distance_view=0x7f030002;
-        public static final int edit_router=0x7f030003;
-        public static final int floorplan=0x7f030004;
-        public static final int manual_map=0x7f030005;
-        public static final int scan_list=0x7f030006;
-        public static final int scan_list_item=0x7f030007;
+        public static final int beacon_view=0x7f030002;
+        public static final int distance_view=0x7f030003;
+        public static final int edit_router=0x7f030004;
+        public static final int floorplan=0x7f030005;
+        public static final int manual_map=0x7f030006;
+        public static final int scan_list=0x7f030007;
+        public static final int scan_list_item=0x7f030008;
     }
     public static final class menu {
         public static final int main=0x7f0a0000;
@@ -330,6 +337,7 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f060014;
+        public static final int beacon_name=0x7f06002e;
         public static final int calibrate_name=0x7f060024;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they

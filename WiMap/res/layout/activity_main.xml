@@ -63,4 +63,13 @@
         android:onClick="UploadDB"
         android:text="Commit DB" />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:onClick="onScience"
+        android:text="Science!" />
+
 </RelativeLayout>

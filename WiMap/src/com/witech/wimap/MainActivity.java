@@ -60,6 +60,10 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+    public void onScience(View v)
+    {
+    	startActivity(new Intent(v.getContext(), BeaconActivity.class));
+    }
     
     
     public void PullDB(View v)
