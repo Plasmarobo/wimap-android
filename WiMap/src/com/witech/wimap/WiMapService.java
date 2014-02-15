@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Map.Entry;
-import java.util.concurrent.CountDownLatch;
-
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -29,14 +27,16 @@ public class WiMapService extends Service{
 	protected WifiLock lock;
 	protected Timer timer;
 	protected ScanReceiver scanner;
-	protected List<BasicResult> last_scan;
-	protected List<BasicResult> last_aggrigate;
+	protected static List<BasicResult> last_scan;
+	protected static List<BasicResult> last_aggrigate;
 	private int service_id;
 	public static final String AGGRIGATE_READY = "com.witech.wimap.AGGRIGATE_READY";
 	public static final String AGGRIGATE_DATA= "com.witech.wimap.AGGRIGATE_DATA";
 	public static final String LOCATION_READY = "com.witech.wimap.LOCATION_READY";
 	public static final String LOCATION_DATA = "com.witech.wimap.LOCATION_DATA";
 	public static final long SCAN_RESET_TIMEOUT = 10000;
+	public static final long WIFI_DOWNCYCLE_TIME = 1000;
+	public static final long WIFI_UPCYCLE_TIME = 12000;
 	protected int scan_delay;
 	protected List<HashMap<String, BasicResult>> aggrigator;
 	protected static final int SAMPLE_COUNT = 4;
@@ -46,6 +46,10 @@ public class WiMapService extends Service{
 	MessageAPI message_api;
 	protected static long last_scan_timestamp;
 	
+	public static List<BasicResult> getLatestScan()
+	{
+		return last_aggrigate;
+	}
 	
 	public class ScanReceiver extends BroadcastReceiver
 	{
@@ -133,7 +137,7 @@ public class WiMapService extends Service{
 						Log.e("WiMap Service", "Turning off Wifi");
 						wifi_man.setWifiEnabled(false);
 						try {
-							Thread.sleep(5000);
+							Thread.sleep(WiMapService.WIFI_DOWNCYCLE_TIME);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -144,7 +148,7 @@ public class WiMapService extends Service{
 						Log.e("WiMap Service", "Turning on Wifi");
 						wifi_man.setWifiEnabled(true);
 						try {
-							Thread.sleep(5000);
+							Thread.sleep(WiMapService.WIFI_UPCYCLE_TIME);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -157,6 +161,8 @@ public class WiMapService extends Service{
 			}
 			
 		}, 5000, WiMapService.SCAN_RESET_TIMEOUT);
+		last_scan = new ArrayList<BasicResult>();
+		last_aggrigate = new ArrayList<BasicResult>();
     }
 
     @Override
@@ -268,7 +274,7 @@ public class WiMapService extends Service{
 
 
 	public void onScanResult(List<BasicResult> r) {
-		this.last_scan = r;
+		WiMapService.last_scan = r;
 		for(int i = 0; i < r.size(); ++i)
 		{
 			Log.v("ScanResult:", r.get(i).GetSSID() );

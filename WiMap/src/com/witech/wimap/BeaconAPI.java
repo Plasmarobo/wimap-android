@@ -62,7 +62,7 @@ public class BeaconAPI implements HTTPInterface {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			arguments.add(new BasicNameValuePair("beacon", router_json.toString()));
+			arguments.add(new BasicNameValuePair("distance_sample", router_json.toString()));
 			Log.i("POST:", arguments.toString());
 			try {
 				req.setEntity(new UrlEncodedFormEntity(arguments));

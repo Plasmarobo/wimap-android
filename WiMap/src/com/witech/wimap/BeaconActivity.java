@@ -31,12 +31,14 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 		startSelection(getBaseContext());
 		started = false;
 		distance = 0;
+		findViewById(R.id.beacon_stop).setVisibility(View.GONE);
 		((SeekBar)findViewById(R.id.distslider)).setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
 			@Override
 			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
 				// TODO Auto-generated method stub
 				((EditText)findViewById(R.id.dist)).setText(Integer.toString(arg1));
+				
 			}
 
 			@Override
@@ -70,6 +72,7 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				((SeekBar) findViewById(R.id.distslider)).setProgress(Math.abs(Integer.parseInt(s.toString())));
+			
 			}
 		});
 	}
@@ -77,11 +80,15 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 	public void onStart(View v)
 	{
 		started = true;
+		findViewById(R.id.beacon_start).setVisibility(View.GONE);
+		findViewById(R.id.beacon_stop).setVisibility(View.VISIBLE);
 	}
 	
 	public void onStop(View v)
 	{
 		started = false;
+		findViewById(R.id.beacon_start).setVisibility(View.VISIBLE);
+		findViewById(R.id.beacon_stop).setVisibility(View.GONE);
 	}
 	
 	
@@ -115,6 +122,8 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 		dBm.setText(Integer.toString(r.GetPower()));
 		if(started)
 		{
+			String dist = ((EditText)findViewById(R.id.dist)).getText().toString();
+			distance = Double.parseDouble(dist);
 			beaconAPI.CommitSample(r.GetPower(), distance);
 		}
 	}

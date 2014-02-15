@@ -13,8 +13,6 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 	private final static int SELECTROUTER = 7;
 	private String ssid;
 	private String uid;
-	private int power;
-	private double frequency;
 	private AndroidRouter current;
 	RouterDatabase db;
 	
@@ -26,6 +24,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 		setContentView(R.layout.distance_view); 
 		db = new RouterDatabase(this);
 		startSelection(getBaseContext());
+
 	}
 	
 	
@@ -77,8 +76,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 					Toast.makeText(this, "Could not find router in DB", Toast.LENGTH_LONG).show();
 					return;
 				}
-				power = data.getIntExtra("dBm", -90);
-				frequency = data.getIntExtra("freq", 2400);
+				
 				TextView routername = (TextView) findViewById(R.id.routername);
 				routername.setText(new String(ssid));
 				TextView routermac = (TextView) findViewById(R.id.routermac);

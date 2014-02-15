@@ -240,8 +240,8 @@ containing a value of this type.
         public static final int action_settings=0x7f05002f;
         public static final int avatar=0x7f050028;
         public static final int beacon_root=0x7f05000e;
-        public static final int button1=0x7f050009;
-        public static final int button2=0x7f05000c;
+        public static final int beacon_start=0x7f050009;
+        public static final int beacon_stop=0x7f05000c;
         public static final int button3=0x7f05000d;
         public static final int container=0x7f050029;
         public static final int dBm=0x7f050016;

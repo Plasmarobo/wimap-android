@@ -33,7 +33,13 @@ public abstract class ScanListActivity extends WiMapServiceSubscriber{
 		}else adapter = new ScanListAdapter(this);
 		listview.setAdapter(adapter);
 		adapter.setNotifyOnChange(false);
-		adapter.addAll(cache);
+		List<BasicResult> wifi_list = WiMapService.getLatestScan();
+		for(int i = 0; i < wifi_list.size(); ++i)
+		{
+			adapter.add(wifi_list.get(i));
+		}
+		adapter.notifyDataSetChanged();
+		findViewById(R.id.scan_list).invalidate();
 	}
 	
 	

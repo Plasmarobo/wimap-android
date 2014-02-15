@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import android.util.Log;
 
 public class TracksAPI implements HTTPInterface{
-	private static final String API_KEY = "";
+	//private static final String API_KEY = "";
 	public static final String TRACKS_URI = "http://www.wimapnav.com/api/v1/tracks";
 	static List<Intersect> buffer;
 	
