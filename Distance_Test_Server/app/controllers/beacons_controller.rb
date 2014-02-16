@@ -10,25 +10,33 @@ class BeaconsController < ApplicationController
 
   # GET /beacons/1
   # GET /beacons/1.json
+  # GET /beacons/1.m
   def show
-    filename = @beacon.uid.!gsub(':','_') + ".m"
-    File.open(filename, "w+") do |f|
-      f.write("function data = " + filename.substr(-2) + "()\n")
-      f.write("data = [\n")
-      data_rows = [];
-      @beacon.distance_samples.each do |sample|
-        data_rows[sample.distance] += sample.power
-        data_rows[sample.distance] += ","
-      end
-      block = ""
-      data_rows.each do |row|
-        block += row[-1] + ";\n"
-      end
-      f.write(block[-2] + "\n")
-      f.write("];\n")
-      f.write("\nend");
+    respond_to do |format|
+      format.matlab {
+      begin
+        filename = 'beacon' + @beacon.uid.gsub(':','_') + ".m"
+        File.open(Dir.pwd + "/matlab/" + filename, "w+") do |f|
+          f.write("function data = " + filename[0..-3] + "()\n")
+          f.write("data = [\n")
+          block = Array.new(31)
+          $i = 0
+          begin
+            block[$i] = @beacon.distance_samples.where(distance: $i).collect {|sample| sample.power.to_s}.join(',')
+            $i = $i + 1
+          end until $i > 30
+          block = block.join(";\n")
+          f.write(block)
+          f.write("\n];\n")
+          f.write("\nend");
+
+        end
+        send_file Dir.pwd + "/matlab/" + filename, {filename: filename, type: 'text/matlab'}
+      end }
+      format.html 
+      format.json { render :json => @beacon }
+
     end
-    render :file => filename, :content_type => "text/matlab"
   end
 
   # GET /beacons/new
