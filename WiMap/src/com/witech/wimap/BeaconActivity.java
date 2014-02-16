@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class BeaconActivity extends WiMapServiceSubscriber {
@@ -21,17 +22,19 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 	private boolean started;
 	private double distance;
 	BeaconAPI beaconAPI;
-	
+	private int sample_number;
+	private static int SAMPLE_COUNT=20;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		Log.i("DistanceActivity", "Created");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.beacon_view);
-		startSelection(getBaseContext());
+		ssid = "";
+		uid = "";
 		started = false;
 		distance = 0;
-		findViewById(R.id.beacon_stop).setVisibility(View.GONE);
+		startSelection(getBaseContext());
 		((SeekBar)findViewById(R.id.distslider)).setOnSeekBarChangeListener(new OnSeekBarChangeListener(){
 
 			@Override
@@ -79,9 +82,12 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 	
 	public void onStart(View v)
 	{
+		if(uid.equals(""))
+			startSelection(getBaseContext());
 		started = true;
 		findViewById(R.id.beacon_start).setVisibility(View.GONE);
 		findViewById(R.id.beacon_stop).setVisibility(View.VISIBLE);
+		sample_number = 0;
 	}
 	
 	public void onStop(View v)
@@ -94,6 +100,7 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 	
 	public void startSelection(View v)
 	{
+		findViewById(R.id.beacon_stop).setVisibility(View.GONE);
 		startSelection(v.getContext());
 	}
 	
@@ -125,6 +132,16 @@ public class BeaconActivity extends WiMapServiceSubscriber {
 			String dist = ((EditText)findViewById(R.id.dist)).getText().toString();
 			distance = Double.parseDouble(dist);
 			beaconAPI.CommitSample(r.GetPower(), distance);
+			++sample_number;
+			if(sample_number == BeaconActivity.SAMPLE_COUNT)
+			{
+				this.onStop(null);
+				Toast.makeText(this,  "Finished!", Toast.LENGTH_LONG).show();
+				++distance;
+				((EditText)findViewById(R.id.dist)).setText(Integer.toString((int)distance));
+			}
+			((TextView)findViewById(R.id.sample_no)).setText(Integer.toString(sample_number));
+			
 		}
 	}
 	@Override

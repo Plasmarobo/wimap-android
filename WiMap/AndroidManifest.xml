@@ -25,7 +25,8 @@
         <service android:name=".WiMapService" />
         <activity
             android:name="com.witech.wimap.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,35 +35,43 @@
         </activity>
         <activity
             android:name="com.witech.wimap.MapActivity"
-            android:label="@string/map_name">         
+            android:label="@string/map_name"
+            >          
         </activity>
         <activity 
             android:name="com.witech.wimap.DistanceActivity"
-            android:label="@string/distance_name">
+            android:label="@string/distance_name"
+            android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name="com.witech.wimap.BeaconActivity"
-            android:label="@string/beacon_name">
+            android:label="@string/beacon_name"
+          	android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name="com.witech.wimap.CalibrateActivity"
-            android:label="@string/calibrate_name">
+            android:label="@string/calibrate_name"
+            android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name="com.witech.wimap.SelectRouterActivity"
-            android:label="@string/selectrouter_name">
+            android:label="@string/selectrouter_name"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.witech.wimap.EditRouterActivity"
-            android:label="@string/editrouter_name">         
+            android:label="@string/editrouter_name"
+            android:screenOrientation="portrait">         
         </activity>
         <activity
             android:name="com.witech.wimap.FetchRouterActivity"
-            android:label="@string/fetchrouter_name">
+            android:label="@string/fetchrouter_name"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.witech.wimap.PushRouterActivity"
-            android:label="@string/pushrouter_name">
+            android:label="@string/pushrouter_name"
+            android:screenOrientation="portrait">
         </activity>
         
     </application>
