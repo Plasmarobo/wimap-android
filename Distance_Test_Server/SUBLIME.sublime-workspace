@@ -1,0 +1,307 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"queue",
+				"queue_size"
+			],
+			[
+				"queu",
+				"queue_size"
+			],
+			[
+				"EX_mem",
+				"EX_mem_write_flag"
+			],
+			[
+				"WB_re",
+				"WB_regw"
+			],
+			[
+				"EX_rd",
+				"EX_rd"
+			],
+			[
+				"jmp",
+				"jmp"
+			],
+			[
+				"EX_reg",
+				"EX_regdst"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "config/initializers/mime_types.rb",
+			"settings":
+			{
+				"buffer_size": 292,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/beacons_controller.rb",
+			"settings":
+			{
+				"buffer_size": 2760,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 380.0,
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/models/beacon.rb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/models/distance_sample.rb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/controllers/distance_samples_controller.rb",
+		"/C/Users/austen/Documents/GitHub/capstone2.0/serial_driver/data.csv",
+		"/C/Users/austen/Documents/GitHub/capstone2.0/serial_driver/vs/serial_test/data.csv",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/matlab/44_32_c8_29_41_92.m",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/views/beacons/show.m.erb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/config/routes.rb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/views/beacons/show.json.jbuilder",
+		"/C/Users/austen/Dropbox/School/Simulation/hw2/ssq1.c",
+		"/C/Users/austen/Documents/GitHub/capstone2.0/.gitignore",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/controllers/beacons_controller.rb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/sftp-config.json",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/views/beacons/show.matlab.m",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/config/initializers/mime_types.rb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/db/migrate/20140214222358_ds_int_to_double.rb",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/views/distance_samples/show.json.jbuilder",
+		"/C/Users/austen/Documents/GitHub/wimap-android/Distance_Test_Server/app/views/distance_samples/index.html.erb",
+		"/C/Users/austen/Documents/GitHub/wimap/.git/config",
+		"/C/Users/austen/Dropbox/vw.dat",
+		"/C/Users/austen/Documents/CompArch/src/HAZu.v",
+		"/C/Users/austen/Documents/CompArch/src/adv_processor.v",
+		"/C/Users/austen/Documents/CompArch/test/test_adv_processor.v",
+		"/C/Users/austen/Documents/CompArch/src/cpu.v",
+		"/C/Users/austen/Downloads/matrix.s",
+		"/C/Users/austen/Documents/CompArch/src/memory.v",
+		"/C/Users/austen/Documents/CompArch/src/adv_cpu.v",
+		"/C/Users/austen/Documents/CompArch/src/FwdU.v",
+		"/C/Users/austen/Documents/CompArch/matrix.hexdump",
+		"/C/Users/austen/Downloads/matrix.hexdump",
+		"/C/Users/austen/Documents/CompArch/src/regfile32x32.v"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"mem_res",
+			"MEM_add",
+			"#1",
+			"EX_rd"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "config/initializers/mime_types.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								291,
+								291
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Ruby/Ruby.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/controllers/beacons_controller.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2760,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1377,
+								1377
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Ruby/Ruby.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 579.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 100.0
+	},
+	"project": "SUBLIME.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 235.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

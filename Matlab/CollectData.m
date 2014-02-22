@@ -1,4 +1,4 @@
-function PlotPattern(data)
+function [m, average_data] = CollectData(data)
 m = size(data,2);
 n = size(data,3);
 average_data=zeros(m,1,1);
@@ -8,5 +8,4 @@ for i = 1:m
     end
     average_data(i) = average_data(i) / n;
 end
-plot(1:m,average_data-average_data(1));
 end
