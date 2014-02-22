@@ -210,7 +210,7 @@ public class WiMapService extends Service{
 		        Entry<String, BasicResult> pair = (Entry<String, BasicResult>)it.next();
 		        if(scan_map.containsKey(pair.getKey()))
 		        {
-		        	((BasicResult)pair.getValue()).Merge((BasicResult)scan_map.get(pair.getKey()));
+		        	((BasicResult)pair.getValue()).Merge((BasicResult)scan_map.get(pair.getKey()), (double)i);
 		        	scan_map.remove(pair.getKey());
 		        }else{
 		        	((BasicResult)pair.getValue()).CompensateForMiss();
@@ -228,7 +228,7 @@ public class WiMapService extends Service{
 		ArrayList<BasicResult> aggrigates = new ArrayList<BasicResult>(wifi_map.values());
 		for(int j = 0; j < aggrigates.size(); ++j)
 		{
-			aggrigates.get(j).Average(WiMapService.SAMPLE_COUNT);
+			aggrigates.get(j).Average(this.AverageFactor());
 		}
 		last_aggrigate = aggrigates;
 		Intent intent = new Intent();
@@ -272,6 +272,15 @@ public class WiMapService extends Service{
 		}
 	}
 
+
+	private double AverageFactor() {
+		double factor = 0;
+		for(int i = 0; i < WiMapService.SAMPLE_COUNT; ++i)
+		{
+			factor += WiMapService.SAMPLE_COUNT-i;
+		}
+		return factor;
+	}
 
 	public void onScanResult(List<BasicResult> r) {
 		WiMapService.last_scan = r;

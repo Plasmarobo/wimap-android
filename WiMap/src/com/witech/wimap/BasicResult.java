@@ -99,8 +99,8 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		return this.ssid + "|" + this.uid + "|" + this.power;
 	}
 
-	public void Merge(BasicResult br) {
-		this.power += br.power;
+	public void Merge(BasicResult br, double weight) {
+		this.power += weight*br.power;
 		if(this.freq != br.freq)
 		{
 			//Throw Exception! But really we don't care!
