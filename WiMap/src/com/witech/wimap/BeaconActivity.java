@@ -9,6 +9,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -32,7 +35,7 @@ public class BeaconActivity extends Activity{
 	BeaconAPI beaconAPI;
 	private int sample_number;
 	private Timer timer;
-	private static int SAMPLE_COUNT=20;
+	private static int SAMPLE_COUNT=100;
 	private WifiManager wifi_man;
 	private class WifiRec extends BroadcastReceiver
 	{
@@ -73,6 +76,13 @@ public class BeaconActivity extends Activity{
 				++sample_number;
 				if(sample_number == BeaconActivity.SAMPLE_COUNT)
 				{
+					try {
+					    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+					    Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), notification);
+					    rt.play();
+					} catch (Exception e) {
+					    e.printStackTrace();
+					}
 					onStop(null);
 					Toast.makeText(context,  "Finished!", Toast.LENGTH_LONG).show();
 					++distance;
@@ -172,11 +182,13 @@ public class BeaconActivity extends Activity{
 	}
 	public void onPause()
 	{
+		super.onPause();
 		unregisterReceiver(rec);
 		timer.cancel();
 	}
 	public void onResume()
 	{
+		super.onResume();
 		timer = new Timer();
 		registerReceiver(rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 		timer.schedule(new TimerTask(){
