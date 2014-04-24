@@ -1,6 +1,8 @@
-package com.wimap;
+package com.wimap.apis;
 
 import android.os.AsyncTask;
+
+import com.wimap.templates.HTTPInterface;
 
 public class AsyncHTTP extends AsyncTask<HTTPInterface, Integer, Integer> {
 

@@ -1,10 +1,9 @@
-package com.wimap;
+package com.wimap.apis;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import android.util.Log;
+
+import com.wimap.templates.HTTPInterface;
+import com.wimap.math.Intersect;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -18,9 +17,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class TracksAPI implements HTTPInterface{
+public class TracksAPI implements HTTPInterface {
 	//private static final String API_KEY = "";
 	public static final String TRACKS_URI = "http://www.wimapnav.com/api/v1/tracks";
 	static List<Intersect> buffer;

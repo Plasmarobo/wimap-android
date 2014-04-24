@@ -1,6 +1,4 @@
-package com.wimap;
-
-import java.util.List;
+package com.wimap.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.wimap.apis.RouterAPI;
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.RouterDatabase;
+import com.wimap.wimap.R;
+
+import java.util.List;
 
 public class PushRouterActivity extends Activity {
 	public class PushRouterTask extends AsyncTask<List<AndroidRouter>, Integer, List<AndroidRouter>> {
@@ -63,7 +68,7 @@ public class PushRouterActivity extends Activity {
 		protected void onCreate(Bundle savedInstance)
 		{
 			super.onCreate(savedInstance);
-			setContentView(R.layout.activity_fetch); 
+			setContentView(R.layout.activity_fetch);
 			List<AndroidRouter> l;
 			RouterDatabase db = new RouterDatabase(getBaseContext());
 			db.open();

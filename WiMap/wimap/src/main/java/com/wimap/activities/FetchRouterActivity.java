@@ -1,4 +1,4 @@
-package com.wimap;
+package com.wimap.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,15 +8,20 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.wimap.apis.RouterAPI;
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.RouterDatabase;
+import com.wimap.wimap.R;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 
 public class FetchRouterActivity extends Activity {
 
@@ -89,7 +94,7 @@ public class FetchRouterTask extends AsyncTask<List<AndroidRouter>, Integer, Lis
 	protected void onCreate(Bundle savedInstance)
 	{
 		super.onCreate(savedInstance);
-		setContentView(R.layout.activity_fetch); 
+		setContentView(R.layout.activity_fetch);
 		List<AndroidRouter> l = new ArrayList<AndroidRouter>();
 		new FetchRouterTask(findViewById(R.id.progress)).execute(l);
 	}

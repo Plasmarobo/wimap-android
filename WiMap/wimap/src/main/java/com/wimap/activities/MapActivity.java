@@ -1,12 +1,20 @@
-package com.wimap;
+package com.wimap.activities;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import com.witech.wimap.Intersect;
+
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.BasicResult;
+import com.wimap.components.RouterDatabase;
+import com.wimap.components.WiMapServiceSubscriber;
+import com.wimap.math.Intersect;
+import com.wimap.math.RadialDistance;
+import com.wimap.wimap.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapActivity extends WiMapServiceSubscriber {
 	private List<AndroidRouter> routers;
@@ -19,7 +27,7 @@ public class MapActivity extends WiMapServiceSubscriber {
     protected void onCreate(Bundle savedInstanceState) {
     	Log.v("MapActivity", "Created");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.floorplan);  
+        setContentView(R.layout.floorplan);
         
         map = (ImageView) findViewById(R.id.map_image);
         icon = (ImageView) findViewById(R.id.avatar);
@@ -73,7 +81,7 @@ public class MapActivity extends WiMapServiceSubscriber {
 	        params.leftMargin = (int) point.x; //XCOORD
 	        params.topMargin = (int) point.y; //YCOORD
 	        icon.setLayoutParams(params);
-			icon.setBackgroundResource(R.drawable.man32);
+			icon.setBackgroundResource(R.drawable.man16);
 		}else{
 			icon.setBackgroundResource(R.drawable.lost32);
 		}

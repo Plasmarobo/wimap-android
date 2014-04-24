@@ -1,14 +1,17 @@
-package com.wimap;
+package com.wimap.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
-public class SelectRouterActivity extends ScanListActivity{
+import com.wimap.templates.ScanListActivity;
+import com.wimap.wimap.R;
+
+public class SelectRouterActivity extends ScanListActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

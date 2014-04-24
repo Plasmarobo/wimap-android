@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\Austen\Documents\GitHub\WiMap" />
-            <option value="C:\Users\Austen\Documents\GitHub\WiMap\wimap" />
+            <option value="C:\Users\Austen\Documents\GitHub\wimap-android\WiMap" />
+            <option value="C:\Users\Austen\Documents\GitHub\wimap-android\WiMap\wimap" />
           </set>
         </option>
       </GradleProjectSettings>

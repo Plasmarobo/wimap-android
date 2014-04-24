@@ -1,10 +1,4 @@
-package com.wimap;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.witech.wimap.R;
+package com.wimap.components;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;
@@ -13,7 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.witech.wimap.BasicResult;
+
+
+import com.wimap.wimap.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class ScanListAdapter extends ArrayAdapter<BasicResult> {

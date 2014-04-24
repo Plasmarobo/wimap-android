@@ -1,8 +1,8 @@
-package com.wimap;
+package com.wimap.components;
 
 import android.net.wifi.ScanResult;
 
-import com.witech.wimap.Router;
+import com.wimap.math.Router;
 
 
 public class AndroidRouter extends Router {
@@ -22,10 +22,16 @@ public class AndroidRouter extends Router {
 		this.freq = r.frequency;
 		this.power = r.level;//Distance initializer of 1
 	}
-	public AndroidRouter(double double1, double double2, double double3,
-			String string, String string2, double double4, double double5) {
-		super(double1, double2, double3, string, string2, double4, double5);
-	}
+    public AndroidRouter(double x, double y, double z, String ssid, String uid, double dBm, double freq)
+    {
+        super(x, y, z, ssid, uid, 1, dBm, freq);
+    }
+
+    public AndroidRouter(double x, double y, double z, String ssid, String uid, int site_id, double dBm, double frequency, double tx_power)
+    {
+        super(x,y,z,ssid,uid,site_id,dBm,frequency,tx_power);
+    }
+
 	public void PowerFromScan(ScanResult scan) 
 	{ 
 		this.power = scan.level;
@@ -57,7 +63,7 @@ public class AndroidRouter extends Router {
     }
 	public String toString()
 	{
-		return this.uid + "|" + this.ssid + "|" + this.power;
+		return this.uid + "|" + this.ssid + "|" + this.power + "|" + this.tx_power;
 	}
 
 }

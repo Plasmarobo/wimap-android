@@ -1,7 +1,4 @@
-package com.witech.wimap;
-
-
-import java.util.List;
+package com.wimap.math;
 
 
 import org.apache.commons.math3.analysis.DifferentiableMultivariateVectorFunction;
@@ -15,6 +12,8 @@ import org.apache.commons.math3.optim.nonlinear.vector.ModelFunctionJacobian;
 import org.apache.commons.math3.optim.nonlinear.vector.Target;
 import org.apache.commons.math3.optim.nonlinear.vector.Weight;
 import org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizer;
+
+import java.util.List;
 
 
 public class Intersect {

@@ -1,4 +1,4 @@
-package com.wimap;
+package com.wimap.apis;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

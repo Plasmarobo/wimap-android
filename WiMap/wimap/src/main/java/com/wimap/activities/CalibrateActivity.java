@@ -1,17 +1,23 @@
-package com.wimap;
+package com.wimap.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.RouterDatabase;
+import com.wimap.templates.ScanListActivity;
+import com.wimap.wimap.R;
 
 public class CalibrateActivity extends ScanListActivity {
 	private RouterDatabase db;
 	static final int EDITROUTER = 1;
+    static final int RESULT_OK = 1;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);

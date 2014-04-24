@@ -1,4 +1,4 @@
-package com.wimap;
+package com.wimap.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
+import com.wimap.wimap.R;
 
 public class EditRouterActivity extends Activity {
 	private static final int RESULT_CANCEL = 0;

@@ -1,4 +1,4 @@
-package com.wimap;
+package com.wimap.components;
 
 import android.net.wifi.ScanResult;
 import android.os.Parcel;

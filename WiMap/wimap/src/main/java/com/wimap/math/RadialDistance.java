@@ -1,4 +1,4 @@
-package com.witech.wimap;
+package com.wimap.math;
 
 public class RadialDistance {
 	private double x;

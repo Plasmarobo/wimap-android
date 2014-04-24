@@ -1,11 +1,7 @@
-package com.wimap;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+package com.wimap.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,10 +17,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.content.BroadcastReceiver;
+
+import com.wimap.apis.AsyncHTTP;
+import com.wimap.apis.BeaconAPI;
+import com.wimap.components.BasicResult;
+import com.wimap.wimap.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BeaconActivity extends Activity{
 	private final static int SELECTROUTER = 7;

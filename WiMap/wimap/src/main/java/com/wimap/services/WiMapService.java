@@ -1,13 +1,5 @@
-package com.wimap.wimap;
+package com.wimap.services;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Map.Entry;
 import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -21,9 +13,27 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
+
+import com.wimap.apis.AsyncHTTP;
+import com.wimap.apis.MessageAPI;
+import com.wimap.apis.RouterAPI;
+import com.wimap.apis.TracksAPI;
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.BasicResult;
+import com.wimap.components.IntersectBundle;
+import com.wimap.math.Intersect;
+import com.wimap.math.RadialDistance;
+import com.wimap.wimap.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class WiMapService extends Service {
     protected WifiManager wifi_man;
@@ -187,18 +197,6 @@ public class WiMapService extends Service {
         timer.cancel();
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
-
-    // This is the object that receives interactions from clients.  See
-    // RemoteService for a more complete example.
-    private final IBinder mBinder = new LocalBinder();
-
-    /**
-     * Show a notification while this service is running.
-     */
 
 
     public void onScanAggrigate() {

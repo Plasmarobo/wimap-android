@@ -1,4 +1,6 @@
-package com.witech.wimap;
+package com.wimap.math;
+
+import org.apache.commons.math3.fitting.CurveFitter;
 
 public class Router {
 	protected int id;
@@ -71,7 +73,7 @@ public class Router {
 	public void SetPower(double power, double freq) {this.freq = freq; this.power = power;}
     public void SetTxPower(double power) { this.tx_power = power;}
 	
-	public double GetFDSPLDistance(double dBm)
+	public double GetFSPLDistance(double dBm)
 	{
 		//Compute free space path loss
 		//loss(dBm)= 20.0*log10(df) -27.55221678
@@ -88,7 +90,10 @@ public class Router {
         double n = 5;
         double multipath_compensation = (10*n);
         return Math.pow(10.0,((effective_power-dBm)/multipath_compensation));
+    }
 
+    public void FindTxPower(double [][] power_map)
+    {
 
     }
 	

@@ -1,12 +1,10 @@
-package com.wimap;
+package com.wimap.apis;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
+
+import com.wimap.components.AndroidRouter;
+import com.wimap.templates.HTTPInterface;
+import com.wimap.math.Router;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -23,10 +21,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class RouterAPI implements HTTPInterface{
+public class RouterAPI implements HTTPInterface {
 
 	private static final String API_KEY = "";
 	
@@ -84,9 +88,9 @@ public class RouterAPI implements HTTPInterface{
 						router_json.getDouble(tag_z),
 						router_json.getString(tag_ssid),
 						router_json.getString(tag_uid),
+                        router_json.getInt(tag_site_id),
 						router_json.getDouble(tag_power),
 						router_json.getDouble(tag_freq),
-                        router_json.getInt(tag_site_id),
                         router_json.getDouble((tag_tx_power)));
 				cache.add(model);
 				}

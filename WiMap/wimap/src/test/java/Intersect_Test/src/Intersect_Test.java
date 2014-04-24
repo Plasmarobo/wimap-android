@@ -1,3 +1,6 @@
+import com.witech.wimap.Intersect;
+import com.witech.wimap.RadialDistance;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,9 +20,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
-
-import com.witech.wimap.Intersect;
-import com.witech.wimap.RadialDistance;
 
 
 public class Intersect_Test extends JApplet {

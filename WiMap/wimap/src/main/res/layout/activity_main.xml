@@ -9,45 +9,64 @@
     tools:context="com.wimap.wimap.MainActivity"
     style="@android:style/Theme.Holo.NoActionBar">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/logo" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/login_email"
-        android:background="@color/White"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/email_hint" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="348dp"
+            android:id="@+id/splash"
+            android:src="@drawable/logo"
+            android:layout_alignBottom="@+id/login_email"
+            android:layout_centerHorizontal="true"
+            android:minHeight="128dp"
+            android:minWidth="128dp"
+            android:maxWidth="512dp"
+            android:maxHeight="512dp"
+            android:longClickable="true"
+            android:layout_gravity="center_horizontal" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/login_password"
-        android:layout_marginTop="22dp"
-        android:background="@color/White"
-        android:layout_below="@+id/login_email"
-        android:layout_alignLeft="@+id/login_email"
-        android:layout_alignStart="@+id/login_email"
-        android:hint="@string/password_hint" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/login_email"
+            android:background="@color/White"
+            android:hint="@string/email_hint"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login_hint"
-        android:id="@+id/login_submit"
-        android:layout_below="@+id/login_password"
-        android:layout_marginTop="25dp"
-        android:layout_alignLeft="@+id/login_password"
-        android:layout_alignStart="@+id/login_password"
-        android:layout_alignRight="@+id/login_password"
-        android:layout_alignEnd="@+id/login_password" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/login_password"
+            android:background="@color/White"
+            android:hint="@string/password_hint"
+            android:layout_below="@+id/login_email"
+            android:layout_alignLeft="@+id/login_email"
+            android:layout_alignStart="@+id/login_email"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_hint"
+            android:id="@+id/login_submit"
+            android:layout_below="@+id/login_password"
+            android:layout_marginTop="25dp"
+            android:layout_alignLeft="@+id/login_password"
+            android:layout_alignStart="@+id/login_password"
+            android:layout_alignRight="@+id/login_password"
+            android:layout_alignEnd="@+id/login_password"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
 
 </RelativeLayout>

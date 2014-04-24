@@ -1,6 +1,5 @@
-package com.wimap;
+package com.wimap.activities;
 
-import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.BasicResult;
+import com.wimap.components.RouterDatabase;
+import com.wimap.components.WiMapServiceSubscriber;
+import com.wimap.wimap.R;
+
+import java.util.List;
 
 public class DistanceActivity extends WiMapServiceSubscriber {
 	private final static int SELECTROUTER = 7;
@@ -21,7 +28,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 	{
 		Log.i("DistanceActivity", "Created");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.distance_view); 
+		setContentView(R.layout.distance_view);
 		db = new RouterDatabase(this);
 		startSelection(getBaseContext());
 

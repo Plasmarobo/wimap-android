@@ -1,4 +1,4 @@
-package com.wimap;
+package com.wimap.apis;
 
 public class MessageAPI {
 
