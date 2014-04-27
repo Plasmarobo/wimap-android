@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="EditRouterGrid">5</integer>
-    <integer name="EditRouterGrid_Cols">2</integer>
-</resources>

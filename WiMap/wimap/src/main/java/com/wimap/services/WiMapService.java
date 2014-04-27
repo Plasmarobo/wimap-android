@@ -25,6 +25,14 @@ import com.wimap.math.Intersect;
 import com.wimap.math.RadialDistance;
 import com.wimap.wimap.R;
 
+import org.apache.commons.math3.filter.DefaultMeasurementModel;
+import org.apache.commons.math3.filter.DefaultProcessModel;
+import org.apache.commons.math3.filter.KalmanFilter;
+import org.apache.commons.math3.filter.MeasurementModel;
+import org.apache.commons.math3.filter.ProcessModel;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,6 +50,7 @@ public class WiMapService extends Service {
     protected ScanReceiver scanner;
     protected static List<BasicResult> last_scan;
     protected static List<BasicResult> last_aggrigate;
+    protected static KalmanFilter kalman_filter;
     private int service_id;
     public static final String AGGRIGATE_READY = "com.witech.wimap.AGGRIGATE_READY";
     public static final String AGGRIGATE_DATA= "com.witech.wimap.AGGRIGATE_DATA";
@@ -176,6 +185,8 @@ public class WiMapService extends Service {
         }, 5000, WiMapService.SCAN_RESET_TIMEOUT);
         last_scan = new ArrayList<BasicResult>();
         last_aggrigate = new ArrayList<BasicResult>();
+
+
     }
 
     @Override
