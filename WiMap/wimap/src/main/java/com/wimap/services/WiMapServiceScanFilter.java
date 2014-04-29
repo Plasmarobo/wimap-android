@@ -10,7 +10,7 @@ import java.util.Queue;
  * Property of WiMap and Austen Higgins-Cassidy
  * No Reproduction or Use without explicit permission including
  * Signature of the CTO of WiMap
- * <p/>
+ *
  * Created by Austen on 4/26/2014.
  */
 public class WiMapServiceScanFilter {

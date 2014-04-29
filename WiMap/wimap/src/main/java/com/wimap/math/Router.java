@@ -2,6 +2,8 @@ package com.wimap.math;
 
 import org.apache.commons.math3.fitting.CurveFitter;
 
+import java.util.ArrayList;
+
 public class Router {
 	protected int id;
 	protected double x;
@@ -73,28 +75,72 @@ public class Router {
 	public void SetPower(double power, double freq) {this.freq = freq; this.power = power;}
     public void SetTxPower(double power) { this.tx_power = power;}
 	
-	public double GetFSPLDistance(double dBm)
+	public double GetFSPLDistance(double dBm, double ptx)
 	{
 		//Compute free space path loss
 		//loss(dBm)= 20.0*log10(df) -27.55221678
 		//double distance = scan.frequency*Math.pow(10.0,(scan.level+27.55221678)/20.0);
 		//return Math.pow(10, ((27.55 - (20 * Math.log10(frequency)) - (dBm-30))/20));
 		//return frequency*Math.pow(10.0,(power+27.55221678)/20.0); //mW
-        double hz = this.freq *(10^6);
 
-        double frequency_attenuation =  20*Math.log10(this.c / hz)-20*Math.log10(4*Math.PI);
-        double jitter = 6*(Math.random()-0.5);
-        double gtx = 2.3;
-        double grx = 2.3;
-        double effective_power = this.tx_power + gtx + grx - jitter;
+        //double hz = this.freq *(10^6);
+        //double frequency_attenuation =  20*Math.log10(this.c / hz)-20*Math.log10(4*Math.PI);
+
         double n = 5;
         double multipath_compensation = (10*n);
-        return Math.pow(10.0,((effective_power-dBm)/multipath_compensation));
+        return Math.pow(10.0,((ptx-dBm)/multipath_compensation));
     }
 
-    public void FindTxPower(double [][] power_map)
+    public double GetFSPLDistance(double dBm)
     {
+        return this.GetFSPLDistance(dBm, this.tx_power);
+    }
 
+
+    public double FindTxPower(ArrayList<Double> power)
+    {
+        double ptx = 75.0;
+        double sq_error = 2500.0;
+        double max_error = 0;
+        double error = 2500;
+        double iteration = 0;
+        double delta = 100;
+        double delta_limit = 0.0001;
+        double adjustment_rate = 1.0/3.0;
+        int last_adjustment = 1;
+        while(delta > delta_limit) {
+            if (iteration > 1) {
+                delta = ptx;
+                if (error > 0) {
+                    if (last_adjustment == -1)
+                        adjustment_rate = adjustment_rate / 2.0;
+
+                    ptx += ptx * adjustment_rate;
+                    last_adjustment = 1;
+                } else {
+                    if (last_adjustment == 1)
+                        adjustment_rate = adjustment_rate / 2.0;
+
+                    ptx -= ptx * adjustment_rate;
+                    last_adjustment = -1;
+                }
+                delta = Math.pow(delta - ptx, 2.0);
+            }
+            error = 0;
+            double err = 0;
+            for(int i = 0; i < power.size(); ++i) {
+                err = i - this.GetFSPLDistance(power.get(i), ptx);
+                if (err > max_error)
+                    max_error = err;
+
+                error += err;
+            }
+
+            sq_error = Math.pow(error,2.0);
+            iteration += 1;
+        }
+        this.tx_power = ptx;
+        return ptx;
     }
 	
 	
