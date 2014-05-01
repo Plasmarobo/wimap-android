@@ -1,6 +1,6 @@
 package com.wimap.math;
 
-import org.apache.commons.math3.fitting.CurveFitter;
+
 
 import java.util.ArrayList;
 
