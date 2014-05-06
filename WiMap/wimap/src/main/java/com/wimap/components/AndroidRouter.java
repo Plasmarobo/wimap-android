@@ -11,6 +11,15 @@ public class AndroidRouter extends Router {
 	{
 		super();
 	}
+    public AndroidRouter(Router rhs)
+    {
+        super(rhs);
+    }
+
+    public AndroidRouter(AndroidRouter rhs)
+    {
+        super(rhs);
+    }
 	public AndroidRouter(double x, double y, double z, ScanResult r)
 	{
 		this.id = 0;
@@ -65,5 +74,10 @@ public class AndroidRouter extends Router {
 	{
 		return this.uid + "|" + this.ssid + "|" + this.power + "|" + this.tx_power;
 	}
+
+    public BasicResult ToBasicResult()
+    {
+        return new BasicResult(this.power, this.GetSSID(), this.GetUID(), this.GetFreq());
+    }
 
 }

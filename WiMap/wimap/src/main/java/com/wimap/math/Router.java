@@ -30,6 +30,11 @@ public class Router {
         tx_power = 75;
 		freq = 2400;
 	}
+    public Router(Router rhs)
+    {
+        this(rhs.GetX(), rhs.GetY(), rhs.GetZ(), rhs.GetSSID(), rhs.GetUID(), rhs.GetSiteID(), rhs.GetPower(), rhs.GetFreq(), rhs.GetTxPower());
+        this.id = rhs.GetID();
+    }
 	public Router(double x, double y, double z, String ssid, String uid, double dBm, double freq)
 	{
 		this(x, y, z, ssid, uid, 1, dBm, freq);

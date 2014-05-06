@@ -3,6 +3,7 @@ package com.wimap.apis;
 import android.util.Log;
 
 import com.wimap.components.AndroidRouter;
+import com.wimap.services.WiMapServiceScanFilter;
 import com.wimap.templates.HTTPInterface;
 import com.wimap.math.Router;
 
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -56,6 +58,16 @@ public class RouterAPI implements HTTPInterface {
 	{
 		return cache;	
 	}
+    public static HashMap<String, WiMapServiceScanFilter> GetFilters(int filter_length)
+    {
+        HashMap<String, WiMapServiceScanFilter> filters = new HashMap<String, WiMapServiceScanFilter>();
+        for(int i = 0; i < cache.size(); ++i)
+        {
+            AndroidRouter rt = cache.get(i);
+            filters.put(rt.GetUID(), new WiMapServiceScanFilter(rt, filter_length));
+        }
+        return filters;
+    }
 	public static HttpResponse PerformGet()
 	{
 		Log.d("GET", "APIKEY: " + API_KEY);

@@ -1,5 +1,9 @@
 package com.wimap.services;
 
+import android.util.Log;
+
+import com.wimap.components.AndroidRouter;
+import com.wimap.components.BasicResult;
 import com.wimap.math.Router;
 
 import java.util.Iterator;
@@ -13,12 +17,13 @@ import java.util.Queue;
  *
  * Created by Austen on 4/26/2014.
  */
-public class WiMapServiceScanFilter {
-    protected Router source;
+public class WiMapServiceScanFilter extends AndroidRouter{
+
     protected final double spike_tolerance = 5;
     protected double weight_sum;
     protected Double last_derivative;
     protected Double last_weight;
+    protected Double next_value;
 
     protected class WeightedPoint {
         public double value;
@@ -59,7 +64,7 @@ public class WiMapServiceScanFilter {
 
     public WiMapServiceScanFilter(Router src, int length)
     {
-        this.source = src;
+        super(src);
         this.length = length;
         this.window = new LinkedList<WeightedPoint>();
         for(int i = 0; i < length; ++i)
@@ -71,22 +76,30 @@ public class WiMapServiceScanFilter {
         this.weight_sum = length*(length+1)/2;
     }
 
+    public void filteredMerge(BasicResult R)
+    {
+        this.insertValue((double)R.GetPower());
+    }
 
+    public void insertValue(Double value)
+    {
+        this.next_value = value;
+    }
 
-    public double Filter(Double value)
+    public double Filter()
     {
         this.window.removeFirst();
-        Double derivative = value - this.window.getLast().value;
+        Double derivative = next_value - this.window.getLast().value;
 
         if( Math.abs(derivative) > spike_tolerance)
         {
             //Patch the list
-            last_weight = (last_derivative + this.window.getLast().value) / value;
+            last_weight = (last_derivative + this.window.getLast().value) / next_value;
         }else{
             last_weight = new Double(1);
         }
 
-        WeightedPoint current = new WeightedPoint(value, last_weight);
+        WeightedPoint current = new WeightedPoint(next_value, last_weight);
         this.window.push(current);
         double age_weight = 0;
         double filtered_value = 0;
@@ -96,6 +109,8 @@ public class WiMapServiceScanFilter {
             filtered_value = this.window.get(i).GetResult() * age_weight;
         }
         filtered_value /= this.weight_sum;
+        Log.d("Filter", new Double(filtered_value).toString());
+        this.power = filtered_value;
         return filtered_value;
     }
 

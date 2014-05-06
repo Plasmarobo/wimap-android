@@ -50,7 +50,8 @@ public class WiMapService extends Service {
     protected ScanReceiver scanner;
     protected static List<BasicResult> last_scan;
     protected static List<BasicResult> last_aggrigate;
-    protected static KalmanFilter kalman_filter;
+    //protected static KalmanFilter kalman_filter;
+    protected HashMap<String, WiMapServiceScanFilter> filters;
     private int service_id;
     public static final String AGGRIGATE_READY = "com.witech.wimap.AGGRIGATE_READY";
     public static final String AGGRIGATE_DATA= "com.witech.wimap.AGGRIGATE_DATA";
@@ -59,14 +60,17 @@ public class WiMapService extends Service {
     public static final long SCAN_RESET_TIMEOUT = 10000;
     public static final long WIFI_DOWNCYCLE_TIME = 1000;
     public static final long WIFI_UPCYCLE_TIME = 12000;
+    public static final double DEFAULT_SCAN_LEVEL = -90.0;
     protected int scan_delay;
-    protected List<HashMap<String, BasicResult>> aggrigator;
+    //protected List<HashMap<String, BasicResult>> aggrigator;
     protected static final int SAMPLE_COUNT = 4;
     protected int aggrigate_index;
     RouterAPI router_api;
     TracksAPI tracks_api;
     MessageAPI message_api;
     protected static long last_scan_timestamp;
+
+
 
     public static List<BasicResult> getLatestScan()
     {
@@ -78,16 +82,17 @@ public class WiMapService extends Service {
         @Override
         public void onReceive(Context c, Intent intent)
         {
-            Log.i("WiMapService", "Scan Completed");
+            Log.d("WiMapService", "Scan Completed");
             WiMapService parent = (WiMapService) c;
             List<ScanResult> wifi_list = wifi_man.getScanResults();
-            List<BasicResult> br = new ArrayList<BasicResult>(wifi_list.size());
+            HashMap<String, BasicResult> scan_list = new HashMap<String, BasicResult>();
             for(int i = 0; i < wifi_list.size(); ++i)
             {
-                Log.v("ScanResult:", wifi_list.get(i).SSID );
-                br.add(new BasicResult(wifi_list.get(i)));
+                BasicResult br = new BasicResult(wifi_list.get(i));
+                Log.v("ScanResult:", br.GetSSID() );
+                scan_list.put(br.GetUID(), br);
             }
-            parent.onScanResult(br);
+            parent.onScanResult(scan_list);
             parent.timer.schedule(new TimerTask(){
                 @Override
                 public void run() {
@@ -102,6 +107,7 @@ public class WiMapService extends Service {
     // Unique Identification Number for the Notification.
     // We use it on Notification start, and to cancel it.
     private static int SERVICENAME = R.string.ScanService;
+
 
     /**
      * Class for clients to access.  Because we know this service always
@@ -126,16 +132,16 @@ public class WiMapService extends Service {
                 .build();
         startForeground(service_id, n);
         this.wifi_man = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        aggrigator = new ArrayList<HashMap<String,BasicResult>>();
-        for(int i = 0; i < WiMapService.SAMPLE_COUNT; ++i)
-        {
-            aggrigator.add(new HashMap<String, BasicResult>());
-        }
+        //aggrigator = new ArrayList<HashMap<String,BasicResult>>();
+        //for(int i = 0; i < WiMapService.SAMPLE_COUNT; ++i)
+        //{
+        //    aggrigator.add(new HashMap<String, BasicResult>());
+        //}
         this.aggrigate_index = 0;
         router_api = new RouterAPI();
         AsyncHTTP http = new AsyncHTTP();
         http.execute(router_api);
-
+        this.filters = router_api.GetFilters(SAMPLE_COUNT);
         scanner = new ScanReceiver();
         registerReceiver(scanner, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         Log.v("Wifi Scanner", "Starting Scanner");
@@ -213,39 +219,16 @@ public class WiMapService extends Service {
     public void onScanAggrigate() {
         Map<String, BasicResult> wifi_map = new HashMap<String,BasicResult>();
         int i;
-        for(i = 0; i < WiMapService.SAMPLE_COUNT; ++i)
-        {
-            HashMap<String, BasicResult> scan_map = aggrigator.get(i);
-            //Merge appropriate
-            Iterator<Entry<String, BasicResult>> it = wifi_map.entrySet().iterator();
-            while (it.hasNext()) {
-                Entry<String, BasicResult> pair = (Entry<String, BasicResult>)it.next();
-                if(scan_map.containsKey(pair.getKey()))
-                {
-                    ((BasicResult)pair.getValue()).Merge((BasicResult)scan_map.get(pair.getKey()), (double)i);
-                    scan_map.remove(pair.getKey());
-                }else{
-                    ((BasicResult)pair.getValue()).CompensateForMiss();
-                    scan_map.remove(pair.getKey());
-                }
 
-            }
-            Iterator<Entry<String, BasicResult>> miss = scan_map.entrySet().iterator();
-            while(miss.hasNext())
-            {
-                Entry<String, BasicResult> pair = (Entry<String, BasicResult>)miss.next();
-                wifi_map.put((String)pair.getKey(), (((BasicResult)pair.getValue()).CompensateForMisses(i)));
-            }
-        }
-        ArrayList<BasicResult> aggrigates = new ArrayList<BasicResult>(wifi_map.values());
-        for(int j = 0; j < aggrigates.size(); ++j)
+        ArrayList<BasicResult> levels = new ArrayList<BasicResult>();
+        for(Entry<String, WiMapServiceScanFilter> item : this.filters.entrySet())
         {
-            aggrigates.get(j).Average(this.AverageFactor());
+            levels.add(item.getValue().ToBasicResult());
         }
-        last_aggrigate = aggrigates;
+        last_aggrigate = levels;
         Intent intent = new Intent();
         intent.setAction(WiMapService.AGGRIGATE_READY);
-        intent.putParcelableArrayListExtra(WiMapService.AGGRIGATE_DATA, aggrigates);
+        intent.putParcelableArrayListExtra(WiMapService.AGGRIGATE_DATA, levels);
         sendBroadcast(intent);
         List<AndroidRouter> routers = RouterAPI.Routers();
         if(routers == null)
@@ -253,19 +236,17 @@ public class WiMapService extends Service {
         if(last_aggrigate.size() > 4)
         {
             List<RadialDistance> ld = new ArrayList<RadialDistance>();
-            for(i = 0; i < last_aggrigate.size(); ++i)
+            for(BasicResult sr : last_aggrigate)
             {
-                BasicResult sr = last_aggrigate.get(i);
                 if(sr.GetPower() > -90)
                 {
-                    for(int j = 0; j < routers.size(); ++j)
+                    for(AndroidRouter rt : routers)
                     {
-                        AndroidRouter rt = (AndroidRouter) routers.get(j);
                         if(rt == null)
                             continue;
                         if(sr.GetUID().equals(rt.GetUID()))
                         {
-                            ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetAverageDistance(sr)));
+                            ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetDistance(sr)));
                             break;
                         }
                     }
@@ -284,30 +265,25 @@ public class WiMapService extends Service {
         }
     }
 
-
-    private double AverageFactor() {
-        double factor = 0;
-        for(int i = 0; i < WiMapService.SAMPLE_COUNT; ++i)
+    public void onScanResult(HashMap<String, BasicResult> r) {
+        WiMapService.last_scan.clear();
+        WiMapService.last_scan.addAll(r.values());
+        for(Entry<String, WiMapServiceScanFilter> item : filters.entrySet())
         {
-            factor += WiMapService.SAMPLE_COUNT-i;
-        }
-        return factor;
-    }
-
-    public void onScanResult(List<BasicResult> r) {
-        WiMapService.last_scan = r;
-        for(int i = 0; i < r.size(); ++i)
-        {
-            Log.v("ScanResult:", r.get(i).GetSSID() );
-            aggrigator.get(aggrigate_index).put(new String(r.get(i).GetUID()), r.get(i));
+            if(r.containsKey(item.getKey()))
+            {
+                item.getValue().filteredMerge(r.get(item.getKey())); //We've got a valid result
+            }else{
+                item.getValue().insertValue(DEFAULT_SCAN_LEVEL); //MISSED ONE!
+            }
+            item.getValue().Filter(); //Destructive
         }
         ++aggrigate_index;
         Log.d("ScanReceiver", "Aggrigate index: "+aggrigate_index);
         if(aggrigate_index >= WiMapService.SAMPLE_COUNT)
         {
-            Log.d("ScanReceiver", "Scan Aggrigate updated");
-            onScanAggrigate();
-            aggrigate_index = 0;
+            Log.d("ScanReceiver", "Scan Initialized");
+            onScanAggrigate(); //This used to be something else. Now it's just 'make sure we have enough valid data'
         }
     }
 

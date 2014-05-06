@@ -5,8 +5,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BasicResult implements Comparable<BasicResult>, Parcelable {
-	private int power;
-	private int freq;
+	private double power;
+	private double freq;
 	private String ssid;
 	private String uid;
 	
@@ -19,13 +19,13 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	}
 	public BasicResult(Parcel in)
 	{
-		this.power = in.readInt();
-		this.freq = in.readInt();
+		this.power = in.readDouble();
+		this.freq = in.readDouble();
 		this.ssid = in.readString();
 		this.uid = in.readString();
 	}
 	
-	public BasicResult(int power, String ssid, String uid, int freq)
+	public BasicResult(double power, String ssid, String uid, double freq)
 	{
 		this.power = power;
 		this.ssid = ssid;
@@ -48,11 +48,11 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		this.freq = rhs.freq;
 	}
 	
-	public int GetPower()
+	public double GetPower()
 	{
 		return this.power;
 	}
-	public int GetFreq()
+	public double GetFreq()
 	{
 		return this.freq;
 	}
@@ -66,12 +66,12 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		return this.uid;
 	}
 	
-	void SetPower(int power)
+	void SetPower(double power)
 	{
 		this.power = power;
 	}
 	
-	void SetFreq(int freq)
+	void SetFreq(double freq)
 	{
 		this.freq = freq;
 	}
@@ -118,13 +118,13 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	{
 		if(misses > 0)
 		{
-			this.power += (-100*misses);
+			this.power += (-100.0*misses);
 		}
 		return this;
 	}
 	public BasicResult CompensateForMiss()
 	{
-		this.power += (-100);
+		this.power += (-100.0);
 		return this;
 	}
 
@@ -136,8 +136,8 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeInt(power);
-		out.writeInt(freq);
+		out.writeDouble(power);
+		out.writeDouble(freq);
 		out.writeString(ssid);
 		out.writeString(uid);
 		

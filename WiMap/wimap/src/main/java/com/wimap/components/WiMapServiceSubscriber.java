@@ -48,4 +48,9 @@ public class WiMapServiceSubscriber extends Activity implements ScanListConsumer
 	{
 		cache = l;
 	}
+
+    public static void setCache(List<BasicResult> cache)
+    {
+        WiMapServiceSubscriber.cache = cache;
+    }
 }

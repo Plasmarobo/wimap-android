@@ -39,7 +39,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/Black" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -52,7 +53,9 @@
             android:layout_below="@+id/login_email"
             android:layout_alignLeft="@+id/login_email"
             android:layout_alignStart="@+id/login_email"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/Black"
+            android:password="true" />
 
         <Button
             android:layout_width="wrap_content"
