@@ -10,9 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wimap.components.AndroidRouter;
+import com.wimap.components.BasicResult;
 import com.wimap.components.RouterDatabase;
 import com.wimap.templates.ScanListActivity;
 import com.wimap.wimap.R;
+
+import java.util.List;
 
 public class CalibrateActivity extends ScanListActivity {
 	private RouterDatabase db;
@@ -41,6 +44,7 @@ public class CalibrateActivity extends ScanListActivity {
 			}
 		});
 	}
+
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)

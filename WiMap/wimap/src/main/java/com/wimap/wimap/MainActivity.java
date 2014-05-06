@@ -18,22 +18,21 @@ import com.wimap.services.WiMapService;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
-
+    private Runnable service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WiMapServiceSubscriber.setCache(new ArrayList<BasicResult>());
-        new Thread(new Runnable() {
-            public void run() {
-                startService(new Intent(getBaseContext(),WiMapService.class));
-            }
-        }).start();
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
         setContentView(R.layout.activity_main);
         ImageView logo = (ImageView) findViewById(R.id.splash);
         logo.setOnLongClickListener(new View.OnLongClickListener(){
 
             @Override
             public boolean onLongClick(View v) {
+                WiMapServiceSubscriber.setCache(new ArrayList<BasicResult>());
+                StartService();
                 startActivity(new Intent(getBaseContext(), CalibrationActivity.class));
                 return true;
             }
@@ -43,6 +42,8 @@ public class MainActivity extends Activity {
         login_submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                WiMapServiceSubscriber.setCache(new ArrayList<BasicResult>());
+                StartService();
                 startActivity(new Intent(getBaseContext(), HomeActivity.class));
             }
         });
@@ -57,6 +58,7 @@ public class MainActivity extends Activity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -67,6 +69,21 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        finish();
+    }
+
+    private void StartService()
+    {
+        service = new Runnable() {
+            public void run() {
+                startService(new Intent(getBaseContext(),WiMapService.class));
+            }
+        };
+        new Thread(service).start();
     }
 
 }

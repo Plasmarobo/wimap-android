@@ -37,7 +37,8 @@ public class BeaconActivity extends Activity{
 	private String uid;
 	private boolean started;
 	private double distance;
-	BeaconAPI beaconAPI;
+    AsyncHTTP http;
+    BeaconAPI beaconAPI;
 	private int sample_number;
 	private Timer timer;
 	private static int SAMPLE_COUNT=100;
@@ -72,7 +73,7 @@ public class BeaconActivity extends Activity{
 			if(r == null)
 				return;
 			TextView dBm = (TextView) findViewById(R.id.power_beacon);
-			dBm.setText(Integer.toString(r.GetPower()));
+			dBm.setText(Double.toString(r.GetPower()));
 			if(started)
 			{
 				String dist = ((EditText)findViewById(R.id.dist)).getText().toString();
@@ -107,7 +108,8 @@ public class BeaconActivity extends Activity{
 	{
 		Log.i("DistanceActivity", "Created");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.beacon_view);
+		setContentView(R.layout.activity_beacon_view);
+        http = new AsyncHTTP();
 		wifi_man = ((WifiManager) getSystemService(Context.WIFI_SERVICE));
 		timer = new Timer();
 		ssid = "";
@@ -224,11 +226,17 @@ public class BeaconActivity extends Activity{
 				routermac.setText(new String(uid));
 				findViewById(R.id.beacon_root).invalidate();
 				beaconAPI = new BeaconAPI(ssid, uid);
-				AsyncHTTP http = new AsyncHTTP();
+
 				http.execute(beaconAPI);
 				//onScanAggrigate(cache);
 			}
 			
 		}
 	}
+
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        http.cancel(true);
+    }
 }

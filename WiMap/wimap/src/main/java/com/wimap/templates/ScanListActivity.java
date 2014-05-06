@@ -26,7 +26,7 @@ public abstract class ScanListActivity extends WiMapServiceSubscriber {
 	{
 		Log.i("ScanListActivity", "Created");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.scan_list);
+		setContentView(R.layout.activity_scan_list);
 
 		listview = (ListView) findViewById(R.id.scan_list);
 		Intent viewintent = getIntent();
@@ -51,9 +51,9 @@ public abstract class ScanListActivity extends WiMapServiceSubscriber {
 	
 	
 	@Override
-	public void onScanAggrigate(List<BasicResult> wifi_list)
+	public void onScanResult(List<BasicResult> wifi_list)
 	{
-		super.onScanAggrigate(wifi_list);
+		//super.onScanResult(wifi_list);
 		adapter.clear();
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{
@@ -62,6 +62,8 @@ public abstract class ScanListActivity extends WiMapServiceSubscriber {
 		adapter.sort();
 		adapter.notifyDataSetChanged();
 	}
+
+
 
 	
 	

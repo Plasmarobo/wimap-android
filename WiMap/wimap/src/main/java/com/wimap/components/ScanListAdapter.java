@@ -22,7 +22,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	
 	public ScanListAdapter(Context context, String[] ssids, String[] uids, int[] powers, int[] freqs)
 	{
-		super(context, R.layout.scan_list_item);
+		super(context, R.layout.template_scan_list_item);
 		values = new ArrayList<BasicResult>();
 		this.context = context;
 		int size = ssids.length;
@@ -36,7 +36,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	
 	public ScanListAdapter(Context context, List<ScanResult> list)
 	{
-		super(context, R.layout.scan_list_item);
+		super(context, R.layout.template_scan_list_item);
 		values = new ArrayList<BasicResult>(list.size());
 		this.context = context;
 		for(int i = 0; i < list.size(); ++i)
@@ -46,7 +46,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	}
 	public ScanListAdapter(Context context)
 	{
-		super(context, R.layout.scan_list_item);
+		super(context, R.layout.template_scan_list_item);
 		values = new ArrayList<BasicResult>();
 		this.context = context;
 		values.clear();
@@ -58,7 +58,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View v;
 		if(convertView == null)
-			v = inflater.inflate(R.layout.scan_list_item, parent, false);
+			v = inflater.inflate(R.layout.template_scan_list_item, parent, false);
 		else
 			v = convertView;
 		TextView ssid = (TextView) v.findViewById(R.id.ssid);
@@ -70,8 +70,8 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 			BasicResult br = values.get(position);
 			ssid.setText(br.GetSSID());
 			uid.setText(br.GetUID());
-			power.setText(Integer.toString(br.GetPower()));
-			freq.setText(Integer.toString(br.GetFreq()));
+			power.setText(Double.toString(br.GetPower()));
+			freq.setText(Double.toString(br.GetFreq()));
 		}else return null;
 		return v;
 	}

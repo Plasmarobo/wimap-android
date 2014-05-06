@@ -1,6 +1,7 @@
 package com.wimap.services;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.wimap.activities.ExitActivity;
 import com.wimap.apis.AsyncHTTP;
 import com.wimap.apis.MessageAPI;
 import com.wimap.apis.RouterAPI;
@@ -23,6 +25,7 @@ import com.wimap.components.BasicResult;
 import com.wimap.components.IntersectBundle;
 import com.wimap.math.Intersect;
 import com.wimap.math.RadialDistance;
+import com.wimap.wimap.MainActivity;
 import com.wimap.wimap.R;
 
 import org.apache.commons.math3.filter.DefaultMeasurementModel;
@@ -41,6 +44,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 public class WiMapService extends Service {
@@ -55,6 +61,7 @@ public class WiMapService extends Service {
     private int service_id;
     public static final String AGGRIGATE_READY = "com.witech.wimap.AGGRIGATE_READY";
     public static final String AGGRIGATE_DATA= "com.witech.wimap.AGGRIGATE_DATA";
+    public static final String RAW_READY = "com.witech.wimap.RAW_READY";
     public static final String LOCATION_READY = "com.witech.wimap.LOCATION_READY";
     public static final String LOCATION_DATA = "com.witech.wimap.LOCATION_DATA";
     public static final long SCAN_RESET_TIMEOUT = 10000;
@@ -69,6 +76,7 @@ public class WiMapService extends Service {
     TracksAPI tracks_api;
     MessageAPI message_api;
     protected static long last_scan_timestamp;
+    public static final int EXIT_CODE = -1;
 
 
 
@@ -125,9 +133,20 @@ public class WiMapService extends Service {
         super.onCreate();
         last_scan_timestamp = System.currentTimeMillis();
         service_id = 0x70;
+        Intent intent = new Intent(this, ExitActivity.class);
+        PendingIntent deleteIntent = PendingIntent.getActivity(this, EXIT_CODE, intent, 0);
+        intent = new Intent(this, MainActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        PendingIntent focusIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification n = new NotificationCompat.Builder(this)
                 .setContentTitle("WiMap Service")
                 .setContentText("WiMap services running")
+                .setOngoing(true)
+                .setDeleteIntent(deleteIntent)
+                .setContentIntent(focusIntent)
+                .addAction(R.drawable.ic_clear_normal, "Stop", deleteIntent)
                 .setSmallIcon(R.drawable.ic_target)
                 .build();
         startForeground(service_id, n);
@@ -212,6 +231,16 @@ public class WiMapService extends Service {
         lock.release();
         unregisterReceiver(scanner);
         timer.cancel();
+        try {
+            http.get(5000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+
+        }
+
     }
 
 
@@ -268,6 +297,9 @@ public class WiMapService extends Service {
     public void onScanResult(HashMap<String, BasicResult> r) {
         WiMapService.last_scan.clear();
         WiMapService.last_scan.addAll(r.values());
+        Intent intent = new Intent();
+        intent.setAction(WiMapService.RAW_READY);
+        sendBroadcast(intent);
         for(Entry<String, WiMapServiceScanFilter> item : filters.entrySet())
         {
             if(r.containsKey(item.getKey()))

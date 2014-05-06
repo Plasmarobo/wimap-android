@@ -27,7 +27,7 @@ public class MapActivity extends WiMapServiceSubscriber {
     protected void onCreate(Bundle savedInstanceState) {
     	Log.v("MapActivity", "Created");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.floorplan);
+        setContentView(R.layout.activity_floorplan);
         
         map = (ImageView) findViewById(R.id.map_image);
         icon = (ImageView) findViewById(R.id.avatar);

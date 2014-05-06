@@ -28,7 +28,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 	{
 		Log.i("DistanceActivity", "Created");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.distance_view);
+		setContentView(R.layout.activity_distance_view);
 		db = new RouterDatabase(this);
 		startSelection(getBaseContext());
 
@@ -64,7 +64,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 		TextView distance = (TextView) findViewById(R.id.distance);
 		distance.setText(Double.toString(current.GetAverageDistance(r)));
 		TextView dBm = (TextView) findViewById(R.id.dBm);
-		dBm.setText(Integer.toString(r.GetPower()));
+		dBm.setText(Double.toString(r.GetPower()));
 	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)

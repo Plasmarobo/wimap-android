@@ -28,17 +28,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     class="com.google.android.gms.maps.MapFragment" />
-                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/guide"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"></LinearLayout>
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/settings"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"></LinearLayout>
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"></LinearLayout>
         </FrameLayout>
     </LinearLayout>
 </TabHost>

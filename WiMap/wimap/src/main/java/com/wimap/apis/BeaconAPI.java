@@ -90,7 +90,7 @@ public class BeaconAPI implements HTTPInterface {
 	
 	public void CommitSample(double power, double distance)
 	{
-		AsyncHTTP http = new AsyncHTTP();
+        AsyncHTTP http = new AsyncHTTP();
 		http.execute(new DistanceSampleAPI(power, distance));
 	}
 	

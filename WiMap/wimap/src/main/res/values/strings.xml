@@ -18,5 +18,7 @@
     <string name="title_activity_pushrouter">Uploading</string>
     <string name="title_activity_scanlist">Scan Results</string>
     <string name="title_activity_selectrouter">Select Router</string>
+    <string name="title_activity_exit">Really Quit?</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

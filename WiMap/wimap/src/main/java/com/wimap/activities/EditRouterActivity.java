@@ -20,7 +20,7 @@ public class EditRouterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.edit_router);
+		setContentView(R.layout.activity_edit_router);
 		EditText ed_x = (EditText) findViewById(R.id.edit_X);
 		EditText ed_y = (EditText) findViewById(R.id.edit_Y);
 		EditText ed_z = (EditText) findViewById(R.id.edit_Z);

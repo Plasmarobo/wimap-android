@@ -58,12 +58,11 @@ public class RouterAPI implements HTTPInterface {
 	{
 		return cache;	
 	}
-    public static HashMap<String, WiMapServiceScanFilter> GetFilters(int filter_length)
+    public HashMap<String, WiMapServiceScanFilter> GetFilters(int filter_length)
     {
         HashMap<String, WiMapServiceScanFilter> filters = new HashMap<String, WiMapServiceScanFilter>();
-        for(int i = 0; i < cache.size(); ++i)
+        for(AndroidRouter rt : cache)
         {
-            AndroidRouter rt = cache.get(i);
             filters.put(rt.GetUID(), new WiMapServiceScanFilter(rt, filter_length));
         }
         return filters;
@@ -157,7 +156,7 @@ public class RouterAPI implements HTTPInterface {
 	public RouterAPI(Integer progress)
 	{
 		//Eventually pull a cache based on coarse/cached location
-		
+		cache = new ArrayList<AndroidRouter>();
 	}
 	
 	public static boolean Store(Router r)
