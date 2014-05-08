@@ -1,9 +1,11 @@
 package com.wimap.apis;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.wimap.components.AndroidRouter;
-import com.wimap.services.WiMapServiceScanFilter;
+import com.wimap.components.RouterDatabase;
+import com.wimap.components.WiMapServiceScanFilter;
 import com.wimap.templates.HTTPInterface;
 import com.wimap.math.Router;
 
@@ -49,7 +51,7 @@ public class RouterAPI implements HTTPInterface {
 	//private HttpClient httpclient;
 	public static final String ROUTERS_URI = "http://www.wimapnav.com/api/v1/routers";
 	private static List<AndroidRouter> cache;
-	
+
 	public static List<AndroidRouter> PullRouters()
 	{
 		return JsonToCache(PerformGet(), 0);
@@ -148,15 +150,24 @@ public class RouterAPI implements HTTPInterface {
 	{
 		
 	}
-	public RouterAPI()
+	public RouterAPI(Context context)
 	{
-		this(Integer.valueOf(0));
+		this(context, Integer.valueOf(0));
 	}
 	
-	public RouterAPI(Integer progress)
+	public RouterAPI(Context context, Integer progress)
 	{
 		//Eventually pull a cache based on coarse/cached location
-		cache = new ArrayList<AndroidRouter>();
+        boolean upToDate = true;
+		//cache = new ArrayList<AndroidRouter>();
+        if(upToDate) {
+            RouterDatabase local = new RouterDatabase(context);
+            local.open();
+            cache = local.getAllRouters();
+            local.close();
+        }else{
+            PullRouters();
+        }
 	}
 	
 	public static boolean Store(Router r)

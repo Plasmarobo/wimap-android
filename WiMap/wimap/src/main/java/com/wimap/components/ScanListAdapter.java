@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 
@@ -19,19 +20,23 @@ import java.util.List;
 public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	private final Context context;
 	private ArrayList<BasicResult> values;
+    private RouterDatabase db;
 	
 	public ScanListAdapter(Context context, String[] ssids, String[] uids, int[] powers, int[] freqs)
 	{
 		super(context, R.layout.template_scan_list_item);
+        db = new RouterDatabase(context);
 		values = new ArrayList<BasicResult>();
 		this.context = context;
 		int size = ssids.length;
 		if(size > uids.length) size = uids.length;
-		if(size > powers.length) size = powers.length; 
+		if(size > powers.length) size = powers.length;
+        db.open();
 		for(int i = 0; i < size; ++i)
 		{
-			values.add(new BasicResult(powers[i], ssids[i], uids[i], freqs[i]));
+			values.add(new BasicResult(powers[i], ssids[i], uids[i], freqs[i], db.getRouterByUID(uids[i]) != null));
 		}
+        db.close();
 	}
 	
 	public ScanListAdapter(Context context, List<ScanResult> list)
@@ -39,14 +44,20 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 		super(context, R.layout.template_scan_list_item);
 		values = new ArrayList<BasicResult>(list.size());
 		this.context = context;
+        db = new RouterDatabase(context);
+        db.open();
 		for(int i = 0; i < list.size(); ++i)
 		{
-			values.add(new BasicResult(list.get(i)));
+            BasicResult r = new BasicResult(list.get(i));
+            r.SetCalibrated(db.getRouterByUID(r.GetUID()) != null);
+			values.add(r);
 		}
+        db.close();
 	}
 	public ScanListAdapter(Context context)
 	{
 		super(context, R.layout.template_scan_list_item);
+        db = new RouterDatabase(context);
 		values = new ArrayList<BasicResult>();
 		this.context = context;
 		values.clear();
@@ -61,6 +72,8 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 			v = inflater.inflate(R.layout.template_scan_list_item, parent, false);
 		else
 			v = convertView;
+        CheckBox done = (CheckBox) v.findViewById(R.id.cal_done);
+
 		TextView ssid = (TextView) v.findViewById(R.id.ssid);
 		TextView uid = (TextView) v.findViewById(R.id.uid);
 		TextView power = (TextView) v.findViewById(R.id.power);
@@ -72,6 +85,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 			uid.setText(br.GetUID());
 			power.setText(Double.toString(br.GetPower()));
 			freq.setText(Double.toString(br.GetFreq()));
+            done.setChecked(br.IsCalibrated());
 		}else return null;
 		return v;
 	}
@@ -84,6 +98,9 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	@Override
 	public void add(BasicResult br)
 	{
+        db.open();
+        br.SetCalibrated(db.getRouterByUID(br.GetUID()) != null);
+        db.close();
 		values.add(br);
 	}
 	
@@ -96,6 +113,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	public void sort() {
 		Collections.sort(values);
 	}
+
 	
 
 }

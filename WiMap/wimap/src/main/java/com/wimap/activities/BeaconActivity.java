@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -23,7 +24,9 @@ import android.widget.Toast;
 
 import com.wimap.apis.AsyncHTTP;
 import com.wimap.apis.BeaconAPI;
+import com.wimap.components.AndroidRouter;
 import com.wimap.components.BasicResult;
+import com.wimap.components.RouterDatabase;
 import com.wimap.wimap.R;
 
 import java.util.ArrayList;
@@ -33,15 +36,16 @@ import java.util.TimerTask;
 
 public class BeaconActivity extends Activity{
 	private final static int SELECTROUTER = 7;
-	private String ssid;
-	private String uid;
+	AndroidRouter rt;
 	private boolean started;
-	private double distance;
+    private double distance;
+	private double [][] data;
     AsyncHTTP http;
     BeaconAPI beaconAPI;
 	private int sample_number;
 	private Timer timer;
 	private static int SAMPLE_COUNT=100;
+    private static int DISTANCE_MAX=31;
 	private WifiManager wifi_man;
 	private class WifiRec extends BroadcastReceiver
 	{
@@ -64,7 +68,7 @@ public class BeaconActivity extends Activity{
 			BasicResult r = null;
 			for(int i = 0; i < wifi_list.size(); ++i)
 			{
-				if(wifi_list.get(i).GetUID().equals(uid))
+				if(wifi_list.get(i).GetUID().equals(rt.GetUID()))
 				{
 					r = wifi_list.get(i);
 					break;
@@ -78,6 +82,7 @@ public class BeaconActivity extends Activity{
 			{
 				String dist = ((EditText)findViewById(R.id.dist)).getText().toString();
 				distance = Double.parseDouble(dist);
+                data[(int)distance][sample_number] = r.GetPower();
 				beaconAPI.CommitSample(r.GetPower(), distance);
 				++sample_number;
 				if(sample_number == BeaconActivity.SAMPLE_COUNT)
@@ -89,10 +94,18 @@ public class BeaconActivity extends Activity{
 					} catch (Exception e) {
 					    e.printStackTrace();
 					}
+
 					onStop(null);
 					Toast.makeText(context,  "Finished!", Toast.LENGTH_LONG).show();
 					++distance;
 					((EditText)findViewById(R.id.dist)).setText(Integer.toString((int)distance));
+                    if(distance > DISTANCE_MAX)
+                    {
+                        TextView result = (TextView) findViewById(R.id.calc_tx_power);
+                        double value = rt.TrainTxPower(data, DISTANCE_MAX, SAMPLE_COUNT);
+                        result.setText(Double.toString(value));
+                        findViewById(R.id.beacon_root).invalidate();
+                    }
 				}
 				((TextView)findViewById(R.id.sample_no)).setText(Integer.toString(sample_number));
 				
@@ -112,10 +125,10 @@ public class BeaconActivity extends Activity{
         http = new AsyncHTTP();
 		wifi_man = ((WifiManager) getSystemService(Context.WIFI_SERVICE));
 		timer = new Timer();
-		ssid = "";
-		uid = "";
+		rt = new AndroidRouter();
 		started = false;
-		distance = 0;
+        distance = 0;
+		data = new double[DISTANCE_MAX][SAMPLE_COUNT];
 		startSelection(getBaseContext());
 		rec = new WifiRec();
 		registerReceiver(rec, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
@@ -162,11 +175,31 @@ public class BeaconActivity extends Activity{
 			
 			}
 		});
+        Button save_tx_power = (Button) findViewById(R.id.save_tx_power);
+        save_tx_power.setOnClickListener(new View.OnClickListener() {
+                                             @Override
+                                            public void onClick(View view) {
+                                                 double tx_power = rt.GetTxPower();
+                                                 RouterDatabase db = new RouterDatabase(getBaseContext());
+                                                 db.open();
+                                                 //Copy out existing calibration
+                                                 AndroidRouter tmp = db.getRouterByUID(rt.GetUID());
+                                                 if (tmp == null) {
+                                                     tmp = rt;
+                                                 } else {
+                                                     tmp.SetTxPower(tx_power);
+                                                 }
+                                                 db.WriteRouter(tmp);
+                                                 db.close();
+                                             }
+
+                                         }
+        );
 	}
 	
 	public void onStart(View v)
 	{
-		if(uid.equals(""))
+		if(rt.GetUID().equals(""))
 			startSelection(getBaseContext());
 		started = true;
 		findViewById(R.id.beacon_start).setVisibility(View.GONE);
@@ -218,15 +251,16 @@ public class BeaconActivity extends Activity{
 		{
 			if(resultCode == RESULT_OK)
 			{
-				ssid = data.getStringExtra("ssid");
-				uid = data.getStringExtra("uid");
-				TextView routername = (TextView) findViewById(R.id.ssid_beacon);
-				routername.setText(new String(ssid));
-				TextView routermac = (TextView) findViewById(R.id.uid_beacon);
-				routermac.setText(new String(uid));
-				findViewById(R.id.beacon_root).invalidate();
-				beaconAPI = new BeaconAPI(ssid, uid);
 
+				rt = new AndroidRouter(0.0, 0.0, 0.0, data.getStringExtra("ssid"), data.getStringExtra("uid"), Double.parseDouble(data.getStringExtra("dBm")), Double.parseDouble(data.getStringExtra("freq")));
+
+				TextView routername = (TextView) findViewById(R.id.ssid_beacon);
+				routername.setText(new String(rt.GetSSID()));
+				TextView routermac = (TextView) findViewById(R.id.uid_beacon);
+				routermac.setText(new String(rt.GetUID()));
+				findViewById(R.id.beacon_root).invalidate();
+				beaconAPI = new BeaconAPI(rt.GetSSID(), rt.GetUID());
+                this.data = new double[DISTANCE_MAX][SAMPLE_COUNT];
 				http.execute(beaconAPI);
 				//onScanAggrigate(cache);
 			}

@@ -33,6 +33,13 @@
         android:max="30"
         android:progress="0" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Train TX Power"
+        android:id="@+id/collect_label"
+        android:textColor="@color/White" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -77,5 +84,26 @@
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/White" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculated TX power"
+        android:id="@+id/tx_power_label"
+        android:textColor="@color/White" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="?"
+        android:id="@+id/calc_tx_power"
+        android:textColor="@color/White" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save TX Power"
+        android:id="@+id/save_tx_power" />
 
 </LinearLayout>

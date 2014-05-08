@@ -27,6 +27,7 @@ public class CalibrationActivity extends Activity {
         Button ClearButton = (Button) findViewById(R.id.clear_cal);
         Button DistButton = (Button) findViewById(R.id.dist_cal);
         Button EditButton = (Button) findViewById(R.id.edit_cal);
+        Button TrainButton = (Button) findViewById(R.id.train_cal);
         Button Upload = (Button) findViewById(R.id.up_cal);
         Button Download = (Button) findViewById(R.id.down_cal);
         ClearButton.setOnClickListener(new View.OnClickListener() {
@@ -50,10 +51,19 @@ public class CalibrationActivity extends Activity {
         EditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("List", "click");
+                Log.i("Edit", "click");
 
                 Intent edit_router = new Intent(view.getContext(), CalibrateActivity.class);
                 startActivityForResult(edit_router, EDITROUTER);
+            }
+        });
+        TrainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Log.i("Train", "click");
+
+                Intent train_router = new Intent(view.getContext(), BeaconActivity.class);
+                startActivity(train_router);
             }
         });
         Upload.setOnClickListener(new View.OnClickListener() {

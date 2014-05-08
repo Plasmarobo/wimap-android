@@ -79,6 +79,16 @@ public class Router {
 	public void SetFreq(double freq) {this.freq = freq;}
 	public void SetPower(double power, double freq) {this.freq = freq; this.power = power;}
     public void SetTxPower(double power) { this.tx_power = power;}
+
+    public double GetFSPLRelativeDistance(double dBm, double ptx)
+    {
+        return GetFSPLDistance(dBm - this.power, ptx);
+    }
+
+    public double GetFSPLRelativeDistance(double dBm)
+    {
+        return GetFSPLRelativeDistance(dBm, this.tx_power);
+    }
 	
 	public double GetFSPLDistance(double dBm, double ptx)
 	{

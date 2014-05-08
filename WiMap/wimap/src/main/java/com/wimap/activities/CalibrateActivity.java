@@ -10,12 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wimap.components.AndroidRouter;
-import com.wimap.components.BasicResult;
+
 import com.wimap.components.RouterDatabase;
 import com.wimap.templates.ScanListActivity;
 import com.wimap.wimap.R;
 
-import java.util.List;
 
 public class CalibrateActivity extends ScanListActivity {
 	private RouterDatabase db;
@@ -35,9 +34,9 @@ public class CalibrateActivity extends ScanListActivity {
 				TextView power = (TextView)row.findViewById(R.id.power);
 				TextView ssid = (TextView)row.findViewById(R.id.ssid);
 				TextView uid = (TextView)row.findViewById(R.id.uid);
-				int p = Integer.parseInt((String)power.getText());
-				int f = Integer.parseInt((String)frequency.getText());
-				rt = new AndroidRouter(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), (double)p, (double)f);
+				double p = Double.parseDouble((String)power.getText());
+				double f = Double.parseDouble((String)frequency.getText());
+				rt = new AndroidRouter(0, 0, 0, (String)ssid.getText(), (String) uid.getText(), p, f);
 				edit_router.putExtra("dBm",p);
 				edit_router.putExtra("frequency", (int) f);
 				startActivityForResult(edit_router, EDITROUTER);
@@ -57,11 +56,15 @@ public class CalibrateActivity extends ScanListActivity {
 				rt.SetY(data.getDoubleExtra("Y", 0));
 				rt.SetZ(data.getDoubleExtra("Z", 0));
 				rt.SetPower(data.getIntExtra("dBm", -90), data.getIntExtra("frequency", 2400));
+
 				db.open();
 				db.WriteRouter(rt);
 				db.close();
 				Toast.makeText(this, "Saved Router", Toast.LENGTH_SHORT).show();
-			}
+                this.listview.invalidate();
+			}else{
+                Toast.makeText(this, "Could not save calibration", Toast.LENGTH_LONG).show();
+            }
 			
 		}
 	}

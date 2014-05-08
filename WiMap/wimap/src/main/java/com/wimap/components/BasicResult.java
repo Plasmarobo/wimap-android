@@ -9,6 +9,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	private double freq;
 	private String ssid;
 	private String uid;
+    private Boolean calibrated;
 	
 	public BasicResult()
 	{
@@ -16,6 +17,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		this.ssid = "Error";
 		this.uid = "Error";
 		this.freq = 2400;
+        this.calibrated = false;
 	}
 	public BasicResult(Parcel in)
 	{
@@ -23,7 +25,14 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		this.freq = in.readDouble();
 		this.ssid = in.readString();
 		this.uid = in.readString();
+        this.calibrated = in.readInt() > 0;
 	}
+
+    public BasicResult(double power, String ssid, String uid, double freq, boolean cal_done)
+    {
+        this(power, ssid, uid, freq);
+        this.calibrated = cal_done;
+    }
 	
 	public BasicResult(double power, String ssid, String uid, double freq)
 	{
@@ -31,6 +40,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		this.ssid = ssid;
 		this.uid = uid;
 		this.freq = freq;
+        this.calibrated = false;
 	}
 	
 	public BasicResult(ScanResult result)
@@ -39,6 +49,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		ssid = result.SSID;
 		uid = result.BSSID;
 		freq = result.frequency;
+        this.calibrated = false;
 	}
 	public BasicResult(BasicResult rhs)
 	{
@@ -46,6 +57,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		this.ssid = rhs.ssid;
 		this.uid = rhs.uid;
 		this.freq = rhs.freq;
+        this.calibrated = rhs.calibrated;
 	}
 	
 	public double GetPower()
@@ -65,11 +77,14 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	{
 		return this.uid;
 	}
+    public boolean IsCalibrated() {return this.calibrated; }
 	
 	void SetPower(double power)
 	{
 		this.power = power;
 	}
+
+    void SetCalibrated(boolean calibrated) { this.calibrated = calibrated; }
 	
 	void SetFreq(double freq)
 	{
@@ -96,7 +111,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	
 	public String toString()
 	{
-		return this.ssid + "|" + this.uid + "|" + this.power;
+		return this.ssid + "|" + this.uid + "|" + this.power + "|" + this.freq + "|" + this.calibrated;
 	}
 
 	public void Merge(BasicResult br, double weight) {
@@ -140,6 +155,7 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 		out.writeDouble(freq);
 		out.writeString(ssid);
 		out.writeString(uid);
+        out.writeInt(calibrated ? 1 : 0);
 		
 	}
 	public static final Parcelable.Creator<BasicResult> CREATOR = new Parcelable.Creator<BasicResult>() {

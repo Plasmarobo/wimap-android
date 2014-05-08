@@ -51,18 +51,24 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 		if(current == null)
 			return;
 		BasicResult r = null;
-		for(int i = 0; i < wifi_list.size(); ++i)
+		for(BasicResult item : wifi_list)
 		{
-			if(wifi_list.get(i).GetUID().equals(this.uid))
+			if(item.GetUID().equals(this.uid))
 			{
-				r = wifi_list.get(i);
+				r = item;
 				break;
 			}
 		}
 		if(r == null)
 			return;
 		TextView distance = (TextView) findViewById(R.id.distance);
+        TextView comp = (TextView) findViewById(R.id.comp_dist);
+        TextView fspl = (TextView) findViewById(R.id.fspl_dist);
+        TextView rel = (TextView) findViewById(R.id.relative_dist);
 		distance.setText(Double.toString(current.GetAverageDistance(r)));
+        fspl.setText(Double.toString(current.GetDistance(r)));
+        comp.setText(Double.toString(current.GetComparativeDistance(r)));
+        rel.setText(Double.toString(current.GetFSPLRelativeDistance(r)));
 		TextView dBm = (TextView) findViewById(R.id.dBm);
 		dBm.setText(Double.toString(r.GetPower()));
 	}

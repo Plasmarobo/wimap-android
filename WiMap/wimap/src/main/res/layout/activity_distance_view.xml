@@ -16,7 +16,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/White" />
 
-        <TextView
+    <TextView
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +25,66 @@
             android:textColor="@color/White"
             android:textSize="@dimen/HalfScreenTextVertical" />
 
-        <TextView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average"
+        android:id="@+id/avg_label"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/White" />
+
+    <TextView
+        android:id="@+id/fspl_dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/White"
+        android:textSize="@dimen/HalfScreenTextVertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FSPL"
+        android:id="@+id/fspl_label"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/White" />
+
+    <TextView
+        android:id="@+id/comp_dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/White"
+        android:textSize="@dimen/HalfScreenTextVertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comp"
+        android:id="@+id/comp_label"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/White" />
+
+    <TextView
+        android:id="@+id/relative_dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/White"
+        android:textSize="@dimen/HalfScreenTextVertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative_label"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/White"
+        android:text="Relative" />
+
+    <TextView
             android:id="@+id/dBm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

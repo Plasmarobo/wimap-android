@@ -23,22 +23,14 @@ import com.wimap.apis.TracksAPI;
 import com.wimap.components.AndroidRouter;
 import com.wimap.components.BasicResult;
 import com.wimap.components.IntersectBundle;
+import com.wimap.components.WiMapServiceScanFilter;
 import com.wimap.math.Intersect;
 import com.wimap.math.RadialDistance;
 import com.wimap.wimap.MainActivity;
 import com.wimap.wimap.R;
 
-import org.apache.commons.math3.filter.DefaultMeasurementModel;
-import org.apache.commons.math3.filter.DefaultProcessModel;
-import org.apache.commons.math3.filter.KalmanFilter;
-import org.apache.commons.math3.filter.MeasurementModel;
-import org.apache.commons.math3.filter.ProcessModel;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.RealMatrix;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -82,7 +74,7 @@ public class WiMapService extends Service {
 
     public static List<BasicResult> getLatestScan()
     {
-        return last_aggrigate;
+        return last_scan;
     }
 
     public class ScanReceiver extends BroadcastReceiver
@@ -157,7 +149,7 @@ public class WiMapService extends Service {
         //    aggrigator.add(new HashMap<String, BasicResult>());
         //}
         this.aggrigate_index = 0;
-        router_api = new RouterAPI();
+        router_api = new RouterAPI(this.getBaseContext());
         AsyncHTTP http = new AsyncHTTP();
         http.execute(router_api);
         this.filters = router_api.GetFilters(SAMPLE_COUNT);

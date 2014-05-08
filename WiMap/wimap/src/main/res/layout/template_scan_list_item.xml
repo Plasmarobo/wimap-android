@@ -10,6 +10,11 @@
     android:longClickable="false"
     android:orientation="horizontal" >
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cal_done" />
+
     <TextView
         android:id="@+id/freq"
         android:layout_width="wrap_content"
@@ -20,7 +25,7 @@
 
     <TextView
         android:id="@+id/power"
-        android:layout_width="74dp"
+        android:layout_width="148dp"
         android:layout_height="71dp"
         android:clickable="false"
         android:ems="10"

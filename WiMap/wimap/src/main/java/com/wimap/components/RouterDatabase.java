@@ -19,6 +19,7 @@ public class RouterDatabase {
   private LocalDBHelper dbHelper;
   public RouterDatabase(Context context) {
     dbHelper = new LocalDBHelper(context);
+
   }
 
   public void open() throws SQLException {
@@ -48,8 +49,11 @@ public class RouterDatabase {
     values.put(LocalDBHelper.COLUMN_Y, r.GetY());
     values.put(LocalDBHelper.COLUMN_Z, r.GetZ());
     values.put(LocalDBHelper.COLUMN_TX_POWER, r.GetTxPower());
-    
-    database.insert(LocalDBHelper.TABLE_ROUTERS, null, values);
+    try {
+        database.insertOrThrow(LocalDBHelper.TABLE_ROUTERS, null, values);
+    }catch (SQLException e) {
+        Log.e("SQLite", e.getMessage());
+    }
   }
 
   public void RemoveRouter(AndroidRouter r) {
@@ -121,6 +125,7 @@ public class RouterDatabase {
   }
   public void ForceReset()
   {
-	  dbHelper.onUpgrade(database, 0, 6);
+      //Version seven at least
+	  dbHelper.onUpgrade(database, 0, 7);
   }
 } 

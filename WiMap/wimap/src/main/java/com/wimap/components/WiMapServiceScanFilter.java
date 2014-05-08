@@ -1,4 +1,4 @@
-package com.wimap.services;
+package com.wimap.components;
 
 import android.util.Log;
 
@@ -88,13 +88,13 @@ public class WiMapServiceScanFilter extends AndroidRouter{
 
     public double Filter()
     {
-        this.window.removeFirst();
+        this.window.removeLast();
         Double derivative = next_value - this.window.getLast().value;
 
         if( Math.abs(derivative) > spike_tolerance)
         {
             //Patch the list
-            last_weight = (last_derivative + this.window.getLast().value) / next_value;
+            last_weight = (derivative + this.window.getLast().value) / next_value;
         }else{
             last_weight = new Double(1);
         }
@@ -105,8 +105,8 @@ public class WiMapServiceScanFilter extends AndroidRouter{
         double filtered_value = 0;
         for(int i = 0; i < length; ++i)
         {
-            age_weight = i + 1;
-            filtered_value = this.window.get(i).GetResult() * age_weight;
+            age_weight = length - i;
+            filtered_value += this.window.get(i).GetResult() * age_weight;
         }
         filtered_value /= this.weight_sum;
         Log.d("Filter", new Double(filtered_value).toString());

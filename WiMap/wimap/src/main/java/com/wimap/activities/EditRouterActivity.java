@@ -232,7 +232,7 @@ public class EditRouterActivity extends Activity {
 		result.putExtra("X", Double.parseDouble(ed_x.getText().toString()));
 		result.putExtra("Y", Double.parseDouble(ed_y.getText().toString()));
 		result.putExtra("Z", Double.parseDouble(ed_z.getText().toString()));
-		setResult(RESULT_OK, result);
+		setResult(CalibrateActivity.RESULT_OK, result);
 		finish();
 	}
 
