@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.wimap.apis.AsyncHTTP;
 import com.wimap.apis.BeaconAPI;
+import com.wimap.apis.RouterAPI;
 import com.wimap.components.AndroidRouter;
 import com.wimap.components.BasicResult;
 import com.wimap.components.RouterDatabase;
@@ -191,6 +192,7 @@ public class BeaconActivity extends Activity{
                                                  }
                                                  db.WriteRouter(tmp);
                                                  db.close();
+                                                 RouterAPI.Store(tmp);
                                              }
 
                                          }
