@@ -170,7 +170,7 @@ public class WiMapService extends Service {
             public void run() {
                 if((System.currentTimeMillis() - last_scan_timestamp) > WiMapService.SCAN_RESET_TIMEOUT)
                 {
-                    //Fuuuuuuck, somethings fucked up! POWERCYCLE WIFI
+                    //Somethings wrong! POWERCYCLE WIFI
                     while(wifi_man.isWifiEnabled())
                     {
                         Log.e("WiMap Service", "Turning off Wifi");

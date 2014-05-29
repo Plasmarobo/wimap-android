@@ -85,6 +85,23 @@
         android:text="Relative" />
 
     <TextView
+        android:id="@+id/alt_dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/White"
+        android:textSize="@dimen/HalfScreenTextVertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alt_label"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/White"
+        android:text="Alternate" />
+
+    <TextView
             android:id="@+id/dBm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

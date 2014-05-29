@@ -106,6 +106,14 @@ public class Router {
         return Math.pow(10.0,((ptx-dBm)/multipath_compensation));
     }
 
+    public double GetFSPLDistance_d(double dBm)
+    {
+        dBm = Math.abs(dBm);
+        double exponent = (27.55 - (20 * Math.log10(this.freq) ) + dBm) / 20.0;
+        return Math.pow(10.0, exponent);
+    }
+
+
     public double GetFSPLDistance(double dBm)
     {
         return this.GetFSPLDistance(dBm, this.tx_power);

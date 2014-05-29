@@ -33,8 +33,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 		startSelection(getBaseContext());
 
 	}
-	
-	
+
 	public void startSelection(View v)
 	{
 		startSelection(v.getContext());
@@ -44,7 +43,6 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 	{
 		startActivityForResult(new Intent(c, SelectRouterActivity.class), SELECTROUTER);
 	}
-	
 	
 	@Override
 	public void onScanAggrigate(List<BasicResult> wifi_list) {
@@ -65,13 +63,16 @@ public class DistanceActivity extends WiMapServiceSubscriber {
         TextView comp = (TextView) findViewById(R.id.comp_dist);
         TextView fspl = (TextView) findViewById(R.id.fspl_dist);
         TextView rel = (TextView) findViewById(R.id.relative_dist);
+        TextView prime = (TextView) findViewById(R.id.alt_dist);
 		distance.setText(Double.toString(current.GetAverageDistance(r)));
         fspl.setText(Double.toString(current.GetDistance(r)));
         comp.setText(Double.toString(current.GetComparativeDistance(r)));
         rel.setText(Double.toString(current.GetFSPLRelativeDistance(r)));
+        prime.setText(Double.toString(current.GetFSPLDistance_d(r.GetPower())));
 		TextView dBm = (TextView) findViewById(R.id.dBm);
 		dBm.setText(Double.toString(r.GetPower()));
 	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
@@ -84,6 +85,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 				db.open();
 				current = db.getRouterByUID(uid);
 				db.close();
+
 				if(current == null)
 				{
 					Toast.makeText(this, "Could not find router in DB", Toast.LENGTH_LONG).show();

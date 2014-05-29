@@ -16,17 +16,9 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="348dp"
+            android:layout_height="wrap_content"
             android:id="@+id/splash"
-            android:src="@drawable/logo"
-            android:layout_alignBottom="@+id/login_email"
-            android:layout_centerHorizontal="true"
-            android:minHeight="128dp"
-            android:minWidth="128dp"
-            android:maxWidth="512dp"
-            android:maxHeight="512dp"
-            android:longClickable="true"
-            android:layout_gravity="center_horizontal" />
+            android:src="@drawable/letters" />
 
         <EditText
             android:layout_width="wrap_content"
