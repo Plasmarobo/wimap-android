@@ -9,6 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/wimap" />
+            <option value="$PROJECT_DIR$/wimapapi" />
+            <option value="$PROJECT_DIR$/wimapcommon" />
+            <option value="$PROJECT_DIR$/wimapdev" />
           </set>
         </option>
       </GradleProjectSettings>

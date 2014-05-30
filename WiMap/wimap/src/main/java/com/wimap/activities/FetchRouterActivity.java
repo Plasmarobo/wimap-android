@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.wimap.apis.RouterAPI;
+import com.wimap.api.RouterAPI;
+import com.wimap.common.Router;
 import com.wimap.components.AndroidRouter;
 import com.wimap.components.RouterDatabase;
 import com.wimap.wimap.R;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class FetchRouterActivity extends Activity {
 
-public class FetchRouterTask extends AsyncTask<List<AndroidRouter>, Integer, List<AndroidRouter>> {
+public class FetchRouterTask extends AsyncTask<List<Router>, Integer, List<Router>> {
 	protected Integer prog; 
 	protected View progressIndicator;
 	
@@ -44,8 +45,8 @@ public class FetchRouterTask extends AsyncTask<List<AndroidRouter>, Integer, Lis
 		prog = Integer.valueOf(0);
 	}
 	@Override
-	protected List<AndroidRouter> doInBackground(List<AndroidRouter>... l) {
-		List<AndroidRouter> li = l[0];
+	protected List<Router> doInBackground(List<Router>... l) {
+		List<Router> li = l[0];
 		HttpResponse resp = RouterAPI.PerformGet();
 		InputStream inputStream = null;
 		String json_str = "";
@@ -83,7 +84,7 @@ public class FetchRouterTask extends AsyncTask<List<AndroidRouter>, Integer, Lis
         //setProgressPercent(progress[0]);
     }
 	@Override
-    protected void onPostExecute(List<AndroidRouter> result) {
+    protected void onPostExecute(List<Router> result) {
 		saveAndExit(result);
         Toast.makeText(getBaseContext(), "Region Updated", Toast.LENGTH_SHORT).show();
     }
@@ -95,11 +96,11 @@ public class FetchRouterTask extends AsyncTask<List<AndroidRouter>, Integer, Lis
 	{
 		super.onCreate(savedInstance);
 		setContentView(R.layout.activity_fetch);
-		List<AndroidRouter> l = new ArrayList<AndroidRouter>();
+		List<Router> l = new ArrayList<Router>();
 		new FetchRouterTask(findViewById(R.id.progress)).execute(l);
 	}
 	
-	protected void saveAndExit(List<AndroidRouter> l)
+	protected void saveAndExit(List<Router> l)
 	{
 		RouterDatabase db = new RouterDatabase(this);
 		db.open();

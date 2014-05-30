@@ -24,8 +24,8 @@ import com.wimap.components.AndroidRouter;
 import com.wimap.components.BasicResult;
 import com.wimap.components.IntersectBundle;
 import com.wimap.components.WiMapServiceScanFilter;
-import com.wimap.math.Intersect;
-import com.wimap.math.RadialDistance;
+import com.wimap.common.math.Intersect;
+import com.wimap.common.math.RadialDistance;
 import com.wimap.wimap.MainActivity;
 import com.wimap.wimap.R;
 

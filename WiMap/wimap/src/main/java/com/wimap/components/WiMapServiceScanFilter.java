@@ -2,13 +2,9 @@ package com.wimap.components;
 
 import android.util.Log;
 
-import com.wimap.components.AndroidRouter;
-import com.wimap.components.BasicResult;
-import com.wimap.math.Router;
+import com.wimap.common.Router;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * Property of WiMap and Austen Higgins-Cassidy
@@ -17,7 +13,7 @@ import java.util.Queue;
  *
  * Created by Austen on 4/26/2014.
  */
-public class WiMapServiceScanFilter extends AndroidRouter{
+public class WiMapServiceScanFilter extends AndroidRouter {
 
     protected final double spike_tolerance = 5;
     protected double weight_sum;

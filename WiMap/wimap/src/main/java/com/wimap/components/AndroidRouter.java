@@ -2,9 +2,7 @@ package com.wimap.components;
 
 import android.net.wifi.ScanResult;
 
-import com.wimap.math.Router;
-
-import java.util.ArrayList;
+import com.wimap.common.Router;
 
 
 public class AndroidRouter extends Router {
@@ -81,20 +79,6 @@ public class AndroidRouter extends Router {
     public BasicResult ToBasicResult()
     {
         return new BasicResult(this.power, this.GetSSID(), this.GetUID(), this.GetFreq());
-    }
-    public double TrainTxPower(double data[][], int trials, int samples)
-    {
-        double results = 0;
-        for(int i = 0; i < trials; ++i)
-        {
-            ArrayList<Double> trial = new ArrayList<Double>();
-            for(int j = 0; j < samples; ++j)
-            {
-                trial.add(data[i][j]);
-            }
-            results += this.FindTxPower(trial);
-        }
-        return results/(double)trials;
     }
 
 }

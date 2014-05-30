@@ -3,8 +3,8 @@ package com.wimap.components;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.wimap.math.Intersect;
-import com.wimap.math.RadialDistance;
+import com.wimap.common.math.Intersect;
+import com.wimap.common.math.RadialDistance;
 
 import java.util.List;
 

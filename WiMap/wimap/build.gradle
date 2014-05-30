@@ -33,5 +33,6 @@ android {
 
 dependencies {
     compile 'com.google.android.gms:play-services:4.0.30'
-    compile fileTree(include: ['*.jar', 'commons-math3-3.2/commons-math3-3.2.jar'], dir: 'libs')
+    compile project(':wimapapi')
+    compile project(':wimapcommon')
 }

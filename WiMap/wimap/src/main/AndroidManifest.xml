@@ -40,19 +40,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.wimap.activities.BeaconActivity"
+            android:name="com.wimap.devapp.BeaconActivity"
             android:label="@string/title_activity_beacon" >
         </activity>
         <activity
-            android:name="com.wimap.activities.CalibrateActivity"
+            android:name="com.wimap.devapp.CalibrateActivity"
             android:label="@string/title_activity_calibrate" >
         </activity>
         <activity
-            android:name="com.wimap.activities.DistanceActivity"
+            android:name="com.wimap.devapp.DistanceActivity"
             android:label="@string/title_activity_distance" >
         </activity>
         <activity
-            android:name="com.wimap.activities.EditRouterActivity"
+            android:name="com.wimap.devapp.EditRouterActivity"
             android:label="@string/title_activity_editrouter" >
         </activity>
         <activity
@@ -68,11 +68,11 @@
             android:label="@string/title_activity_map" >
         </activity>
         <activity
-            android:name="com.wimap.activities.PushRouterActivity"
+            android:name="com.wimap.devapp.PushRouterActivity"
             android:label="@string/title_activity_pushrouter" >
         </activity>
         <activity
-            android:name="com.wimap.activities.SelectRouterActivity"
+            android:name="com.wimap.devapp.SelectRouterActivity"
             android:label="@string/title_activity_selectrouter" >
         </activity>
 
@@ -83,7 +83,7 @@
         </service>
 
         <activity
-            android:name="com.wimap.activities.CalibrationActivity"
+            android:name="com.wimap.devapp.CalibrationActivity"
             android:label="@string/title_activity_calibration" >
         </activity>
         <activity

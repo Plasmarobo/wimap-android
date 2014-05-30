@@ -17,11 +17,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/splash"
+            android:id="@+id/logo"
             android:src="@drawable/letters" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:ems="10"
@@ -35,7 +35,7 @@
             android:textColor="@color/Black" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
@@ -50,8 +50,8 @@
             android:password="true" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="256dp"
+            android:layout_height="96dp"
             android:text="@string/login_hint"
             android:id="@+id/login_submit"
             android:layout_below="@+id/login_password"
@@ -60,7 +60,13 @@
             android:layout_alignStart="@+id/login_password"
             android:layout_alignRight="@+id/login_password"
             android:layout_alignEnd="@+id/login_password"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:textSize="32dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/BrightGreen"
+            android:background="@color/Green" />
 
     </LinearLayout>
 
