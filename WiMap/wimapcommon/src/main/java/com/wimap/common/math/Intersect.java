@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 WiMap.
+ *
+ * Authorized internal use only.
+ * No reproduction or access without express permission of WiMap.
+ */
+
 package com.wimap.common.math;
 
 import org.apache.commons.math3.analysis.DifferentiableMultivariateVectorFunction;

@@ -1,8 +1,17 @@
+/*
+ * Copyright (c) 2014 WiMap.
+ *
+ * Authorized internal use only.
+ * No reproduction or access without express permission of WiMap.
+ */
+
 package com.wimap.api;
 
 import android.os.AsyncTask;
 
 import com.wimap.api.HTTPInterface;
+
+import java.util.List;
 
 public class AsyncHTTP extends AsyncTask<HTTPInterface, Integer, Integer> {
 

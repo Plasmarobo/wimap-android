@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2014 WiMap.
+ *
+ * Authorized internal use only.
+ * No reproduction or access without express permission of WiMap.
+ */
+
 package com.wimap.devapp;
 
 import android.app.Activity;
@@ -7,6 +14,7 @@ import android.view.MenuItem;
 
 
 public class MainActivity extends Activity {
+    private static final String test_url = "http://wimap:3000/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

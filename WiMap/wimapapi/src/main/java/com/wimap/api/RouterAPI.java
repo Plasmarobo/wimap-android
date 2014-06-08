@@ -1,5 +1,11 @@
-package com.wimap.api;
+/*
+ * Copyright (c) 2014 WiMap.
+ *
+ * Authorized internal use only.
+ * No reproduction or access without express permission of WiMap.
+ */
 
+package com.wimap.api;
 import android.content.Context;
 import android.util.Log;
 
@@ -26,14 +32,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
 
 
-public class RouterAPI implements HTTPInterface {
+public class RouterAPI extends BasicAPI {
 
-	private static final String API_KEY = "";
-	
 	public static final String tag_x = "x";
 	public static final String tag_y = "y";
 	public static final String tag_z = "z";
@@ -43,38 +47,60 @@ public class RouterAPI implements HTTPInterface {
 	public static final String tag_freq = "frequency";
 	public static final String tag_site_id = "site_id";
     public static final String tag_tx_power = "tx_power";
-	
-	//private HttpClient httpclient;
-	public static final String ROUTERS_URI = "http://www.wimapnav.com/api/v1/routers";
-	private static List<Router> cache;
 
-	public static List<Router> PullRouters()
+	public static final String ROUTERS_ENDPOINT = "routers";
+
+    @Override
+    public String GetEndpoint()
+    {
+        return ROUTERS_ENDPOINT;
+    }
+	private static Queue<Router> router_buffer;
+    private static List<Router> cache;
+
+    protected boolean AddPushArguments(List<NameValuePair> arguments){
+        JSONArray router_array_json = new JSONArray();
+        while(!router_buffer.isEmpty())
+        {
+            Router r = router_buffer.poll();
+            if( r != null)
+            {
+                JSONObject router_json = new JSONObject();
+                try {
+                    router_json.put(tag_x, r.GetX());
+                    router_json.put(tag_y, r.GetY());
+                    router_json.put(tag_z, r.GetZ());
+                    router_json.put(tag_site_id, r.GetSiteID());
+                    router_json.put(tag_ssid, r.GetSSID());
+                    router_json.put(tag_uid, r.GetUID());
+                    router_json.put(tag_power, r.GetPower());
+                    router_json.put(tag_freq, r.GetFreq());
+                    router_json.put(tag_tx_power, r.GetTxPower());
+                } catch (JSONException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                    return false;
+                }
+                router_array_json.put(router_json);
+            }
+        }
+        arguments.add(new BasicNameValuePair("routers", router_array_json.toString()));
+        return true;
+    }
+
+    protected boolean AddPullArguments(List<NameValuePair> arguments){
+        return true;
+    }
+    protected boolean OnResult(HttpResponse response){
+        JsonToCache(response, new Integer(0));
+        return true;
+    }
+
+	public List<Router> Routers()
 	{
-		return JsonToCache(PerformGet(), 0);
-	}
-	public static List<Router> Routers()
-	{
-		return cache;	
+		return cache;
 	}
 
-	public static HttpResponse PerformGet()
-	{
-		Log.d("GET", "APIKEY: " + API_KEY);
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpGet req = new HttpGet(ROUTERS_URI);
-		try {
-			HttpResponse resp = httpclient.execute(req);
-			if(resp.getStatusLine().getStatusCode() == 200)
-			return resp;
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	public static List<Router> JsonToCache(String json_str)
 	{
 		try {
@@ -84,7 +110,7 @@ public class RouterAPI implements HTTPInterface {
 			{
 				JSONObject router_json = routers_json.getJSONObject(i);
 				Router model = new Router(
-						router_json.getDouble(tag_x), 
+						router_json.getDouble(tag_x),
 						router_json.getDouble(tag_y),
 						router_json.getDouble(tag_z),
 						router_json.getString(tag_ssid),
@@ -95,14 +121,14 @@ public class RouterAPI implements HTTPInterface {
                         router_json.getDouble((tag_tx_power)));
 				cache.add(model);
 				}
-			
+
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return cache;
 	}
-	
+
 	public static List<Router> JsonToCache(HttpResponse resp, Integer progress)
 	{
 
@@ -125,24 +151,24 @@ public class RouterAPI implements HTTPInterface {
 				progress = 200*bytes_read/total;
 			}
 			json_str = sb.toString();
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			// Oops
 		}
 		finally {
 			try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
 		}
 		return JsonToCache(json_str);
-	
+
 	}
 	protected void JsonToRouter(HttpResponse resp)
 	{
-		
+
 	}
 	public RouterAPI(Context context)
 	{
-		this(context, Integer.valueOf(0), new ArrayList<Router>());
+		this(context, new Integer(0), new ArrayList<Router>());
 	}
-	
+
 	public RouterAPI(Context context, Integer progress, ArrayList<Router> local_list)
 	{
 		//Eventually pull a cache based on coarse/cached location
@@ -151,51 +177,14 @@ public class RouterAPI implements HTTPInterface {
         if(upToDate) {
             cache = local_list;
         }else{
-            PullRouters();
+            JsonToCache(SyncPull(), progress);
         }
 	}
-	
-	public static boolean Store(Router r)
+
+	public boolean Store(Router r)
 	{
-		HttpPost req = new HttpPost(RouterAPI.ROUTERS_URI);
-		List<NameValuePair> arguments = new ArrayList<NameValuePair>();
-		JSONObject router_json = new JSONObject();
-		
-		try {
-			router_json.put(tag_x, r.GetX());
-			router_json.put(tag_y, r.GetY());
-			router_json.put(tag_z, r.GetZ());
-			router_json.put(tag_site_id, r.GetSiteID());
-			router_json.put(tag_ssid, r.GetSSID());
-			router_json.put(tag_uid, r.GetUID());
-			router_json.put(tag_power, r.GetPower());
-			router_json.put(tag_freq, r.GetFreq());
-            router_json.put(tag_tx_power, r.GetTxPower());
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		arguments.add(new BasicNameValuePair("router", router_json.toString()));
-		Log.i("POST:", arguments.toString());
-		try {
-			req.setEntity(new UrlEncodedFormEntity(arguments));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        // Execute HTTP Post Request
-        try {
-        	HttpClient httpclient = new DefaultHttpClient();
-			HttpResponse resp = httpclient.execute(req);
-			return resp.getStatusLine().getStatusCode() == 200;
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+        router_buffer.add(r);
+        return true;
 	}
 	public List<Router> getRoutersBySSID(String ssid)
 	{
@@ -210,15 +199,5 @@ public class RouterAPI implements HTTPInterface {
 		return cache.get(0);
 	}
 
-	@Override
-	public boolean PerformRequest(Integer progress) {
-		HttpResponse resp = PerformGet();
-		if(resp == null)
-			return false;
-		else
-			JsonToCache(resp, progress);
-		return true;
-	}
-	
 
 }

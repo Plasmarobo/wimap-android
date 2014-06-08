@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="WiMap">
+    <module2copyright>
+      <element module="Project Files" copyright="WiMap" />
+    </module2copyright>
+  </settings>
 </component>
