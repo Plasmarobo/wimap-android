@@ -8,10 +8,23 @@
 package com.wimap.common;
 
 
-
 import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Router {
+public class Router implements APIObject {
+
+    public static final String tag_x = "x";
+    public static final String tag_y = "y";
+    public static final String tag_z = "z";
+    public static final String tag_ssid = "ssid";
+    public static final String tag_uid = "uid";
+    public static final String tag_power = "power";
+    public static final String tag_freq = "frequency";
+    public static final String tag_site_id = "site_id";
+    public static final String tag_tx_power = "tx_power";
+
 	protected int id;
 	protected double x;
 	protected double y;
@@ -187,7 +200,44 @@ public class Router {
         }
         return results/(double)trials;
     }
-	
-	
+
+
+    @Override
+    public JSONObject ToJSON() throws JSONException {
+        JSONObject router_json = new JSONObject();
+            router_json.put(tag_x, this.GetX());
+            router_json.put(tag_y, this.GetY());
+            router_json.put(tag_z, this.GetZ());
+            router_json.put(tag_site_id, this.GetSiteID());
+            router_json.put(tag_ssid, this.GetSSID());
+            router_json.put(tag_uid, this.GetUID());
+            router_json.put(tag_power, this.GetPower());
+            router_json.put(tag_freq, this.GetFreq());
+            router_json.put(tag_tx_power, this.GetTxPower());
+        return router_json;
+    }
+
+    @Override
+    public boolean FromJSON(JSONObject json) throws JSONException {
+
+                this.x = json.getDouble(tag_x);
+                this.y = json.getDouble(tag_y);
+                this.z = json.getDouble(tag_z);
+                this.ssid = json.getString(tag_ssid);
+                this.uid = json.getString(tag_uid);
+                this.site_id = json.getInt(tag_site_id);
+                this.power = json.getDouble(tag_power);
+                this.freq = json.getDouble(tag_freq);
+                this.tx_power = json.getDouble((tag_tx_power));
+                return true;
+    }
+
+    @Override
+    public JSONObject FromJSONArray(JSONArray json) throws JSONException {
+        JSONObject item = json.getJSONObject(0);
+        json.remove(0);
+        this.FromJSON(item);
+        return item;
+    }
 }
 

@@ -7,43 +7,83 @@
 
 package com.wimap.api;
 
+import com.wimap.api.templates.CachedAPI;
+import com.wimap.common.APIObject;
+import com.wimap.common.Site;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class SitesAPI implements HTTPInterface {
+public class SitesAPI extends CachedAPI {
 
-    public class Site
+
+    public static final String SITES_ENDPOINT = "sites";
+    public static final String SITES_FIELD = "site";
+    public static final String SITES_PULL_FIELD = "location";
+
+    public static final String lat_tag = "lat";
+    public static final String long_tag = "long";
+    public static final String range_tag = "range";
+
+    protected List<Site> buffer;
+
+    @Override
+    public String GetEndpoint()
     {
-        public int id;
-        public String name;
-
-        public Site()
-        {
-            id = 0;
-            name = "ERROR";
-        }
-
-        public Site(int id, String name)
-        {
-            this.id = id;
-            this.name = name;
-        }
-
-    }
-
-    List<Site> cache;
-
-    public SitesAPI()
-    {
-        cache = null;
-    }
-
-    public void PullSites()
-    {
-
+        return SITES_ENDPOINT;
     }
 
     @Override
-    public boolean PerformRequest(Integer progress) {
-        return false;
+    public String GetAPIFieldName()
+    {
+        return SITES_FIELD;
     }
+
+    @Override
+    protected List<APIObject> JSONToCache(String json_str) throws JSONException {
+        try {
+            JSONArray sites_json = new JSONArray(json_str);
+            cache = new ArrayList<APIObject>();
+            while(sites_json.length() > 0)
+            {
+                Site s = new Site();
+                s.FromJSONArray(sites_json);
+                cache.add(s);
+            }
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        return cache;
+    }
+
+
+    @Override
+    protected boolean AddPullArguments(List<NameValuePair> arguments) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put(lat_tag, 0.0);
+            json.put(long_tag, 0.0);
+            json.put(range_tag, 1.0);
+        }catch(JSONException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        arguments.add(new BasicNameValuePair(SITES_PULL_FIELD, json.toString()));
+        return true;
+    }
+
+
+
+
+
+
 }

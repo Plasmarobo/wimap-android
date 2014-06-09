@@ -3,4 +3,5 @@ apply plugin: 'java'
 
 dependencies {
     compile fileTree(include: ['*.jar', 'commons-math3-3.2/commons-math3-3.2.jar'], dir: 'libs')
+    compile 'org.json:json:20140107'
 }
