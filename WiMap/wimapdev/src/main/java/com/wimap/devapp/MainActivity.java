@@ -8,9 +8,13 @@
 package com.wimap.devapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -20,6 +24,15 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView site_text = (TextView)findViewById(R.id.site_text);
+        Button site_select = (Button)findViewById(R.id.site_btn);
+        site_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(,)));
+            }
+        });
+        site_text.setText("0");
     }
 
 

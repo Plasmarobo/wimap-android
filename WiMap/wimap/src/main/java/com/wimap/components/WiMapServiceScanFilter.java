@@ -9,9 +9,13 @@ package com.wimap.components;
 
 import android.util.Log;
 
+import com.wimap.api.RouterAPI;
 import com.wimap.common.Router;
+import com.wimap.services.WiMapService;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Property of WiMap and Austen Higgins-Cassidy
@@ -134,5 +138,16 @@ public class WiMapServiceScanFilter extends AndroidRouter {
             this.length = length;
         }
         this.weight_sum = length * (length + 1) / 2;
+    }
+
+    public static HashMap<String, WiMapServiceScanFilter> GenerateFilters(RouterAPI api, int sample_count)
+    {
+        HashMap<String, WiMapServiceScanFilter> filters = new HashMap<String, WiMapServiceScanFilter>();
+        List<AndroidRouter> routers = (List<AndroidRouter>)(List<?>)api.Routers();
+        for(AndroidRouter rt : routers)
+        {
+            filters.put(rt.GetUID(), new WiMapServiceScanFilter(rt, sample_count));
+        }
+        return filters;
     }
 }

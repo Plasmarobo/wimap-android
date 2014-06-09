@@ -7,7 +7,7 @@
 
 package com.wimap.api.templates;
 
-import com.wimap.api.templates.BasicAPI;
+
 import com.wimap.common.APIObject;
 
 import org.apache.http.Header;
@@ -17,7 +17,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -62,9 +61,13 @@ public abstract class CachedAPI extends BasicAPI {
             APIObject current = queue.poll();
             if( current != null)
             {
-                JSONObject item_json;
-                item_json = current.ToJSON();
-                json_array.put(item_json);
+                    try {
+                        json_array.put(current.ToJSON());
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                        return false;
+                    }
+
             }
         }
         arguments.add(new BasicNameValuePair(GetAPIFieldName(), json_array.toString()));

@@ -16,6 +16,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class RouterAPI extends CachedAPI {
 
 	public static final String ROUTERS_ENDPOINT = "routers";
     public static final String ROUTERS_FIELD = "router";
+    public static final String SITE_FIELD = "site_id";
+
+    protected int current_site;
 
     @Override
     public String GetEndpoint()
@@ -37,27 +41,14 @@ public class RouterAPI extends CachedAPI {
         return ROUTERS_FIELD;
     }
 
-    protected boolean AddPushArguments(List<NameValuePair> arguments){
-        JSONArray router_array_json = new JSONArray();
-        while(!queue.isEmpty())
-        {
-            APIObject r = queue.poll();
-            if( r != null)
-            {
-                router_array_json.put(r.ToJSON());
-            }
-        }
-        arguments.add(new BasicNameValuePair(GetAPIFieldName(), router_array_json.toString()));
-        return true;
-    }
-
-    protected boolean AddPullArguments(List<NameValuePair> arguments){
+    @Override
+    protected boolean AddPullArguments(List<NameValuePair> arguments) {
+        arguments.add(new BasicNameValuePair(SITE_FIELD, Integer.toString(current_site)));
         return true;
     }
 
 
-
-	public List<Router> Routers()
+    public List<Router> Routers()
 	{
 		return (List<Router>)(List<?>) cache;
 	}
@@ -82,6 +73,14 @@ public class RouterAPI extends CachedAPI {
 		return cache;
 	}
 
+    public void SetSite(int site)
+    {
+        if(current_site != site)
+        {
+            current_site = site;
+            Pull();
+        }
+    }
 
 	public RouterAPI(Context context)
 	{
@@ -92,6 +91,7 @@ public class RouterAPI extends CachedAPI {
 	{
 		//Eventually pull a cache based on coarse/cached location
         boolean upToDate = true;
+        current_site = 0;
 		//cache = new ArrayList<Router>();
         if(upToDate) {
             cache = (List<APIObject>)(List<?>)local_list;

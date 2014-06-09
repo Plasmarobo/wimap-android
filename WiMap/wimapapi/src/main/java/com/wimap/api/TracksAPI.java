@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-class TracksAPI extends CachedAPI {
+public class TracksAPI extends CachedAPI {
 
 	public static final String TRACKS_ENDPOINT = "tracks";
     public static final String TRACKS_FIELD = "tracks";

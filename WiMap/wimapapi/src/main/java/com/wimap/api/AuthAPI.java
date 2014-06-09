@@ -15,7 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
-class AuthAPI extends BasicAPI {
+public class AuthAPI extends BasicAPI {
 
     private String auth_token;
 

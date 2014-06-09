@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-class DistanceSampleAPI extends BasicAPI
+public class DistanceSampleAPI extends BasicAPI
 {
     public static final String router_id_tag = "router_id";
     public static final String power_tag = "power";

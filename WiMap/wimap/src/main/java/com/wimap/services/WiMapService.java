@@ -23,10 +23,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.wimap.activities.ExitActivity;
-import com.wimap.apis.AsyncHTTP;
-import com.wimap.apis.MessageAPI;
-import com.wimap.apis.RouterAPI;
-import com.wimap.apis.TracksAPI;
+import com.wimap.api.MessageAPI;
+import com.wimap.api.RouterAPI;
+import com.wimap.api.TracksAPI;
+import com.wimap.api.transport.AsyncHTTP;
+import com.wimap.common.Track;
 import com.wimap.components.AndroidRouter;
 import com.wimap.components.BasicResult;
 import com.wimap.components.IntersectBundle;
@@ -43,9 +44,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 public class WiMapService extends Service {
@@ -58,6 +56,7 @@ public class WiMapService extends Service {
     //protected static KalmanFilter kalman_filter;
     protected HashMap<String, WiMapServiceScanFilter> filters;
     private int service_id;
+
     public static final String AGGRIGATE_READY = "com.witech.wimap.AGGRIGATE_READY";
     public static final String AGGRIGATE_DATA= "com.witech.wimap.AGGRIGATE_DATA";
     public static final String RAW_READY = "com.witech.wimap.RAW_READY";
@@ -67,13 +66,16 @@ public class WiMapService extends Service {
     public static final long WIFI_DOWNCYCLE_TIME = 1000;
     public static final long WIFI_UPCYCLE_TIME = 12000;
     public static final double DEFAULT_SCAN_LEVEL = -90.0;
+
     protected int scan_delay;
     //protected List<HashMap<String, BasicResult>> aggrigator;
     protected static final int SAMPLE_COUNT = 4;
     protected int aggrigate_index;
+
     RouterAPI router_api;
     TracksAPI tracks_api;
     MessageAPI message_api;
+
     protected static long last_scan_timestamp;
     public static final int EXIT_CODE = -1;
 
@@ -157,9 +159,8 @@ public class WiMapService extends Service {
         //}
         this.aggrigate_index = 0;
         router_api = new RouterAPI(this.getBaseContext());
-        AsyncHTTP http = new AsyncHTTP();
-        http.execute(router_api);
-        this.filters = router_api.GetFilters(SAMPLE_COUNT);
+
+        this.filters = WiMapServiceScanFilter.GenerateFilters(router_api, SAMPLE_COUNT);
         scanner = new ScanReceiver();
         registerReceiver(scanner, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         Log.v("Wifi Scanner", "Starting Scanner");
@@ -224,25 +225,12 @@ public class WiMapService extends Service {
     @Override
     public void onDestroy() {
         // Tell the user we stopped.
-        AsyncHTTP http = new AsyncHTTP();
-        http.execute(tracks_api);
+        tracks_api.Flush();
         Log.d("WiMapService", "Destroying");
         lock.release();
         unregisterReceiver(scanner);
         timer.cancel();
-        try {
-            http.get(5000, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-
-        }
-
     }
-
-
 
     public void onScanAggrigate() {
         Map<String, BasicResult> wifi_map = new HashMap<String,BasicResult>();
@@ -258,7 +246,7 @@ public class WiMapService extends Service {
         intent.setAction(WiMapService.AGGRIGATE_READY);
         intent.putParcelableArrayListExtra(WiMapService.AGGRIGATE_DATA, levels);
         sendBroadcast(intent);
-        List<AndroidRouter> routers = RouterAPI.Routers();
+        List<AndroidRouter> routers = (List<AndroidRouter>)(List<?>)router_api.Routers();
         if(routers == null)
             return;
         if(last_aggrigate.size() > 4)
@@ -288,7 +276,8 @@ public class WiMapService extends Service {
                 intent.setAction(WiMapService.LOCATION_READY);
                 intent.putExtra(WiMapService.LOCATION_DATA, new IntersectBundle(point));
                 sendBroadcast(intent);
-                TracksAPI.CommitPoint(point);
+                //TODO: Associate with user and site
+                tracks_api.Push(new Track(point, 0, 0));
             }
         }
     }
