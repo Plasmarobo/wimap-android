@@ -1,1 +1,1 @@
-include ':wimap', 'wimapdev', 'wimapcommon', 'wimapapi'
+include ':wimap', 'wimapdev', 'wimapcommon', 'wimapapi', 'wimaplocationservice'

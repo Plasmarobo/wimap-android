@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.wimap.components.AndroidRouter;
 
 import com.wimap.components.RouterDatabase;
+import com.wimap.devapp.lists.ScanListActivity;
 import com.wimap.templates.ScanListActivity;
 import com.wimap.wimap.R;
 

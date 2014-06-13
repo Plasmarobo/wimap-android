@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.wimap.devapp.lists.SelectSiteActivity;
+
 
 public class MainActivity extends Activity {
     private static final String test_url = "http://wimap:3000/";
@@ -29,7 +31,7 @@ public class MainActivity extends Activity {
         site_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(,)));
+                startActivity(new Intent(this, SelectSiteActivity.class)));
             }
         });
         site_text.setText("0");

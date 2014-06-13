@@ -39,22 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.wimap.devapp.BeaconActivity"
-            android:label="@string/title_activity_beacon" >
-        </activity>
-        <activity
-            android:name="com.wimap.devapp.CalibrateActivity"
-            android:label="@string/title_activity_calibrate" >
-        </activity>
-        <activity
-            android:name="com.wimap.devapp.DistanceActivity"
-            android:label="@string/title_activity_distance" >
-        </activity>
-        <activity
-            android:name="com.wimap.devapp.EditRouterActivity"
-            android:label="@string/title_activity_editrouter" >
-        </activity>
+
         <activity
             android:name="com.wimap.activities.FetchRouterActivity"
             android:label="@string/title_activity_fetchrouter" >
@@ -67,33 +52,22 @@
             android:name="com.wimap.activities.MapActivity"
             android:label="@string/title_activity_map" >
         </activity>
-        <activity
-            android:name="com.wimap.devapp.PushRouterActivity"
-            android:label="@string/title_activity_pushrouter" >
-        </activity>
-        <activity
-            android:name="com.wimap.devapp.SelectRouterActivity"
-            android:label="@string/title_activity_selectrouter" >
-        </activity>
 
         <service
-            android:name="com.wimap.services.WiMapService"
+            android:name="com.wimap.location.wifi.WiMapService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
+
         <activity
-            android:name="com.wimap.devapp.CalibrationActivity"
-            android:label="@string/title_activity_calibration" >
-        </activity>
-        <activity
-            android:name="com.wimap.activities.ExitActivity"
+            android:name="com.wimap.location.core.ExitActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_exit" >
         </activity>
 
         <service
-            android:name="com.wimap.services.WiMapBLELocation"
+            android:name="com.wimap.location.bluetooth.WiMapBLELocation"
             android:enabled="true"
             android:exported="false" >
         </service>

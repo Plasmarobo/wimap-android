@@ -7,6 +7,9 @@
 
 package com.wimap.api;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
 import com.wimap.common.Track;
@@ -23,6 +26,10 @@ public class TracksAPI extends CachedAPI {
 
 	public static final String TRACKS_ENDPOINT = "tracks";
     public static final String TRACKS_FIELD = "tracks";
+
+    public TracksAPI(Context c) {
+        super(c);
+    }
 
     @Override
     protected String GetEndpoint()
@@ -59,5 +66,30 @@ public class TracksAPI extends CachedAPI {
             return null;
         }
         return cache;
+    }
+
+    @Override
+    protected String GetLocalDBName() {
+        return null;
+    }
+
+    @Override
+    protected int GetLocalDBVersion() {
+        return 0;
+    }
+
+    @Override
+    protected SQLiteDatabase GetLocalDatabase() {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
     }
 }

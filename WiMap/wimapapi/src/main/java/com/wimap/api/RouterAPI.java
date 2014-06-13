@@ -7,6 +7,7 @@
 
 package com.wimap.api;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
@@ -73,6 +74,31 @@ public class RouterAPI extends CachedAPI {
 		return cache;
 	}
 
+    @Override
+    protected String GetLocalDBName() {
+        return null;
+    }
+
+    @Override
+    protected int GetLocalDBVersion() {
+        return 0;
+    }
+
+    @Override
+    protected SQLiteDatabase GetLocalDatabase() {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
+    }
+
     public void SetSite(int site)
     {
         if(current_site != site)
@@ -89,6 +115,7 @@ public class RouterAPI extends CachedAPI {
 
 	public RouterAPI(Context context, Integer progress, ArrayList<Router> local_list)
 	{
+        super(context);
 		//Eventually pull a cache based on coarse/cached location
         boolean upToDate = true;
         current_site = 0;

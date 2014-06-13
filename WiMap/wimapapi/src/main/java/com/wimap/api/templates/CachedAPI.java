@@ -8,6 +8,10 @@
 package com.wimap.api.templates;
 
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
 import com.wimap.common.APIObject;
 
 import org.apache.http.Header;
@@ -31,24 +35,50 @@ public abstract class CachedAPI extends BasicAPI {
     protected List<APIObject> cache;
     protected Queue<APIObject> queue;
     protected static final int queue_limit=64;
+    protected SQLiteDatabase local_db;
 
-    public CachedAPI()
+    public CachedAPI(Context c)
     {
-        cache = new ArrayList<APIObject>();
+        LoadCache(c);
         queue = new LinkedList<APIObject>();
     }
 
-    public CachedAPI(String url)
+    public CachedAPI(Context c, String url)
     {
         super(url);
-        cache = new ArrayList<APIObject>();
+        LoadCache(c);
         queue = new LinkedList<APIObject>();
+        LoadCache(c);
+    }
+
+    protected boolean LoadCache(Context c)
+    {
+        SQLiteDatabase local_db = GetLocalDatabase();
+        cache = new ArrayList<APIObject>();
+        if(local_db.isOpen()) {
+            LocalDBRead(local_db, cache);
+            local_db.close();
+        } else return false;
+        return true;
+    }
+
+    protected boolean SaveCache(Context c)
+    {
+        SQLiteDatabase local_db = GetLocalDatabase();
+        if(local_db.isOpen())
+        {
+            LocalDBWrite(local_db, cache);
+            local_db.close();
+        }else return false;
+        return true;
+
     }
 
     public void Push(APIObject item)
     {
         cache.add(item);
         queue.add(item);
+
         if(queue.size() > queue_limit)
             AsyncPush();
     }
@@ -61,13 +91,7 @@ public abstract class CachedAPI extends BasicAPI {
             APIObject current = queue.poll();
             if( current != null)
             {
-                    try {
-                        json_array.put(current.ToJSON());
-                    }catch(JSONException e){
-                        e.printStackTrace();
-                        return false;
-                    }
-
+                json_array.put(current.ToJSON());
             }
         }
         arguments.add(new BasicNameValuePair(GetAPIFieldName(), json_array.toString()));
@@ -113,6 +137,13 @@ public abstract class CachedAPI extends BasicAPI {
     }
 
     abstract protected List<APIObject> JSONToCache(String json_str) throws JSONException;
+
+    abstract protected String GetLocalDBName();
+    abstract protected int GetLocalDBVersion();
+    abstract protected SQLiteDatabase GetLocalDatabase();
+    abstract protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest);
+    abstract protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest);
+
 
     public List<APIObject> Pull()
     {

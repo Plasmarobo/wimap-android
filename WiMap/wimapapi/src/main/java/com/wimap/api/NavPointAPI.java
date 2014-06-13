@@ -7,6 +7,9 @@
 
 package com.wimap.api;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
 import com.wimap.common.NavPoint;
@@ -29,9 +32,9 @@ public class NavPointAPI extends CachedAPI {
     protected int current_site;
     protected int cached_site;
 
-    public NavPointAPI()
+    public NavPointAPI(Context c)
     {
-        super();
+        super(c);
         current_site = 0;
     }
 
@@ -56,6 +59,31 @@ public class NavPointAPI extends CachedAPI {
             cache.add(p);
         }
         return cache;
+    }
+
+    @Override
+    protected String GetLocalDBName() {
+        return null;
+    }
+
+    @Override
+    protected int GetLocalDBVersion() {
+        return 0;
+    }
+
+    @Override
+    protected SQLiteDatabase GetLocalDatabase() {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
     }
 
     @Override

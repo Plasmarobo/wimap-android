@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    buildToolsVersion '19.1.0'
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 19
@@ -35,4 +35,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:4.0.30'
     compile project(':wimapapi')
     compile project(':wimapcommon')
+    compile project(':wimaplocationservice')
 }

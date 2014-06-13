@@ -7,6 +7,9 @@
 
 package com.wimap.api;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
 import com.wimap.common.Site;
@@ -32,6 +35,11 @@ public class SitesAPI extends CachedAPI {
     public static final String range_tag = "range";
 
     protected List<Site> buffer;
+
+    public SitesAPI(Context c)
+    {
+        super(c);
+    }
 
     @Override
     public String GetEndpoint()
@@ -62,6 +70,31 @@ public class SitesAPI extends CachedAPI {
             return null;
         }
         return cache;
+    }
+
+    @Override
+    protected String GetLocalDBName() {
+        return null;
+    }
+
+    @Override
+    protected int GetLocalDBVersion() {
+        return 0;
+    }
+
+    @Override
+    protected SQLiteDatabase GetLocalDatabase() {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
+    }
+
+    @Override
+    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
+        return null;
     }
 
 
