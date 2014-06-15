@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/WiMap.iml" filepath="$PROJECT_DIR$/WiMap.iml" />
       <module fileurl="file://$PROJECT_DIR$/wimap/wimap.iml" filepath="$PROJECT_DIR$/wimap/wimap.iml" />
       <module fileurl="file://$PROJECT_DIR$/wimapapi/wimapapi.iml" filepath="$PROJECT_DIR$/wimapapi/wimapapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wimapbranding/wimapbranding.iml" filepath="$PROJECT_DIR$/wimapbranding/wimapbranding.iml" />
       <module fileurl="file://$PROJECT_DIR$/wimapcommon/wimapcommon.iml" filepath="$PROJECT_DIR$/wimapcommon/wimapcommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/wimapdev/wimapdev.iml" filepath="$PROJECT_DIR$/wimapdev/wimapdev.iml" />
       <module fileurl="file://$PROJECT_DIR$/wimaplocationservice/wimaplocationservice.iml" filepath="$PROJECT_DIR$/wimaplocationservice/wimaplocationservice.iml" />

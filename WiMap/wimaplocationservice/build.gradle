@@ -30,5 +30,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':wimapcommon')
+    compile project(':wimapbranding')
     compile project(':wimapapi')
 }

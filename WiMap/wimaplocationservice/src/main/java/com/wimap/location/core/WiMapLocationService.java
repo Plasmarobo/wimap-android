@@ -31,6 +31,7 @@ import com.wimap.common.math.RadialDistance;
 import com.wimap.location.helpers.IntersectBundle;
 import com.wimap.location.models.AndroidRouter;
 import com.wimap.location.models.BasicResult;
+import com.wimap.location.wifi.R;
 import com.wimap.location.wifi.WiMapWifiFilter;
 
 import java.util.ArrayList;
@@ -54,11 +55,11 @@ public class WiMapLocationService extends Service {
     protected HashMap<String, WiMapWifiFilter> filters;
     private int service_id;
 
-    public static final String AGGRIGATE_READY = "com.witech.wimap.AGGRIGATE_READY";
-    public static final String AGGRIGATE_DATA= "com.witech.wimap.AGGRIGATE_DATA";
-    public static final String RAW_READY = "com.witech.wimap.RAW_READY";
-    public static final String LOCATION_READY = "com.witech.wimap.LOCATION_READY";
-    public static final String LOCATION_DATA = "com.witech.wimap.LOCATION_DATA";
+    public static final String AGGRIGATE_READY = "com.wimap.AGGRIGATE_READY";
+    public static final String AGGRIGATE_DATA= "com.wimap.AGGRIGATE_DATA";
+    public static final String RAW_READY = "com.wimap.RAW_READY";
+    public static final String LOCATION_READY = "com.wimap.LOCATION_READY";
+    public static final String LOCATION_DATA = "com.wimap.LOCATION_DATA";
     public static final long SCAN_RESET_TIMEOUT = 10000;
     public static final long WIFI_DOWNCYCLE_TIME = 1000;
     public static final long WIFI_UPCYCLE_TIME = 12000;

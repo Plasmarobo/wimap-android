@@ -203,7 +203,7 @@ public class Router implements APIObject {
 
 
     @Override
-    public JSONObject ToJSON() throws JSONException {
+    public JSONObject ToJSON(){
         JSONObject router_json = new JSONObject();
             router_json.put(tag_x, this.GetX());
             router_json.put(tag_y, this.GetY());

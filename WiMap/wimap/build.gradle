@@ -33,7 +33,8 @@ android {
 
 dependencies {
     compile 'com.google.android.gms:play-services:4.0.30'
-    compile project(':wimapapi')
     compile project(':wimapcommon')
+    compile project(':wimapbranding')
+    compile project(':wimapapi')
     compile project(':wimaplocationservice')
 }

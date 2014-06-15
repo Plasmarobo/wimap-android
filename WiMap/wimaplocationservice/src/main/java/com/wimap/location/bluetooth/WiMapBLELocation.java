@@ -55,8 +55,8 @@ public class WiMapBLELocation extends Service {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == REQUEST_ENABLE_BT)
-        {
+        //if(requestCode == REQUEST_ENABLE_BT)
+        //{
             //if(resultCode == RESULT_OK)
             //{
 
@@ -65,7 +65,7 @@ public class WiMapBLELocation extends Service {
 
             //}
 
-        }
+        //}
     }
 
     @Override

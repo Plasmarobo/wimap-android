@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<!--
+  ~ Copyright (c) 2014 WiMap.
+  ~
+  ~ Authorized internal use only.
+  ~ No reproduction or access without express permission of WiMap.
+  -->
 
-    <string name="app_name">WiMap</string>
-    <string name="email_hint">username@gmail.com</string>
-    <string name="password_hint">password</string>
-    <string name="login_hint">Login</string>
-    <string name="title_activity_home">Home</string>
-    <string name="action_settings">Settings</string>
-    <string name="ScanService">Wifi Scanner</string>
-    <string name="title_activity_beacon">Beacon</string>
-    <string name="title_activity_calibrate">Calibration Menu</string>
-    <string name="title_activity_calibration">Calibration</string>
-    <string name="title_activity_distance">Distance</string>
-    <string name="title_activity_editrouter">Edit Router</string>
-    <string name="title_activity_fetchrouter">Loading</string>
-    <string name="title_activity_map">Map</string>
-    <string name="title_activity_pushrouter">Uploading</string>
-    <string name="title_activity_scanlist">Scan Results</string>
-    <string name="title_activity_selectrouter">Select Router</string>
-    <string name="title_activity_exit">Really Quit?</string>
-    <string name="hello_world">Hello world!</string>
 
-</resources>
+<resources><string name="app_name">WiMap</string></resources>
