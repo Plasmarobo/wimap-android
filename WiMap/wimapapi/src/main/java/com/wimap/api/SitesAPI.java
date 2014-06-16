@@ -34,8 +34,6 @@ public class SitesAPI extends CachedAPI {
     public static final String long_tag = "long";
     public static final String range_tag = "range";
 
-    protected List<Site> buffer;
-
     public SitesAPI(Context c)
     {
         super(c);
@@ -95,6 +93,11 @@ public class SitesAPI extends CachedAPI {
     @Override
     protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
         return null;
+    }
+
+    public List<Site> Sites()
+    {
+        return (List<Site>)(List<?>)cache;
     }
 
 

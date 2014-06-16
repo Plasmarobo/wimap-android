@@ -8,18 +8,28 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".DevAppHomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".lists.SelectSiteActivity"
-            android:label="@string/title_activity_select_site" >
-        </activity>
+            android:label="@string/title_activity_select_site" />
+        <activity android:name=".DevAppActivity"
+            android:label="@string/title_activity_devapp"/>
+        <activity android:name=".CalibrateActivity"
+            android:label="@string/title_activity_calibrate"/>
+        <activity android:name=".TrainBeaconActivity"
+            android:label="@string/title_activity_beacon"/>
+        <activity android:name=".DistanceActivity"
+            android:label="@string/title_activity_distance"/>
+        <activity android:name=".EditRouterActivity"
+            android:label="@string/title_activity_edit_router"/>
+        <service android:name="com.wimap.location.core.WiMapLocationService" />
+
     </application>
 
 </manifest>

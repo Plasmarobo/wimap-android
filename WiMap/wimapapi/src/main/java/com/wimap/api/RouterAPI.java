@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -53,6 +54,31 @@ public class RouterAPI extends CachedAPI {
 	{
 		return (List<Router>)(List<?>) cache;
 	}
+    public List<Router> FilterByUID(String uid)
+    {
+        List<Router> result = new ArrayList<Router>();
+        Iterator<Router> i = this.Routers().iterator();
+        while(i.hasNext()) {
+            Router current = i.next();
+            if(current.GetUID() == uid)
+            {
+                result.add(current);
+            }
+        }
+        return result;
+    }
+    public Router FindByUID(String uid)
+    {
+        Iterator<Router> i = this.Routers().iterator();
+        while(i.hasNext()) {
+            Router current = i.next();
+            if(current.GetUID() == uid)
+            {
+                return current;
+            }
+        }
+        return null;
+    }
 
     @Override
 	public List<APIObject> JSONToCache(String json_str)

@@ -86,23 +86,23 @@ public class BasicResult implements Comparable<BasicResult>, Parcelable {
 	}
     public boolean IsCalibrated() {return this.calibrated; }
 	
-	void SetPower(double power)
+	public void SetPower(double power)
 	{
 		this.power = power;
 	}
 
-    void SetCalibrated(boolean calibrated) { this.calibrated = calibrated; }
+    public void SetCalibrated(boolean calibrated) { this.calibrated = calibrated; }
 	
-	void SetFreq(double freq)
+	public void SetFreq(double freq)
 	{
 		this.freq = freq;
 	}
 	
-	void SetSSID(String ssid)
+	public void SetSSID(String ssid)
 	{
 		this.ssid = ssid;
 	}
-	void SetUID(String uid)
+	public void SetUID(String uid)
 	{
 		this.uid = uid;
 	}

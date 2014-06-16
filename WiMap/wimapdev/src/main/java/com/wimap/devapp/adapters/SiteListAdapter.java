@@ -14,32 +14,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.wimap.api.SitesAPI;
 import com.wimap.common.Site;
-import com.wimap.devapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SiteListAdapter extends ArrayAdapter<Site> {
     private final Context context;
+    private SitesAPI site_api;
     private ArrayList<Site> values;
-
-    public SiteListAdapter(Context context, String [] names, int [] ids)
-    {
-        super(context, R.layout.template_scan_list_item);
-        this.context = context;
-        for(int i = 0; i < names.length; ++i)
-        {
-            values.add(new Site(ids[i], names[i]));
-        }
-    }
 
     public SiteListAdapter(Context context, List<Site> list)
     {
         super(context, R.layout.template_scan_list_item);
-        values = new ArrayList<Site>(list.size());
         this.context = context;
-
+        values = new ArrayList<Site>(list.size());
         for(int i = 0; i < list.size(); ++i)
         {
             values.add(list.get(i));
@@ -49,9 +39,10 @@ public class SiteListAdapter extends ArrayAdapter<Site> {
     public SiteListAdapter(Context context)
     {
         super(context, R.layout.template_scan_list_item);
-
-        values = new ArrayList<Site>();
         this.context = context;
+        this.site_api = new SitesAPI(context);
+        site_api.SyncPull();
+        values = new ArrayList<Site>(site_api.Sites());
         values.clear();
     }
 

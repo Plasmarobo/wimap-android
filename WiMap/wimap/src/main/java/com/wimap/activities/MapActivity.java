@@ -12,19 +12,22 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.wimap.components.AndroidRouter;
-import com.wimap.components.BasicResult;
-import com.wimap.components.RouterDatabase;
-import com.wimap.components.WiMapServiceSubscriber;
+import com.wimap.api.RouterAPI;
+import com.wimap.api.SitesAPI;
+import com.wimap.common.Router;
 import com.wimap.common.math.Intersect;
 import com.wimap.common.math.RadialDistance;
+import com.wimap.location.models.AndroidRouter;
+import com.wimap.location.models.BasicResult;
+import com.wimap.location.templates.WiMapLocationSubscriber;
 import com.wimap.wimap.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends WiMapServiceSubscriber {
-	private List<AndroidRouter> routers;
+public class MapActivity extends WiMapLocationSubscriber {
+	private SitesAPI sites;
+    private RouterAPI routers;
 	private ImageView map;
 	private ImageView icon;
 	
@@ -38,11 +41,9 @@ public class MapActivity extends WiMapServiceSubscriber {
         
         map = (ImageView) findViewById(R.id.map_image);
         icon = (ImageView) findViewById(R.id.avatar);
-        RouterDatabase db = new RouterDatabase(this);
-        db.open();
-        //Fix this for production
-        routers = db.getAllRouters();
-        db.close();
+        sites = new SitesAPI(this);
+        routers = new RouterAPI(this);
+
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT); //WRAP_CONTENT param can be FILL_PARENT
         params.leftMargin = map.getWidth()/2; //XCOORD
         params.topMargin = map.getHeight()/2; //YCOORD
@@ -57,14 +58,15 @@ public class MapActivity extends WiMapServiceSubscriber {
 		if(wifi_list.size() > 4)
 		{
 		List<RadialDistance> ld = new ArrayList<RadialDistance>();
+        List<Router> router_list = routers.Routers();
 		for(int i = 0; i < wifi_list.size(); ++i)
 		{
 			BasicResult sr = wifi_list.get(i);
 			if(sr.GetPower() > -90)
 			{
-				for(int j = 0; j < routers.size(); ++j)
+				for(int j = 0; j < router_list.size(); ++j)
 				{
-					AndroidRouter rt = (AndroidRouter) routers.get(j);
+					AndroidRouter rt = (AndroidRouter) router_list.get(j);
 					if(rt == null)
 						continue;
 					if(sr.GetUID().equals(rt.GetUID()))

@@ -16,34 +16,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.wimap.components.RouterDatabase;
-import com.wimap.wimap.R;
+import com.wimap.api.RouterAPI;
 
-public class CalibrationActivity extends Activity {
+public class DevAppActivity extends Activity {
+    private RouterAPI routers;
     public static final int DISTANCEACTIVITY = 6;
     public static final int EDITROUTER = 5;
-    public static final int UPLOAD = 8;
-    public static final int DOWNLOAD = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calibration);
+        routers = new RouterAPI(this);
+        setContentView(R.layout.wait);
+        routers.SyncPull();
+
+        setContentView(R.layout.activity_devapp);
         Button ClearButton = (Button) findViewById(R.id.clear_cal);
         Button DistButton = (Button) findViewById(R.id.dist_cal);
         Button EditButton = (Button) findViewById(R.id.edit_cal);
         Button TrainButton = (Button) findViewById(R.id.train_cal);
         Button Upload = (Button) findViewById(R.id.up_cal);
         Button Download = (Button) findViewById(R.id.down_cal);
-        ClearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RouterDatabase db = new RouterDatabase(view.getContext());
-                db.open();
-                db.ForceReset();
-                db.close();
-            }
-        });
         DistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,23 +60,24 @@ public class CalibrationActivity extends Activity {
             public void onClick(View view){
                 Log.i("Train", "click");
 
-                Intent train_router = new Intent(view.getContext(), BeaconActivity.class);
+                Intent train_router = new Intent(view.getContext(), TrainBeaconActivity.class);
                 startActivity(train_router);
             }
         });
         Upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent upload =  new Intent(view.getContext(), PushRouterActivity.class);
-                startActivityForResult(upload, UPLOAD);
+                setContentView(R.layout.wait);
+                routers.SyncPush();
+                setContentView(R.layout.activity_devapp);
             }
         });
         Download.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent download = new Intent(view.getContext(), FetchRouterActivity.class);
-                startActivityForResult(download, DOWNLOAD);
-
+                setContentView(R.layout.wait);
+                routers.SyncPull();
+                setContentView(R.layout.activity_devapp);
             }
         });
     }

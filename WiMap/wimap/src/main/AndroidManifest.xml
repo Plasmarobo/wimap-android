@@ -37,10 +37,6 @@
         </activity>
 
         <activity
-            android:name="com.wimap.activities.FetchRouterActivity"
-            android:label="@string/title_activity_fetchrouter" >
-        </activity>
-        <activity
             android:name="com.wimap.activities.HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>

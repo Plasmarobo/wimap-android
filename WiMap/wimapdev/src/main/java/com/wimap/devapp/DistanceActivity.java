@@ -16,21 +16,21 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wimap.components.AndroidRouter;
-import com.wimap.components.BasicResult;
-import com.wimap.components.RouterDatabase;
-import com.wimap.components.WiMapServiceSubscriber;
+import com.wimap.api.RouterAPI;
 import com.wimap.devapp.lists.SelectRouterActivity;
-import com.wimap.wimap.R;
+import com.wimap.location.models.AndroidRouter;
+import com.wimap.location.models.BasicResult;
+import com.wimap.location.templates.WiMapLocationSubscriber;
 
 import java.util.List;
 
-public class DistanceActivity extends WiMapServiceSubscriber {
+
+public class DistanceActivity extends WiMapLocationSubscriber {
 	private final static int SELECTROUTER = 7;
 	private String ssid;
 	private String uid;
 	private AndroidRouter current;
-	RouterDatabase db;
+	RouterAPI db;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -38,7 +38,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 		Log.i("DistanceActivity", "Created");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_distance_view);
-		db = new RouterDatabase(this);
+		db = new RouterAPI(this);
 		startSelection(getBaseContext());
 
 	}
@@ -91,9 +91,8 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 			{
 				ssid = data.getStringExtra("ssid");
 				uid = data.getStringExtra("uid");
-				db.open();
-				current = db.getRouterByUID(uid);
-				db.close();
+				current =(AndroidRouter) db.FilterByUID(uid);
+
 
 				if(current == null)
 				{
@@ -106,7 +105,7 @@ public class DistanceActivity extends WiMapServiceSubscriber {
 				TextView routermac = (TextView) findViewById(R.id.routermac);
 				routermac.setText(new String(uid));
 				findViewById(R.id.distance_root).invalidate();
-				onScanAggrigate(WiMapServiceSubscriber.cache);
+				onScanAggrigate(WiMapLocationSubscriber.cache);
 			}
 			
 		}

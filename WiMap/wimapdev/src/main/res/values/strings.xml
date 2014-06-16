@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2014 WiMap.
+  ~
+  ~ Authorized internal use only.
+  ~ No reproduction or access without express permission of WiMap.
+  -->
+
+<resources>
+    <string name="title_activity_beacon">Beacon</string>
+    <string name="title_activity_calibrate">Calibration Options</string>
+    <string name="title_activity_devapp">Dev App</string>
+    <string name="title_activity_distance">Distance</string>
+    <string name="title_activity_edit_router">Edit Router</string>
+    <string name="title_activity_scan_list">Scan Results</string>
+    <string name="title_activity_select_router">Select Router</string>
+    <string name="title_activity_select_site">Select Site</string>
+</resources>

@@ -16,22 +16,20 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wimap.components.AndroidRouter;
+import com.wimap.api.RouterAPI;
 
-import com.wimap.components.RouterDatabase;
 import com.wimap.devapp.lists.ScanListActivity;
-import com.wimap.templates.ScanListActivity;
-import com.wimap.wimap.R;
+import com.wimap.location.models.AndroidRouter;
 
 
 public class CalibrateActivity extends ScanListActivity {
-	private RouterDatabase db;
+	private RouterAPI routers;
 	static final int EDITROUTER = 1;
     static final int RESULT_OK = 1;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		db = new RouterDatabase(this);
+		routers = new RouterAPI(this);
 		listview.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> list, View row, int position, long id) {
@@ -51,6 +49,10 @@ public class CalibrateActivity extends ScanListActivity {
 			}
 		});
 	}
+    public void onDestroy()
+    {
+        routers.Flush();
+    }
 
 	
 	@Override
@@ -65,10 +67,9 @@ public class CalibrateActivity extends ScanListActivity {
 				rt.SetZ(data.getDoubleExtra("Z", 0));
 				rt.SetPower(data.getIntExtra("dBm", -90), data.getIntExtra("frequency", 2400));
 
-				db.open();
-				db.WriteRouter(rt);
-				db.close();
-				Toast.makeText(this, "Saved Router", Toast.LENGTH_SHORT).show();
+				routers.Push(rt);
+				Toast.makeText(this, "Commiting Router", Toast.LENGTH_SHORT).show();
+
                 this.listview.invalidate();
 			}else{
                 Toast.makeText(this, "Could not save calibration", Toast.LENGTH_LONG).show();

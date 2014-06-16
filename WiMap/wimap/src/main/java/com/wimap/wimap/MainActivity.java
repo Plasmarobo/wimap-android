@@ -14,13 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
-import com.wimap.activities.CalibrationActivity;
 import com.wimap.activities.HomeActivity;
-import com.wimap.components.BasicResult;
-import com.wimap.components.WiMapServiceSubscriber;
-import com.wimap.services.WiMapService;
+import com.wimap.location.core.WiMapLocationService;
+import com.wimap.location.models.BasicResult;
+import com.wimap.location.templates.WiMapLocationSubscriber;
 
 import java.util.ArrayList;
 
@@ -33,23 +31,12 @@ public class MainActivity extends Activity {
             finish();
         }
         setContentView(R.layout.activity_main);
-        ImageView logo = (ImageView) findViewById(R.id.splash);
-        logo.setOnLongClickListener(new View.OnLongClickListener(){
 
-            @Override
-            public boolean onLongClick(View v) {
-                WiMapServiceSubscriber.setCache(new ArrayList<BasicResult>());
-                StartService();
-                startActivity(new Intent(getBaseContext(), CalibrationActivity.class));
-                return true;
-            }
-
-        });
         Button login_submit = (Button) findViewById(R.id.login_submit);
         login_submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                WiMapServiceSubscriber.setCache(new ArrayList<BasicResult>());
+                WiMapLocationSubscriber.setCache(new ArrayList<BasicResult>());
                 StartService();
                 startActivity(new Intent(getBaseContext(), HomeActivity.class));
             }
@@ -86,7 +73,7 @@ public class MainActivity extends Activity {
     {
         service = new Runnable() {
             public void run() {
-                startService(new Intent(getBaseContext(),WiMapService.class));
+                startService(new Intent(getBaseContext(),WiMapLocationService.class));
             }
         };
         new Thread(service).start();

@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public interface APIObject {
 
-    public JSONObject ToJSON();
+    public JSONObject ToJSON() throws JSONException;
     public boolean FromJSON(JSONObject json) throws JSONException;
     public JSONObject FromJSONArray(JSONArray json) throws JSONException;
 }

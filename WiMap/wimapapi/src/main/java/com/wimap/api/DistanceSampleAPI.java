@@ -8,6 +8,7 @@
 package com.wimap.api;
 
 import com.wimap.api.templates.BasicAPI;
+import com.wimap.common.APIObject;
 import com.wimap.common.DistanceSample;
 
 import org.apache.http.HttpResponse;
@@ -32,6 +33,13 @@ public class DistanceSampleAPI extends BasicAPI
     public String DISTANCE_ENDPOINT = "distancesamples";
     public String DISTANCE_FIELD = "sample";
 
+    protected Queue<DistanceSample> queue;
+
+    public DistanceSampleAPI()
+    {
+        queue = new LinkedList<DistanceSample>();
+    }
+
     @Override
     public String GetEndpoint()
     {
@@ -45,7 +53,17 @@ public class DistanceSampleAPI extends BasicAPI
 
     @Override
     protected boolean AddPushArguments(List<NameValuePair> arguments) {
-        return false;
+        JSONArray json_array = new JSONArray();
+        while(!queue.isEmpty())
+        {
+            APIObject current = queue.poll();
+            if( current != null)
+            {
+                json_array.put(current.ToJSON());
+            }
+        }
+        arguments.add(new BasicNameValuePair(DISTANCE_FIELD,json_array.toString()));
+        return true;
     }
 
     @Override
@@ -55,7 +73,15 @@ public class DistanceSampleAPI extends BasicAPI
 
     @Override
     protected boolean OnResult(HttpResponse response) {
-        return false;
+        if (response.getStatusLine().getStatusCode() == 200)
+            return true;
+        else
+            return false;
+    }
+
+    public void Push(DistanceSample distanceSample)
+    {
+        queue.add(distanceSample);
     }
 
 

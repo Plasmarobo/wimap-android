@@ -98,7 +98,6 @@ public abstract class CachedAPI extends BasicAPI {
         return true;
     }
 
-
     protected List<APIObject> ParseResponse(HttpResponse response)
     {
         InputStream inputStream = null;

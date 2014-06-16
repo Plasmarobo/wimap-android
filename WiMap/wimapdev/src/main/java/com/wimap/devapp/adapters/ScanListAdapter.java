@@ -17,8 +17,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 
-import com.wimap.devapp.R;
-import com.wimap.wimap.R;
+import com.wimap.api.RouterAPI;
+import com.wimap.location.models.BasicResult;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,23 +29,22 @@ import java.util.List;
 public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	private final Context context;
 	private ArrayList<BasicResult> values;
-    private RouterDatabase db;
+    private RouterAPI db;
 	
 	public ScanListAdapter(Context context, String[] ssids, String[] uids, int[] powers, int[] freqs)
 	{
 		super(context, R.layout.template_scan_list_item);
-        db = new RouterDatabase(context);
+        db = new RouterAPI(context);
 		values = new ArrayList<BasicResult>();
 		this.context = context;
 		int size = ssids.length;
 		if(size > uids.length) size = uids.length;
 		if(size > powers.length) size = powers.length;
-        db.open();
+
 		for(int i = 0; i < size; ++i)
 		{
-			values.add(new BasicResult(powers[i], ssids[i], uids[i], freqs[i], db.getRouterByUID(uids[i]) != null));
+			values.add(new BasicResult(powers[i], ssids[i], uids[i], freqs[i], db.FindByUID(uids[i]) != null));
 		}
-        db.close();
 	}
 	
 	public ScanListAdapter(Context context, List<ScanResult> list)
@@ -52,20 +52,19 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 		super(context, R.layout.template_scan_list_item);
 		values = new ArrayList<BasicResult>(list.size());
 		this.context = context;
-        db = new RouterDatabase(context);
-        db.open();
+        db = new RouterAPI(context);
+
 		for(int i = 0; i < list.size(); ++i)
 		{
             BasicResult r = new BasicResult(list.get(i));
-            r.SetCalibrated(db.getRouterByUID(r.GetUID()) != null);
+            r.SetCalibrated(db.FindByUID(r.GetUID()) != null);
 			values.add(r);
 		}
-        db.close();
 	}
 	public ScanListAdapter(Context context)
 	{
 		super(context, R.layout.template_scan_list_item);
-        db = new RouterDatabase(context);
+        db = new RouterAPI(context);
 		values = new ArrayList<BasicResult>();
 		this.context = context;
 		values.clear();
@@ -106,9 +105,7 @@ public class ScanListAdapter extends ArrayAdapter<BasicResult> {
 	@Override
 	public void add(BasicResult br)
 	{
-        db.open();
-        br.SetCalibrated(db.getRouterByUID(br.GetUID()) != null);
-        db.close();
+        br.SetCalibrated(db.FindByUID(br.GetUID()) != null);
 		values.add(br);
 	}
 	
