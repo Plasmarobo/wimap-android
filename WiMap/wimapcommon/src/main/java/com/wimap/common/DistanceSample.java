@@ -38,7 +38,7 @@ public class DistanceSample implements APIObject{
     }
 
     @Override
-    public JSONObject ToJSON() throws JSONException {
+    public JSONObject ToJSON(){
         JSONObject json = new JSONObject();
         json.put(router_id_tag, router_id);
         json.put(power_tag, power);

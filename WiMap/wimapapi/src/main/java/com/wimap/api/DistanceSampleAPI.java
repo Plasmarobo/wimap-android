@@ -53,14 +53,17 @@ public class DistanceSampleAPI extends BasicAPI
 
     @Override
     protected boolean AddPushArguments(List<NameValuePair> arguments) {
+
         JSONArray json_array = new JSONArray();
         while(!queue.isEmpty())
         {
-            APIObject current = queue.poll();
-            if( current != null)
-            {
-                json_array.put(current.ToJSON());
-            }
+
+                APIObject current = queue.poll();
+                if (current != null) {
+
+                    json_array.put(current.ToJSON());
+                }
+
         }
         arguments.add(new BasicNameValuePair(DISTANCE_FIELD,json_array.toString()));
         return true;

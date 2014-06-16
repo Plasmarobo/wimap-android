@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.wimap.api.SitesAPI;
 import com.wimap.common.Site;
+import com.wimap.devapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

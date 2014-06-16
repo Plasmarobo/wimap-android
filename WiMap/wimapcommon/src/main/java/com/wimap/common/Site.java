@@ -32,7 +32,7 @@ public class Site implements APIObject
     }
 
     @Override
-    public JSONObject ToJSON() throws JSONException {
+    public JSONObject ToJSON(){
         JSONObject item = new JSONObject();
         item.put(id_tag, id);
         item.put(name_tag, name);

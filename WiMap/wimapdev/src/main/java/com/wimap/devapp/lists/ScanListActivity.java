@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 
+import com.wimap.devapp.R;
 import com.wimap.devapp.adapters.ScanListAdapter;
 import com.wimap.location.core.WiMapLocationService;
 import com.wimap.location.models.AndroidRouter;

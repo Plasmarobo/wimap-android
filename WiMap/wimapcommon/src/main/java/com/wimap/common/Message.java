@@ -28,7 +28,7 @@ public class Message implements APIObject {
 
 
     @Override
-    public JSONObject ToJSON() throws JSONException {
+    public JSONObject ToJSON(){
         JSONObject json = new JSONObject();
         json.put(title_tag,title);
         json.put(icon_tag,icon);

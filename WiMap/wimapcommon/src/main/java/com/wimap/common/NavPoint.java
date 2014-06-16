@@ -42,7 +42,7 @@ public class NavPoint implements APIObject {
 
 
     @Override
-    public JSONObject ToJSON() throws JSONException {
+    public JSONObject ToJSON(){
         JSONObject json = new JSONObject();
         json.put(x_tag, x);
         json.put(y_tag, y);

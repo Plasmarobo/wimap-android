@@ -50,7 +50,7 @@ public class Track implements APIObject {
     }
 
     @Override
-    public JSONObject ToJSON() throws JSONException {
+    public JSONObject ToJSON(){
         JSONObject entry = new JSONObject();
             entry.put(x_tag, this.location.x);
             entry.put(y_tag, this.location.y);
