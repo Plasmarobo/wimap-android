@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 public class Track implements APIObject {
 
     public static final String x_tag = "x";
@@ -23,16 +25,19 @@ public class Track implements APIObject {
     public static final String z_confidence_tag = "z_confidence";
     public static final String site_id_tag = "site_id";
     public static final String user_id_tag = "user_id";
+    public static final String timestamp_tag = "timestamp";
 
     public Intersect location;
     public int site_id;
     public int user_id;
+    public Date time;
 
     public Track()
     {
         location = null;
         site_id = -1;
         user_id = -1;
+        time = new Date();
     }
 
     public Track(Intersect location)
@@ -40,6 +45,7 @@ public class Track implements APIObject {
         this.location = location;
         this.site_id = -1;
         this.user_id = -1;
+        time = new Date();
     }
 
     public Track(Intersect location, int site_id, int user_id)
@@ -47,6 +53,7 @@ public class Track implements APIObject {
         this.location = location;
         this.site_id = site_id;
         this.user_id = user_id;
+        time = new Date();
     }
 
     @Override
@@ -60,6 +67,7 @@ public class Track implements APIObject {
             entry.put(z_confidence_tag, this.location.z_conf);
             entry.put(site_id_tag, this.site_id);
             entry.put(user_id_tag, this.user_id);
+            entry.put(timestamp_tag, this.time.toString());
         return entry;
     }
 
