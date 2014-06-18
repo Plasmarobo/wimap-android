@@ -6,12 +6,17 @@
  */
 
 package com.wimap.api;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
 import com.wimap.common.Router;
+import com.wimap.common.Site;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -60,7 +65,7 @@ public class RouterAPI extends CachedAPI {
         Iterator<Router> i = this.Routers().iterator();
         while(i.hasNext()) {
             Router current = i.next();
-            if(current.GetUID() == uid)
+            if(current.uid == uid)
             {
                 result.add(current);
             }
@@ -72,7 +77,7 @@ public class RouterAPI extends CachedAPI {
         Iterator<Router> i = this.Routers().iterator();
         while(i.hasNext()) {
             Router current = i.next();
-            if(current.GetUID() == uid)
+            if(current.uid == uid)
             {
                 return current;
             }
@@ -102,27 +107,75 @@ public class RouterAPI extends CachedAPI {
 
     @Override
     protected String GetLocalDBName() {
-        return null;
+        return "routers.db";
     }
 
     @Override
     protected int GetLocalDBVersion() {
-        return 0;
+        return 1;
     }
 
     @Override
-    protected SQLiteDatabase GetLocalDatabase() {
-        return null;
+    protected String GetCreateSQL() {
+        return "create table ROUTERES " +
+                "(id integer primary key, " +
+                "x double not null, " +
+                "y double not null, " +
+                "z double not null, " +
+                "ssid text, " +
+                "uid text not null, " +
+                "power double, " +
+                "frequency double not null, " +
+                "site_id integer not null, " +
+                "tx_power double);";
     }
 
     @Override
-    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db) {
+        Cursor cursor = local_db.query("ROUTERS", new String[]{"*"}, "*", null, null, null, null);
+        List<APIObject> list = new ArrayList<APIObject>(cursor.getCount());
+        do {
+            Router r = new Router();
+            r.id = cursor.getInt(0);
+            r.x = cursor.getDouble(1);
+            r.y = cursor.getDouble(2);
+            r.z = cursor.getDouble(3);
+            r.ssid = cursor.getString(4);
+            r.uid = cursor.getString(5);
+            r.power = cursor.getDouble(6);
+            r.frequency = cursor.getDouble(7);
+            r.site_id = cursor.getInt(8);
+            r.tx_power = cursor.getDouble(9);
+            list.add(r);
+        }while(cursor.moveToNext());
+        return list;
     }
 
     @Override
-    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
+    protected boolean LocalDBWrite(SQLiteDatabase local_db, List<APIObject> src) {
+        Iterator<Router> iterator = ((List<Router>)(List<?>)src).iterator();
+        while(iterator.hasNext())
+        {
+            Router r = iterator.next();
+            ContentValues cv = new ContentValues();
+            cv.put("id", r.id);
+            cv.put("x", r.x);
+            cv.put("y", r.y);
+            cv.put("z", r.z);
+            cv.put("ssid", r.ssid);
+            cv.put("uid", r.uid);
+            cv.put("power", r.power);
+            cv.put("frequency", r.frequency);
+            cv.put("site_id", r.site_id);
+            cv.put("tx_power", r.tx_power);
+            try {
+                local_db.insert("ROUTERS", null, cv);
+            }catch(SQLiteException e){
+                Log.e("Sqlite", e.getMessage());
+                return false;
+            }
+        }
+        return true;
     }
 
     public void SetSite(int site)

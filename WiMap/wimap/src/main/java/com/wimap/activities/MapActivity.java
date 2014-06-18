@@ -69,9 +69,9 @@ public class MapActivity extends WiMapLocationSubscriber {
 					AndroidRouter rt = (AndroidRouter) router_list.get(j);
 					if(rt == null)
 						continue;
-					if(sr.GetUID().equals(rt.GetUID()))
+					if(sr.GetUID().equals(rt.uid))
 					{
-						ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetAverageDistance(sr)));
+						ld.add(new RadialDistance(rt.x, rt.y, rt.z, rt.GetAverageDistance(sr)));
 						break;
 					}
 				}

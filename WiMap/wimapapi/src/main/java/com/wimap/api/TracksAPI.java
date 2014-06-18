@@ -70,26 +70,27 @@ public class TracksAPI extends CachedAPI {
 
     @Override
     protected String GetLocalDBName() {
-        return null;
+        return "tracks.db";
     }
 
     @Override
     protected int GetLocalDBVersion() {
-        return 0;
+        return 1;
     }
 
     @Override
-    protected SQLiteDatabase GetLocalDatabase() {
+    protected String GetCreateSQL() {
         return null;
     }
 
     @Override
-    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db) {
         return null;
     }
 
+
     @Override
-    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
+    protected boolean LocalDBWrite(SQLiteDatabase local_db, List<APIObject> src) {
+        return false;
     }
 }

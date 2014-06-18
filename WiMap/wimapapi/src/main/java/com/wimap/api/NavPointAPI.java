@@ -63,27 +63,35 @@ public class NavPointAPI extends CachedAPI {
 
     @Override
     protected String GetLocalDBName() {
-        return null;
+        return "navpoints.db";
     }
 
     @Override
     protected int GetLocalDBVersion() {
-        return 0;
+        return 1;
     }
 
     @Override
-    protected SQLiteDatabase GetLocalDatabase() {
+    protected String GetCreateSQL() {
+        return  "create table NAVPOINTS " +
+                "(id integer not null primary key autoincrement, " +
+                "x double not null, " +
+                "y double not null, " +
+                "z double not null, " +
+                "range double not null, " +
+                "title text, " +
+                "body text);";
+    }
+
+    @Override
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db) {
         return null;
     }
 
     @Override
-    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
-    }
+    protected boolean LocalDBWrite(SQLiteDatabase local_db, List<APIObject> src) {
 
-    @Override
-    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
+        return false;
     }
 
     @Override

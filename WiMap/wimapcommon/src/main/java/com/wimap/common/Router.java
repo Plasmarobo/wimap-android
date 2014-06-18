@@ -25,17 +25,17 @@ public class Router implements APIObject {
     public static final String tag_site_id = "site_id";
     public static final String tag_tx_power = "tx_power";
 
-	protected int id;
-	protected double x;
-	protected double y;
-	protected double z;
-	protected String ssid;
-	protected String uid;
-	protected double power;
-	protected double freq;
-	protected int site_id;
-    protected double tx_power;
-	protected final double c =  299792458.0;
+	public int id;
+	public double x;
+	public double y;
+	public double z;
+	public String ssid;
+	public String uid;
+	public double power;
+	public double frequency;
+	public int site_id;
+    public double tx_power;
+	public final double c =  299792458.0;
 	
 	public Router()
 	{
@@ -48,12 +48,12 @@ public class Router implements APIObject {
 		uid = "MyMAC";
 		power = -90;
         tx_power = 75;
-		freq = 2400;
+		frequency = 2400;
 	}
     public Router(Router rhs)
     {
-        this(rhs.GetX(), rhs.GetY(), rhs.GetZ(), rhs.GetSSID(), rhs.GetUID(), rhs.GetSiteID(), rhs.GetPower(), rhs.GetFreq(), rhs.GetTxPower());
-        this.id = rhs.GetID();
+        this(rhs.x, rhs.y, rhs.z, rhs.ssid, rhs.uid, rhs.site_id, rhs.power, rhs.frequency, rhs.tx_power);
+        this.id = rhs.id;
     }
 	public Router(double x, double y, double z, String ssid, String uid, double dBm, double freq)
 	{
@@ -74,31 +74,9 @@ public class Router implements APIObject {
 		this.ssid = ssid;
 		this.uid = uid;
 		this.site_id = site_id;
-		this.freq = frequency;
+		this.frequency = frequency;
 		this.power = dBm; //Distance initializer of 1
 	}
-	public int GetID() { return id;}
-	public void SetID(int id) { this.id = id;}
-	public void SetSiteID(int id) { this.site_id = id;}
-	public double GetX() { return x;}
-	public double GetY() { return y;}
-	public double GetZ() { return z;}
-	public String GetSSID() { return ssid;}
-	public String GetUID() { return uid;}
-	public int GetSiteID() {return site_id;}
-	public double GetPower() { return power;}
-	public double GetFreq() {return freq;}
-    public double GetTxPower() {return tx_power;}
-	
-	public void SetX(double x) { this.x = x;}
-	public void SetY(double y) { this.y = y;}
-	public void SetZ(double z) { this.z = z;}
-	public void SetSSID(String ssid) { this.ssid = ssid;}
-	public void SetUID(String uid) { this.uid = uid;}
-	public void SetPower(double power) { this.power = power;}
-	public void SetFreq(double freq) {this.freq = freq;}
-	public void SetPower(double power, double freq) {this.freq = freq; this.power = power;}
-    public void SetTxPower(double power) { this.tx_power = power;}
 
     public double GetFSPLRelativeDistance(double dBm, double ptx)
     {
@@ -129,7 +107,7 @@ public class Router implements APIObject {
     public double GetFSPLDistance_d(double dBm)
     {
         dBm = Math.abs(dBm);
-        double exponent = (27.55 - (20 * Math.log10(this.freq) ) + dBm) / 20.0;
+        double exponent = (27.55 - (20 * Math.log10(this.frequency) ) + dBm) / 20.0;
         return Math.pow(10.0, exponent);
     }
 
@@ -205,15 +183,15 @@ public class Router implements APIObject {
     @Override
     public JSONObject ToJSON(){
         JSONObject router_json = new JSONObject();
-            router_json.put(tag_x, this.GetX());
-            router_json.put(tag_y, this.GetY());
-            router_json.put(tag_z, this.GetZ());
-            router_json.put(tag_site_id, this.GetSiteID());
-            router_json.put(tag_ssid, this.GetSSID());
-            router_json.put(tag_uid, this.GetUID());
-            router_json.put(tag_power, this.GetPower());
-            router_json.put(tag_freq, this.GetFreq());
-            router_json.put(tag_tx_power, this.GetTxPower());
+            router_json.put(tag_x, this.x);
+            router_json.put(tag_y, this.y);
+            router_json.put(tag_z, this.z);
+            router_json.put(tag_site_id, this.site_id);
+            router_json.put(tag_ssid, this.ssid);
+            router_json.put(tag_uid, this.uid);
+            router_json.put(tag_power, this.power);
+            router_json.put(tag_freq, this.frequency);
+            router_json.put(tag_tx_power, this.tx_power);
         return router_json;
     }
 
@@ -227,7 +205,7 @@ public class Router implements APIObject {
                 this.uid = json.getString(tag_uid);
                 this.site_id = json.getInt(tag_site_id);
                 this.power = json.getDouble(tag_power);
-                this.freq = json.getDouble(tag_freq);
+                this.frequency = json.getDouble(tag_freq);
                 this.tx_power = json.getDouble((tag_tx_power));
                 return true;
     }

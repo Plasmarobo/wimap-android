@@ -140,7 +140,7 @@ public class WiMapWifiFilter extends AndroidRouter {
         List<AndroidRouter> routers = (List<AndroidRouter>)(List<?>)api.Routers();
         for(AndroidRouter rt : routers)
         {
-            filters.put(rt.GetUID(), new WiMapWifiFilter(rt, sample_count));
+            filters.put(rt.uid, new WiMapWifiFilter(rt, sample_count));
         }
         return filters;
     }

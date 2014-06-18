@@ -35,7 +35,7 @@ public class AndroidRouter extends Router {
 		this.z = z;
 		this.ssid = r.SSID;
 		this.uid = r.BSSID;
-		this.freq = r.frequency;
+		this.frequency = r.frequency;
 		this.power = r.level;//Distance initializer of 1
 	}
     public AndroidRouter(double x, double y, double z, String ssid, String uid, double dBm, double freq)
@@ -51,7 +51,7 @@ public class AndroidRouter extends Router {
 	public void PowerFromScan(ScanResult scan) 
 	{ 
 		this.power = scan.level;
-		this.freq = scan.frequency;
+		this.frequency = scan.frequency;
 	}
 
 	public double GetComparativeDistance(BasicResult sr)
@@ -62,7 +62,7 @@ public class AndroidRouter extends Router {
 		
 		//double exp = (relative_strength - 20*Math.log10(this.freq) + 27.55)/20.0;
 	    //return 1+Math.pow(10.0, exp);
-		return 1 + Math.pow(10, (relative_strength-2.45)/20)/this.freq;
+		return 1 + Math.pow(10, (relative_strength-2.45)/20)/this.frequency;
 	}
 	public double GetAverageDistance(BasicResult sr)
 	{
@@ -85,7 +85,7 @@ public class AndroidRouter extends Router {
 
     public BasicResult ToBasicResult()
     {
-        return new BasicResult(this.power, this.GetSSID(), this.GetUID(), this.GetFreq());
+        return new BasicResult(this.power, this.ssid, this.uid, this.frequency);
     }
 
 }

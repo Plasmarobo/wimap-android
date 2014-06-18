@@ -76,7 +76,7 @@ public class TrainBeaconActivity extends Activity{
 			BasicResult r = null;
 			for(int i = 0; i < wifi_list.size(); ++i)
 			{
-				if(wifi_list.get(i).GetUID().equals(rt.GetUID()))
+				if(wifi_list.get(i).GetUID().equals(rt.uid))
 				{
 					r = wifi_list.get(i);
 					break;
@@ -192,15 +192,15 @@ public class TrainBeaconActivity extends Activity{
         save_tx_power.setOnClickListener(new View.OnClickListener() {
                                              @Override
                                             public void onClick(View view) {
-                                                 double tx_power = rt.GetTxPower();
+                                                 double tx_power = rt.tx_power;
                                                  RouterAPI db = new RouterAPI(getBaseContext());
 
                                                  //Copy out existing calibration
-                                                 AndroidRouter tmp = (AndroidRouter) db.FilterByUID(rt.GetUID());
+                                                 AndroidRouter tmp = (AndroidRouter) db.FilterByUID(rt.uid);
                                                  if (tmp == null) {
                                                      tmp = rt;
                                                  } else {
-                                                     tmp.SetTxPower(tx_power);
+                                                     tmp.tx_power = (tx_power);
                                                  }
                                                  db.Push(tmp);
                                              }
@@ -211,7 +211,7 @@ public class TrainBeaconActivity extends Activity{
 	
 	public void onStart(View v)
 	{
-		if(rt.GetUID().equals(""))
+		if(rt.uid.equals(""))
 			startSelection(getBaseContext());
 		started = true;
 		findViewById(R.id.beacon_start).setVisibility(View.GONE);
@@ -267,9 +267,9 @@ public class TrainBeaconActivity extends Activity{
 				rt = new AndroidRouter(0.0, 0.0, 0.0, data.getStringExtra("ssid"), data.getStringExtra("uid"), Double.parseDouble(data.getStringExtra("dBm")), Double.parseDouble(data.getStringExtra("freq")));
 
 				TextView routername = (TextView) findViewById(R.id.ssid_beacon);
-				routername.setText(new String(rt.GetSSID()));
+				routername.setText(new String(rt.ssid));
 				TextView routermac = (TextView) findViewById(R.id.uid_beacon);
-				routermac.setText(new String(rt.GetUID()));
+				routermac.setText(new String(rt.uid));
 				findViewById(R.id.beacon_root).invalidate();
 				//beaconAPI = new BeaconAPI(rt.GetSSID(), rt.GetUID());
                 this.data = new double[DISTANCE_MAX][SAMPLE_COUNT];

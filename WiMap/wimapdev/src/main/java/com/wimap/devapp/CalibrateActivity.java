@@ -62,10 +62,11 @@ public class CalibrateActivity extends ScanListActivity {
 		{
 			if(resultCode == RESULT_OK)
 			{
-				rt.SetX(data.getDoubleExtra("X", 0));
-				rt.SetY(data.getDoubleExtra("Y", 0));
-				rt.SetZ(data.getDoubleExtra("Z", 0));
-				rt.SetPower(data.getIntExtra("dBm", -90), data.getIntExtra("frequency", 2400));
+				rt.x = (data.getDoubleExtra("X", 0));
+				rt.y = (data.getDoubleExtra("Y", 0));
+				rt.z = (data.getDoubleExtra("Z", 0));
+				rt.power = (data.getIntExtra("dBm", -90));
+                rt.frequency = (data.getIntExtra("frequency", 2400));
 
 				routers.Push(rt);
 				Toast.makeText(this, "Commiting Router", Toast.LENGTH_SHORT).show();

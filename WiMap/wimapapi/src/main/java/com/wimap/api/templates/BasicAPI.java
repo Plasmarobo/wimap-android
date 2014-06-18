@@ -28,12 +28,16 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public abstract class BasicAPI{
 
     private static String API_ROOT = "http://wimapnav.com/api";
     private static final String API_VERSION = "v1";
     private static final String API_KEY = "dummy_key";
+    private static final int API_TIMEOUT = 1000; //ms
 
     public BasicAPI(String url)
     {
@@ -90,7 +94,7 @@ public abstract class BasicAPI{
             @Override
             public boolean PerformRequest(Integer progress)
             {
-                HttpResponse resp = SyncPush();
+                HttpResponse resp = Push();
                 if(resp == null)
                    return false;
                 else
@@ -102,13 +106,40 @@ public abstract class BasicAPI{
         http_task.execute(async_push);
     }
 
+    public void SyncPush(){
+        HTTPInterface async_push = new HTTPInterface()
+        {
+            @Override
+            public boolean PerformRequest(Integer progress)
+            {
+                HttpResponse resp = Push();
+                if(resp == null)
+                    return false;
+                else
+                    OnResult(resp);
+                return true;
+            }
+        };
+        AsyncHTTP http_task = new AsyncHTTP();
+        http_task.execute(async_push);
+        try {
+            http_task.get(API_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void AsyncPull(){
         HTTPInterface async_pull = new HTTPInterface()
         {
             @Override
             public boolean PerformRequest(Integer progress)
             {
-                HttpResponse resp = SyncPull();
+                HttpResponse resp = Pull();
                 if(resp == null)
                     return false;
                 else
@@ -119,8 +150,35 @@ public abstract class BasicAPI{
         AsyncHTTP http_task = new AsyncHTTP();
         http_task.execute(async_pull);
     }
+    public void SyncPull()
+    {
+        HTTPInterface async_pull = new HTTPInterface()
+        {
+            @Override
+            public boolean PerformRequest(Integer progress)
+            {
+                HttpResponse resp = Pull();
+                if(resp == null)
+                    return false;
+                else
+                    OnResult(resp);
+                return true;
+            }
+        };
+        AsyncHTTP http_task = new AsyncHTTP();
+        http_task.execute(async_pull);
+        try {
+            http_task.get(API_TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
 
-    public HttpResponse SyncPush(){
+    protected HttpResponse Push(){
         HttpPost req = (HttpPost) FormPushRequest();
         // Execute HTTP Post Request
         try {
@@ -137,7 +195,7 @@ public abstract class BasicAPI{
         return null;
     }
 
-    public HttpResponse SyncPull(){
+    protected HttpResponse Pull(){
         HttpGet req = (HttpGet) FormPullRequest();
         // Execute HTTP Post Request
         try {

@@ -10,7 +10,9 @@ package com.wimap.api.templates;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.wimap.common.APIObject;
 
@@ -37,6 +39,27 @@ public abstract class CachedAPI extends BasicAPI {
     protected static final int queue_limit=64;
     protected SQLiteDatabase local_db;
 
+    protected class CacheOpenHelper extends SQLiteOpenHelper
+    {
+        public CacheOpenHelper(Context context) {
+            super(context, GetLocalDBName(), null, GetLocalDBVersion());
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase sqLiteDatabase) {
+            try {
+                sqLiteDatabase.execSQL(GetCreateSQL());
+            }catch(SQLiteException e){
+                Log.e("Sqlite:", e.getMessage());
+            }
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GetLocalDBName());
+            onCreate(sqLiteDatabase);
+        }
+    }
     public CachedAPI(Context c)
     {
         LoadCache(c);
@@ -53,10 +76,10 @@ public abstract class CachedAPI extends BasicAPI {
 
     protected boolean LoadCache(Context c)
     {
-        SQLiteDatabase local_db = GetLocalDatabase();
+        SQLiteDatabase local_db = GetLocalDatabase(c);
         cache = new ArrayList<APIObject>();
         if(local_db.isOpen()) {
-            LocalDBRead(local_db, cache);
+            cache = LocalDBRead(local_db);
             local_db.close();
         } else return false;
         return true;
@@ -64,7 +87,7 @@ public abstract class CachedAPI extends BasicAPI {
 
     protected boolean SaveCache(Context c)
     {
-        SQLiteDatabase local_db = GetLocalDatabase();
+        SQLiteDatabase local_db = GetLocalDatabase(c);
         if(local_db.isOpen())
         {
             LocalDBWrite(local_db, cache);
@@ -139,24 +162,29 @@ public abstract class CachedAPI extends BasicAPI {
 
     abstract protected String GetLocalDBName();
     abstract protected int GetLocalDBVersion();
-    abstract protected SQLiteDatabase GetLocalDatabase();
-    abstract protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest);
-    abstract protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest);
+    abstract protected String GetCreateSQL();
 
-
-    public List<APIObject> Pull()
+    protected SQLiteDatabase GetLocalDatabase(Context c)
     {
-        //TODO: Check sync key
-        cache = ParseResponse(SyncPull());
-        return cache;
+        CacheOpenHelper dbhelper = new CacheOpenHelper(c);
+        return dbhelper.getWritableDatabase();
     }
+
+    abstract protected List<APIObject> LocalDBRead(SQLiteDatabase local_db);
+    abstract protected boolean LocalDBWrite(SQLiteDatabase local_db, List<APIObject> src);
+
+
+
 
     public void Update()
     {
         AsyncPull();
     }
 
-    public void UpdateNow() { Pull(); }
+    public List<APIObject> UpdateNow() { //TODO: Check sync key
+        SyncPull();
+        return cache;
+    }
 
     public boolean OnResult(HttpResponse response)
     {

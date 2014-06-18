@@ -7,8 +7,14 @@
 
 package com.wimap.api;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
@@ -21,10 +27,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class SitesAPI extends CachedAPI {
-
 
     public static final String SITES_ENDPOINT = "sites";
     public static final String SITES_FIELD = "site";
@@ -72,27 +78,52 @@ public class SitesAPI extends CachedAPI {
 
     @Override
     protected String GetLocalDBName() {
-        return null;
+        return "sites.db";
     }
 
     @Override
     protected int GetLocalDBVersion() {
-        return 0;
+        return 1;
+    }
+
+
+    @Override
+    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db) {
+        Cursor cursor = local_db.query("SITES", new String[]{"*"}, null, null, null, null, null);
+        if(cursor.getCount() < 1) return null;
+        List<APIObject> list = new ArrayList<APIObject>(cursor.getCount());
+        do {
+            Site s = new Site();
+            s.id = cursor.getInt(0);
+            s.name = cursor.getString(1);
+            s.lattitude = cursor.getDouble(2);
+            s.longitude = cursor.getDouble(3);
+            s.range = cursor.getDouble(4);
+            list.add(s);
+        }while(cursor.moveToNext());
+        return list;
     }
 
     @Override
-    protected SQLiteDatabase GetLocalDatabase() {
-        return null;
-    }
-
-    @Override
-    protected List<APIObject> LocalDBRead(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
-    }
-
-    @Override
-    protected List<APIObject> LocalDBWrite(SQLiteDatabase local_db, List<APIObject> dest) {
-        return null;
+    protected boolean LocalDBWrite(SQLiteDatabase local_db, List<APIObject> src) {
+        Iterator<Site> iterator = ((List<Site>)(List<?>)src).iterator();
+        while(iterator.hasNext())
+        {
+            Site s = iterator.next();
+            ContentValues cv = new ContentValues();
+            cv.put("id", s.id);
+            cv.put("name", s.name);
+            cv.put("lat", s.lattitude);
+            cv.put("long", s.longitude);
+            cv.put("range", s.range);
+            try {
+                local_db.insert("SITES", null, cv);
+            }catch(SQLiteException e){
+                Log.e("Sqlite", e.getMessage());
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<Site> Sites()
@@ -117,9 +148,15 @@ public class SitesAPI extends CachedAPI {
         return true;
     }
 
-
-
-
-
+    @Override
+    protected String GetCreateSQL()
+    {
+        return "create table SITES " +
+               " (id integer primary key, " +
+               " name text not null, " +
+               " lat double not null, " +
+               " long double not null, " +
+               " range double not null);";
+    }
 
 }

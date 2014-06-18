@@ -259,9 +259,9 @@ public class WiMapLocationService extends Service {
                     {
                         if(rt == null)
                             continue;
-                        if(sr.GetUID().equals(rt.GetUID()))
+                        if(sr.GetUID().equals(rt.uid))
                         {
-                            ld.add(new RadialDistance(rt.GetX(), rt.GetY(), rt.GetX(), rt.GetDistance(sr)));
+                            ld.add(new RadialDistance(rt.x, rt.y, rt.z, rt.GetDistance(sr)));
                             break;
                         }
                     }
