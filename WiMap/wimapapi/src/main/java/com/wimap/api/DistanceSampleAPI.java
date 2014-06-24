@@ -25,10 +25,6 @@ import java.util.Queue;
 
 public class DistanceSampleAPI extends BasicAPI
 {
-    public static final String router_id_tag = "router_id";
-    public static final String power_tag = "power";
-    public static final String distance_tag = "distance";
-    public static final String timestamp_tag = "time";
 
     public String DISTANCE_ENDPOINT = "distancesamples";
     public String DISTANCE_FIELD = "sample";
