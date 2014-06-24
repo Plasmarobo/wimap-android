@@ -21,12 +21,14 @@ public class DistanceSample implements APIObject{
     public static final String distance_tag = "distance";
     public static final String timestamped_tag = "timestamped";
     public static final String time_tag = "time";
+    public static final String set_id_tag = "set_id";
 
     public int router_id;
     public double power;
     public double distance;
     public boolean timestamped;
     public Date time;
+    public int set_id;
 
     public DistanceSample()
     {
@@ -35,6 +37,7 @@ public class DistanceSample implements APIObject{
         distance = 0;
         timestamped = true;
         time = new Date();
+        set_id = -1;
     }
 
     @Override
@@ -45,6 +48,7 @@ public class DistanceSample implements APIObject{
         json.put(distance_tag, distance);
         json.put(timestamped_tag, timestamped);
         json.put(time_tag, time.getTime());
+        json.put(set_id_tag, set_id);
         return json;
     }
 
@@ -55,6 +59,7 @@ public class DistanceSample implements APIObject{
         distance = json.getDouble(distance_tag);
         timestamped = json.getBoolean(timestamped_tag);
         time = new Date(json.getLong(time_tag));
+        set_id = json.getInt(set_id_tag);
         return true;
     }
 

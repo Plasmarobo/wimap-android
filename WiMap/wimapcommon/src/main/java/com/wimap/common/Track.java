@@ -25,18 +25,24 @@ public class Track implements APIObject {
     public static final String z_confidence_tag = "z_confidence";
     public static final String site_id_tag = "site_id";
     public static final String user_id_tag = "user_id";
+    public static final String latitude_tag = "latitude";
+    public static final String longitude_tag = "longitude";
     public static final String timestamp_tag = "timestamp";
 
     public Intersect location;
     public int site_id;
     public int user_id;
     public Date time;
+    public double latitude;
+    public double longitude;
 
     public Track()
     {
         location = null;
         site_id = -1;
         user_id = -1;
+        latitude = -1.0;
+        longitude = -1.0;
         time = new Date();
     }
 
@@ -45,6 +51,8 @@ public class Track implements APIObject {
         this.location = location;
         this.site_id = -1;
         this.user_id = -1;
+        this.latitude = -1.0;
+        this.longitude = -1.0;
         time = new Date();
     }
 
@@ -53,6 +61,8 @@ public class Track implements APIObject {
         this.location = location;
         this.site_id = site_id;
         this.user_id = user_id;
+        this.latitude = -1.0;
+        this.longitude = -1.0;
         time = new Date();
     }
 
@@ -67,6 +77,8 @@ public class Track implements APIObject {
             entry.put(z_confidence_tag, this.location.z_conf);
             entry.put(site_id_tag, this.site_id);
             entry.put(user_id_tag, this.user_id);
+            //entry.put(longitude_tag, this.longitude);
+            //entry.put(latitude_tag, this.latitude);
             entry.put(timestamp_tag, this.time.toString());
         return entry;
     }
@@ -74,10 +86,10 @@ public class Track implements APIObject {
     @Override
     public boolean FromJSON(JSONObject json) throws JSONException {
         return false;
-    }
+    } //Why would we ever need to DOWNLOAD track data?
 
     @Override
     public JSONObject FromJSONArray(JSONArray json) throws JSONException {
         return null;
-    }
+    } //See FromJSON comment
 }
