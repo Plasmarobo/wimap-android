@@ -49,23 +49,11 @@ public class TracksAPI extends CachedAPI {
     }
 
     @Override
-    protected List<APIObject> JSONToCache(String json_str) throws JSONException {
-        try {
-            JSONArray tracks_json = new JSONArray(json_str);
-            cache = new ArrayList<APIObject>();
-            for(int i = 0; i < tracks_json.length(); ++i)
-            {
-                JSONObject json_object = tracks_json.getJSONObject(i);
-                Track model = new Track();
-                model.FromJSON(json_object);
-                cache.add(model);
-            }
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-        return cache;
+    protected APIObject ParseJSON(JSONObject obj) throws JSONException
+    {
+        Track t = new Track();
+        t.FromJSON(obj);
+        return t;
     }
 
     @Override

@@ -86,24 +86,12 @@ public class RouterAPI extends CachedAPI {
     }
 
     @Override
-	public List<APIObject> JSONToCache(String json_str)
-	{
-		try {
-			JSONArray routers_json = new JSONArray(json_str);
-			cache = new ArrayList<APIObject>();
-			while(routers_json.length() > 0)
-            {
-                Router r = new Router();
-                r.FromJSONArray(routers_json);
-                cache.add(r);
-            }
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-            return null;
-		}
-		return cache;
-	}
+    protected APIObject ParseJSON(JSONObject obj) throws JSONException
+    {
+        Router r = new Router();
+        r.FromJSON(obj);
+        return r;
+    }
 
     @Override
     protected String GetLocalDBName() {

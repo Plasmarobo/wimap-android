@@ -65,11 +65,4 @@ public class NavPoint implements APIObject {
         return true;
     }
 
-    @Override
-    public JSONObject FromJSONArray(JSONArray json) throws JSONException {
-        JSONObject item = json.getJSONObject(0);
-        json.remove(0);
-        this.FromJSON(item);
-        return item;
-    }
 }

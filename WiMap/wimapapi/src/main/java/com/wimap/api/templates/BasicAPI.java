@@ -34,10 +34,10 @@ import java.util.concurrent.TimeoutException;
 
 public abstract class BasicAPI{
 
-    private static String API_ROOT = "http://wimapnav.com/api";
+    private static String API_ROOT = "http://192.168.1.17:3000/api";
     private static final String API_VERSION = "v1";
     private static final String API_KEY = "dummy_key";
-    private static final int API_TIMEOUT = 1000; //ms
+    private static final int API_TIMEOUT = 10000; //ms
 
     public BasicAPI(String url)
     {

@@ -43,7 +43,7 @@ public class SiteListAdapter extends ArrayAdapter<Site> {
         this.context = context;
         this.site_api = new SitesAPI(context);
         site_api.SyncPull();
-        values = new ArrayList<Site>(site_api.Sites());
+        values = (ArrayList<Site>)site_api.Sites();
         values.clear();
     }
 

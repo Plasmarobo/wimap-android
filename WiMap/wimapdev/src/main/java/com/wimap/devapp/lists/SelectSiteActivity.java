@@ -33,12 +33,12 @@ public class SelectSiteActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wait);
-        listview = (ListView)findViewById(R.id.site_list);
         Intent viewintent = getIntent();
         SitesAPI site_api = new SitesAPI(this);
         site_api.SyncPull();
-        sites = site_api.Sites();
         setContentView(R.layout.activity_select_site);
+        sites = site_api.Sites();
+        listview = (ListView)findViewById(R.id.site_list);
         if(sites != null)
             adapter = new SiteListAdapter(this,sites);
         else
@@ -60,19 +60,7 @@ public class SelectSiteActivity extends Activity {
                 finish();
             }
         });
-        Button new_site = (Button) findViewById(R.id.site_new);
-        new_site.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setContentView(R.layout.wait);
-                SitesAPI sites_api = new SitesAPI(getBaseContext());
-                Site s = new Site();
-                sites_api.Push(s);
-                sites_api.SyncPush();
-                adapter.add(s);
-                setContentView(R.layout.activity_select_site);
-            }
-        });
+
     }
 
     @Override
@@ -90,7 +78,17 @@ public class SelectSiteActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.site_new) {
-            setContentView(R.layout.activity_site_add);
+            setContentView(R.layout.wait);
+            SitesAPI sites_api = new SitesAPI(getBaseContext());
+            Site s = new Site();
+            s.longitude = 7;
+            s.lattitude = 7;
+            s.name = "TEST SITE";
+            s.range = 10;
+            sites_api.Push(s);
+            sites_api.SyncPush();
+            adapter.add(s);
+            setContentView(R.layout.activity_select_site);
             return true;
         }
         return super.onOptionsItemSelected(item);

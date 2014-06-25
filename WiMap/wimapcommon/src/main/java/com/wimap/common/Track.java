@@ -88,8 +88,4 @@ public class Track implements APIObject {
         return false;
     } //Why would we ever need to DOWNLOAD track data?
 
-    @Override
-    public JSONObject FromJSONArray(JSONArray json) throws JSONException {
-        return null;
-    } //See FromJSON comment
 }

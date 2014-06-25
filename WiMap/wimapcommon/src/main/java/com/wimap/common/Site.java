@@ -15,8 +15,8 @@ public class Site implements APIObject
 {
     public static final String id_tag = "id";
     public static final String name_tag = "name";
-    public static final String lat_tag = "lat";
-    public static final String long_tag = "long";
+    public static final String lat_tag = "latitude";
+    public static final String long_tag = "longitude";
     public static final String range_tag = "range";
 
     public int id;
@@ -64,11 +64,5 @@ public class Site implements APIObject
         return true;
     }
 
-    @Override
-    public JSONObject FromJSONArray(JSONArray json) throws JSONException {
-        JSONObject item = json.getJSONObject(0);
-        json.remove(0);
-        this.FromJSON(item);
-        return item;
-    }
+
 }

@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.wimap.common.APIObject;
+import com.wimap.common.Site;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -23,6 +24,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -148,8 +150,23 @@ public abstract class CachedAPI extends BasicAPI {
         finally {
             try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
         }
+
+        cache = JSONToCache(json_str);
+        return cache;
+    }
+
+    abstract protected APIObject ParseJSON(JSONObject json) throws JSONException;
+
+    protected List<APIObject> JSONToCache(String json_str)
+    {
         try {
-            cache = JSONToCache(json_str);
+            JSONArray sites_json = new JSONArray(json_str);
+            cache = new ArrayList<APIObject>();
+            for(int index = 0; index < sites_json.length(); ++index)
+            {
+                JSONObject json = sites_json.getJSONObject(index);
+                cache.add(this.ParseJSON(json));
+            }
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -157,8 +174,6 @@ public abstract class CachedAPI extends BasicAPI {
         }
         return cache;
     }
-
-    abstract protected List<APIObject> JSONToCache(String json_str) throws JSONException;
 
     abstract protected String GetLocalDBName();
     abstract protected int GetLocalDBVersion();

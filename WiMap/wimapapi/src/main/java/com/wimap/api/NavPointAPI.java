@@ -18,6 +18,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,16 +50,11 @@ public class NavPointAPI extends CachedAPI {
     }
 
     @Override
-    protected List<APIObject> JSONToCache(String json_str) throws JSONException {
-        JSONArray navpoints_json = new JSONArray(json_str);
-        cache = new ArrayList<APIObject>();
-        while(navpoints_json.length() > 0)
-        {
-            NavPoint p = new NavPoint();
-            p.FromJSONArray(navpoints_json);
-            cache.add(p);
-        }
-        return cache;
+    protected APIObject ParseJSON(JSONObject obj) throws JSONException
+    {
+        NavPoint n = new NavPoint();
+        n.FromJSON(obj);
+        return n;
     }
 
     @Override

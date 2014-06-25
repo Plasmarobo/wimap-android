@@ -58,25 +58,6 @@ public class SitesAPI extends CachedAPI {
     }
 
     @Override
-    protected List<APIObject> JSONToCache(String json_str) throws JSONException {
-        try {
-            JSONArray sites_json = new JSONArray(json_str);
-            cache = new ArrayList<APIObject>();
-            while(sites_json.length() > 0)
-            {
-                Site s = new Site();
-                s.FromJSONArray(sites_json);
-                cache.add(s);
-            }
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-        return cache;
-    }
-
-    @Override
     protected String GetLocalDBName() {
         return "sites.db";
     }
@@ -128,7 +109,19 @@ public class SitesAPI extends CachedAPI {
 
     public List<Site> Sites()
     {
-        return (List<Site>)(List<?>)cache;
+        if(cache != null) {
+            return new ArrayList<Site>((List<Site>)(List<?>)cache);
+        }else{
+            return new ArrayList<Site>();
+        }
+    }
+
+    @Override
+    protected APIObject ParseJSON(JSONObject obj) throws JSONException
+    {
+        Site s = new Site();
+        s.FromJSON(obj);
+        return s;
     }
 
 
