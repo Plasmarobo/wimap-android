@@ -151,7 +151,7 @@ public abstract class CachedAPI extends BasicAPI {
             try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
         }
 
-        cache = JSONToCache(json_str);
+        JSONToCache(json_str);
         return cache;
     }
 
@@ -159,9 +159,9 @@ public abstract class CachedAPI extends BasicAPI {
 
     protected List<APIObject> JSONToCache(String json_str)
     {
+        cache = new ArrayList<APIObject>();
         try {
             JSONArray sites_json = new JSONArray(json_str);
-            cache = new ArrayList<APIObject>();
             for(int index = 0; index < sites_json.length(); ++index)
             {
                 JSONObject json = sites_json.getJSONObject(index);
@@ -183,6 +183,12 @@ public abstract class CachedAPI extends BasicAPI {
     {
         CacheOpenHelper dbhelper = new CacheOpenHelper(c);
         return dbhelper.getWritableDatabase();
+        //SQLiteDatabase db = dbhelper.getWritableDatabase();
+        //if(db.getVersion() < this.GetLocalDBVersion())
+        //{
+        //    dbhelper.onUpgrade(db,db.getVersion(),this.GetLocalDBVersion());
+        //}
+        //return db;
     }
 
     abstract protected List<APIObject> LocalDBRead(SQLiteDatabase local_db);

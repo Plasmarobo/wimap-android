@@ -26,7 +26,8 @@ public class DevAppActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        routers = new RouterAPI(this);
+        Intent data = getIntent();
+        routers = new RouterAPI(this, data.getIntExtra("site_id", 0));
         setContentView(R.layout.wait);
         routers.SyncPull();
 

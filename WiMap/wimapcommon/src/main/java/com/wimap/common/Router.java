@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 public class Router implements APIObject {
 
+    public static final String tag_id = "id";
     public static final String tag_x = "x";
     public static final String tag_y = "y";
     public static final String tag_z = "z";
@@ -198,6 +199,7 @@ public class Router implements APIObject {
     @Override
     public boolean FromJSON(JSONObject json) throws JSONException {
 
+                this.id = json.getInt(tag_id);
                 this.x = json.getDouble(tag_x);
                 this.y = json.getDouble(tag_y);
                 this.z = json.getDouble(tag_z);

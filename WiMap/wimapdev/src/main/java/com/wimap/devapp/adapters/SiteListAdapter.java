@@ -63,7 +63,7 @@ public class SiteListAdapter extends ArrayAdapter<Site> {
         if(position < values.size())
         {
             Site st = values.get(position);
-            id.setText(st.id);
+            id.setText(Integer.toString(st.id));
             name.setText(st.name);
         }else return null;
         return v;

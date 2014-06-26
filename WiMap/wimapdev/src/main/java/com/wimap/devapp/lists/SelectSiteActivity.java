@@ -44,7 +44,7 @@ public class SelectSiteActivity extends Activity {
         else
             adapter = new SiteListAdapter(this);
         listview.setAdapter(adapter);
-        adapter.setNotifyOnChange(false);
+        adapter.setNotifyOnChange(true);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
@@ -54,7 +54,7 @@ public class SelectSiteActivity extends Activity {
                 TextView name = (TextView)row.findViewById(R.id.site_name);
 
                 Intent result = new Intent();
-                result.putExtra("id", id_text.getText());
+                result.putExtra("id", Integer.getInteger(id_text.getText().toString(),0));
                 result.putExtra("name",name.getText());
                 setResult(Activity.RESULT_OK, result);
                 finish();

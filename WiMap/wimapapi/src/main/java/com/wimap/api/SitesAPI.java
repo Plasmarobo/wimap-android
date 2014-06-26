@@ -71,7 +71,7 @@ public class SitesAPI extends CachedAPI {
     @Override
     protected List<APIObject> LocalDBRead(SQLiteDatabase local_db) {
         Cursor cursor = local_db.query("SITES", new String[]{"*"}, null, null, null, null, null);
-        if(cursor.getCount() < 1) return null;
+        if(cursor.getCount() < 1) return new ArrayList<APIObject>();
         List<APIObject> list = new ArrayList<APIObject>(cursor.getCount());
         do {
             Site s = new Site();

@@ -28,6 +28,8 @@ public class DevAppHomeActivity extends Activity {
         TextView site_text = (TextView)findViewById(R.id.site_text);
         Button site_select = (Button)findViewById(R.id.site_btn);
         Button test_select = (Button)findViewById(R.id.test_btn);
+        current_site = new Site();
+        current_site.id = 0;
         site_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,7 +39,9 @@ public class DevAppHomeActivity extends Activity {
         test_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), DevAppActivity.class));
+                Intent test = new Intent(getBaseContext(), DevAppActivity.class);
+                test.putExtra("site_id", current_site.id);
+                startActivity(test);
             }
         });
         site_text.setText("0");

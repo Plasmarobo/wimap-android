@@ -143,8 +143,8 @@ public abstract class BasicAPI{
                 if(resp == null)
                     return false;
                 else
-                    OnResult(resp);
-                return true;
+                    Log.i("Pull:", resp.getEntity().toString());
+                return resp.getStatusLine().getStatusCode() == 200;
             }
         };
         AsyncHTTP http_task = new AsyncHTTP();

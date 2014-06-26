@@ -100,12 +100,12 @@ public class RouterAPI extends CachedAPI {
 
     @Override
     protected int GetLocalDBVersion() {
-        return 1;
+        return 2;
     }
 
     @Override
     protected String GetCreateSQL() {
-        return "create table ROUTERES " +
+        return "create table ROUTERS " +
                 "(id integer primary key, " +
                 "x double not null, " +
                 "y double not null, " +
@@ -120,8 +120,11 @@ public class RouterAPI extends CachedAPI {
 
     @Override
     protected List<APIObject> LocalDBRead(SQLiteDatabase local_db) {
-        Cursor cursor = local_db.query("ROUTERS", new String[]{"*"}, "*", null, null, null, null);
+        String where = "site_id="+Integer.toString(current_site);
+        Cursor cursor = local_db.query("ROUTERS", new String[]{"*"}, where, null, null, null, null);
+        if(cursor.getCount() < 1) return new ArrayList<APIObject>();
         List<APIObject> list = new ArrayList<APIObject>(cursor.getCount());
+
         do {
             Router r = new Router();
             r.id = cursor.getInt(0);
@@ -177,9 +180,17 @@ public class RouterAPI extends CachedAPI {
 
 	public RouterAPI(Context context)
 	{
-		this(context, new Integer(0), new ArrayList<Router>());
+		super(context);
+        //TODO: check if we are up to date for our location
 	}
 
+    public RouterAPI(Context context, Integer site_id)
+    {
+        super(context);
+        this.current_site = site_id;
+        //TODO: check if we are up to date for our location
+    }
+/*
 	public RouterAPI(Context context, Integer progress, ArrayList<Router> local_list)
 	{
         super(context);
@@ -193,6 +204,6 @@ public class RouterAPI extends CachedAPI {
             Pull();
         }
 	}
-
+*/
 
 }

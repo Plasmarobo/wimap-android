@@ -46,7 +46,7 @@ public class Site implements APIObject
     @Override
     public JSONObject ToJSON(){
         JSONObject item = new JSONObject();
-        item.put(id_tag, id);
+        //item.put(id_tag, id);
         item.put(name_tag, name);
         item.put(lat_tag, lattitude);
         item.put(long_tag, longitude);
@@ -58,9 +58,12 @@ public class Site implements APIObject
     public boolean FromJSON(JSONObject json) throws JSONException {
         this.id = json.getInt(id_tag);
         this.name = json.getString(name_tag);
-        this.lattitude = json.getDouble(lat_tag);
-        this.longitude = json.getDouble(long_tag);
-        this.range = json.getDouble(range_tag);
+        if(json.has(lat_tag))
+            this.lattitude = json.getDouble(lat_tag);
+        if(json.has(long_tag))
+            this.longitude = json.getDouble(long_tag);
+        if(json.has(range_tag))
+            this.range = json.getDouble(range_tag);
         return true;
     }
 
