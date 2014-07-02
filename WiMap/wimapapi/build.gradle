@@ -20,8 +20,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:19.+'
     compile 'org.apache.httpcomponents:httpclient:4.3.3'
     compile 'org.json:json:20140107'
     compile project(':wimapcommon')

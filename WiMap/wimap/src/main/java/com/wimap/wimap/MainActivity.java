@@ -71,12 +71,9 @@ public class MainActivity extends Activity {
 
     private void StartService()
     {
-        service = new Runnable() {
-            public void run() {
-                startService(new Intent(getBaseContext(),WiMapLocationService.class));
-            }
-        };
-        new Thread(service).start();
+        service = WiMapLocationService.StartServiceThread(this);
     }
+
+
 
 }

@@ -54,6 +54,8 @@ public class WiMapLocationService extends Service {
     //protected static KalmanFilter kalman_filter;
     protected HashMap<String, WiMapWifiFilter> filters;
     private int service_id;
+    protected String package_name;
+    protected String activity_name;
 
     public static final String AGGRIGATE_READY = "com.wimap.AGGRIGATE_READY";
     public static final String AGGRIGATE_DATA= "com.wimap.AGGRIGATE_DATA";
@@ -135,7 +137,9 @@ public class WiMapLocationService extends Service {
         service_id = 0x70;
         Intent intent = new Intent(this, ExitActivity.class);
         PendingIntent deleteIntent = PendingIntent.getActivity(this, EXIT_CODE, intent, 0);
-        intent = new Intent().setClassName("com.wimap", "com.wimap.MainActivity");
+        package_name = "com.wimap";
+        activity_name = "com.wimap.MainActivity";
+        intent = new Intent().setClassName(package_name, activity_name);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
@@ -310,5 +314,16 @@ public class WiMapLocationService extends Service {
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public static Runnable StartServiceThread(final Context c)
+    {
+        Runnable service = new Runnable() {
+            public void run() {
+                c.startService(new Intent(c, WiMapLocationService.class));
+            }
+        };
+        new Thread(service).start();
+        return service;
     }
 }

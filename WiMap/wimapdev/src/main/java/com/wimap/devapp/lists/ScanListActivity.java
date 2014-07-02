@@ -49,13 +49,14 @@ public abstract class ScanListActivity extends WiMapLocationSubscriber {
 		listview.setAdapter(adapter);
 		adapter.setNotifyOnChange(false);
 		List<BasicResult> wifi_list = WiMapLocationService.getLatestScan();
-        if(! wifi_list.isEmpty()) {
-            for (BasicResult item : wifi_list) {
-                adapter.add(item);
+        if( wifi_list != null)
+            if(! wifi_list.isEmpty()) {
+                for (BasicResult item : wifi_list) {
+                    adapter.add(item);
+                }
+                adapter.notifyDataSetChanged();
+                findViewById(R.id.scan_list).invalidate();
             }
-            adapter.notifyDataSetChanged();
-            findViewById(R.id.scan_list).invalidate();
-        }
 	}
 	
 	

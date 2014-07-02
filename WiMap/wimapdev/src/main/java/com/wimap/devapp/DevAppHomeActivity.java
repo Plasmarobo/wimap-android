@@ -16,11 +16,13 @@ import android.widget.TextView;
 
 import com.wimap.common.Site;
 import com.wimap.devapp.lists.SelectSiteActivity;
+import com.wimap.location.core.WiMapLocationService;
 
 public class DevAppHomeActivity extends Activity {
     private static final String test_url = "http://wimap:3000/";
     public static final int SELECT_SITE_CODE = 47;
     public static Site current_site;
+    private Runnable service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class DevAppHomeActivity extends Activity {
         Button test_select = (Button)findViewById(R.id.test_btn);
         current_site = new Site();
         current_site.id = 0;
+        service = WiMapLocationService.StartServiceThread(this);
         site_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
