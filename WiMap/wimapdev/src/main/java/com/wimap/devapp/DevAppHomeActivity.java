@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.wimap.common.Site;
 import com.wimap.devapp.lists.SelectSiteActivity;
-import com.wimap.location.core.WiMapLocationService;
+import com.wimap.location.WiMapLocationService;
 
 public class DevAppHomeActivity extends Activity {
     private static final String test_url = "http://wimap:3000/";

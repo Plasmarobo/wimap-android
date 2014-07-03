@@ -31,7 +31,7 @@
         </activity>
 
         <service
-            android:name="com.wimap.location.core.WiMapLocationService"
+            android:name="com.wimap.location.WiMapLocationService"
             android:enabled="true"
             android:exported="false" >
         </service>

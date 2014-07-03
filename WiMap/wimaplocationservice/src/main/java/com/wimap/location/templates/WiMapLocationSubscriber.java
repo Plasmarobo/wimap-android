@@ -14,7 +14,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import com.wimap.location.core.WiMapLocationService;
+import com.wimap.location.WiMapLocationService;
 import com.wimap.location.models.BasicResult;
 
 import java.util.List;

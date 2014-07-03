@@ -13,7 +13,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.wimap.location.wifi.R;
+import com.wimap.location.R;
+import com.wimap.location.WiMapLocationService;
 
 public class ExitActivity extends Activity {
 

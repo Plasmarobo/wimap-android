@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.wimap.activities.HomeActivity;
-import com.wimap.location.core.WiMapLocationService;
+import com.wimap.location.WiMapLocationService;
 import com.wimap.location.models.BasicResult;
 import com.wimap.location.templates.WiMapLocationSubscriber;
 

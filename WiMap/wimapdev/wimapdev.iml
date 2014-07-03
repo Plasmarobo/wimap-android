@@ -68,7 +68,6 @@
     <orderEntry type="module" module-name="wimapbranding" exported="" />
     <orderEntry type="module" module-name="wimaplocationservice" exported="" />
     <orderEntry type="module" module-name="wimapcommon" exported="" />
-    <orderEntry type="module" module-name="wimapapi" exported="" />
   </component>
 </module>
 

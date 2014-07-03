@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import com.wimap.devapp.R;
 import com.wimap.devapp.adapters.ScanListAdapter;
-import com.wimap.location.core.WiMapLocationService;
+import com.wimap.location.WiMapLocationService;
 import com.wimap.location.models.AndroidRouter;
 import com.wimap.location.models.BasicResult;
 import com.wimap.location.templates.WiMapLocationSubscriber;

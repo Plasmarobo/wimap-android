@@ -27,7 +27,7 @@
             android:label="@string/title_activity_distance"/>
         <activity android:name=".EditRouterActivity"
             android:label="@string/title_activity_edit_router"/>
-        <service android:name="com.wimap.location.core.WiMapLocationService" />
+        <service android:name="com.wimap.location.WiMapLocationService" />
 
     </application>
 
