@@ -31,6 +31,7 @@ public class Track implements APIObject {
     public static final String timestamp_tag = "timestamp";
 
     public Intersect location;
+    public int id;
     public int site_id;
     public int user_id;
     public Date time;
@@ -87,6 +88,6 @@ public class Track implements APIObject {
     @Override
     public boolean FromJSON(JSONObject json) throws JSONException {
         return false;
-    } //Why would we ever need to DOWNLOAD track data?
+    }
 
 }

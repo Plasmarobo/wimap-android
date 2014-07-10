@@ -77,7 +77,7 @@ public class SitesAPI extends CachedAPI {
             Site s = new Site();
             s.id = cursor.getInt(0);
             s.name = cursor.getString(1);
-            s.lattitude = cursor.getDouble(2);
+            s.latitude = cursor.getDouble(2);
             s.longitude = cursor.getDouble(3);
             s.range = cursor.getDouble(4);
             list.add(s);
@@ -94,7 +94,7 @@ public class SitesAPI extends CachedAPI {
             ContentValues cv = new ContentValues();
             cv.put("id", s.id);
             cv.put("name", s.name);
-            cv.put("lat", s.lattitude);
+            cv.put("lat", s.latitude);
             cv.put("long", s.longitude);
             cv.put("range", s.range);
             try {

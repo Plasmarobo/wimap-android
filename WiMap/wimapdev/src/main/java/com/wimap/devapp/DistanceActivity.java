@@ -20,12 +20,12 @@ import com.wimap.api.RouterAPI;
 import com.wimap.devapp.lists.SelectRouterActivity;
 import com.wimap.location.models.AndroidRouter;
 import com.wimap.location.models.BasicResult;
-import com.wimap.location.templates.WiMapLocationSubscriber;
+import com.wimap.location.templates.WiMapScanSubscriber;
 
 import java.util.List;
 
 
-public class DistanceActivity extends WiMapLocationSubscriber {
+public class DistanceActivity extends WiMapScanSubscriber {
 	private final static int SELECTROUTER = 7;
 	private String ssid;
 	private String uid;
@@ -105,7 +105,7 @@ public class DistanceActivity extends WiMapLocationSubscriber {
 				TextView routermac = (TextView) findViewById(R.id.routermac);
 				routermac.setText(new String(uid));
 				findViewById(R.id.distance_root).invalidate();
-				onScanAggrigate(WiMapLocationSubscriber.cache);
+				onScanAggrigate(WiMapScanSubscriber.cache);
 			}
 			
 		}

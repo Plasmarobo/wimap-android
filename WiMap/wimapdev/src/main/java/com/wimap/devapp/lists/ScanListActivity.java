@@ -18,12 +18,12 @@ import com.wimap.devapp.adapters.ScanListAdapter;
 import com.wimap.location.WiMapLocationService;
 import com.wimap.location.models.AndroidRouter;
 import com.wimap.location.models.BasicResult;
-import com.wimap.location.templates.WiMapLocationSubscriber;
+import com.wimap.location.templates.WiMapScanSubscriber;
 
 import java.util.List;
 
 
-public abstract class ScanListActivity extends WiMapLocationSubscriber {
+public abstract class ScanListActivity extends WiMapScanSubscriber {
 	protected static ScanListAdapter adapter;
 	protected AndroidRouter rt;
 	protected ListView listview;

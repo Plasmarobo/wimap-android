@@ -19,13 +19,13 @@ import com.wimap.common.math.Intersect;
 import com.wimap.common.math.RadialDistance;
 import com.wimap.location.models.AndroidRouter;
 import com.wimap.location.models.BasicResult;
-import com.wimap.location.templates.WiMapLocationSubscriber;
+import com.wimap.location.templates.WiMapScanSubscriber;
 import com.wimap.wimap.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapActivity extends WiMapLocationSubscriber {
+public class MapActivity extends WiMapScanSubscriber {
 	private SitesAPI sites;
     private RouterAPI routers;
 	private ImageView map;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wimap.wimap" >
+
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <uses-feature
@@ -16,7 +17,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.wimap.wimap.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.wimap.activities.HomeActivity"
             android:label="@string/title_activity_home" >
@@ -36,13 +36,15 @@
             android:exported="false" >
         </service>
 
-
         <activity
             android:name="com.wimap.location.core.ExitActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_exit" >
         </activity>
-
+        <activity
+            android:name="com.wimap.activities.WimapExitActivity"
+            android:label="@string/title_activity_wimap_exit" >
+        </activity>
     </application>
 
 </manifest>

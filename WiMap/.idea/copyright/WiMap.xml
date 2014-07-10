@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="Copyright (c) &amp;#36;today.year WiMap. &#10;All Rights Reserved.&#10;NOTICE:  All information contained herein is, and remains&#10;the property of WiMap Navigation Incorporated and its suppliers,&#10;if any.  The intellectual and technical concepts contained&#10;herein are proprietary to WiMap Navigation Incorporated&#10;and its suppliers and may be covered by U.S. and Foreign Patents,&#10;patents in process, and are protected by trade secret or copyright law.&#10;Dissemination of this information or reproduction of this material&#10;is strictly forbidden." />
+    <option name="keyword" value="Copyright" />
+    <option name="allowReplaceKeyword" value="" />
+    <option name="myName" value="WiMap" />
+    <option name="myLocal" value="true" />
+  </copyright>
+</component>

@@ -82,7 +82,7 @@ public class SelectSiteActivity extends Activity {
             SitesAPI sites_api = new SitesAPI(getBaseContext());
             Site s = new Site();
             s.longitude = 7;
-            s.lattitude = 7;
+            s.latitude = 7;
             s.name = "TEST SITE";
             s.range = 10;
             sites_api.Push(s);

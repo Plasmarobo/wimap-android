@@ -7,7 +7,7 @@
 
 package com.wimap.common;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +21,7 @@ public class Site implements APIObject
 
     public int id;
     public String name;
-    public double lattitude;
+    public double latitude;
     public double longitude;
     public double range;
 
@@ -29,7 +29,7 @@ public class Site implements APIObject
     {
         id = 0;
         name = "ERROR";
-        lattitude = 0;
+        latitude = 0;
         longitude = 0;
         range = 0;
     }
@@ -38,7 +38,7 @@ public class Site implements APIObject
     {
         this.id = id;
         this.name = name;
-        lattitude = 0;
+        latitude = 0;
         longitude = 0;
         range = 0;
     }
@@ -48,7 +48,7 @@ public class Site implements APIObject
         JSONObject item = new JSONObject();
         //item.put(id_tag, id);
         item.put(name_tag, name);
-        item.put(lat_tag, lattitude);
+        item.put(lat_tag, latitude);
         item.put(long_tag, longitude);
         item.put(range_tag, range);
         return item;
@@ -59,7 +59,7 @@ public class Site implements APIObject
         this.id = json.getInt(id_tag);
         this.name = json.getString(name_tag);
         if(json.has(lat_tag))
-            this.lattitude = json.getDouble(lat_tag);
+            this.latitude = json.getDouble(lat_tag);
         if(json.has(long_tag))
             this.longitude = json.getDouble(long_tag);
         if(json.has(range_tag))

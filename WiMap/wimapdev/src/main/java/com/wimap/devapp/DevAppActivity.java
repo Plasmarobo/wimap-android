@@ -32,7 +32,7 @@ public class DevAppActivity extends Activity {
         routers.SyncPull();
 
         setContentView(R.layout.activity_devapp);
-        Button ClearButton = (Button) findViewById(R.id.clear_cal);
+        //Button ClearButton = (Button) findViewById(R.id.clear_cal);
         Button DistButton = (Button) findViewById(R.id.dist_cal);
         Button EditButton = (Button) findViewById(R.id.edit_cal);
         Button TrainButton = (Button) findViewById(R.id.train_cal);

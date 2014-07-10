@@ -26,28 +26,34 @@ public class DevAppHomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_devapphome);
-        TextView site_text = (TextView)findViewById(R.id.site_text);
-        Button site_select = (Button)findViewById(R.id.site_btn);
-        Button test_select = (Button)findViewById(R.id.test_btn);
-        current_site = new Site();
-        current_site.id = 0;
-        service = WiMapLocationService.StartServiceThread(this);
-        site_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(getBaseContext(), SelectSiteActivity.class), SELECT_SITE_CODE);
-            }
-        });
-        test_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent test = new Intent(getBaseContext(), DevAppActivity.class);
-                test.putExtra("site_id", current_site.id);
-                startActivity(test);
-            }
-        });
-        site_text.setText("0");
+        Intent calling = getIntent();
+        if (calling.getBooleanExtra("EXIT", false))
+        {
+            finish();
+        }else {
+            setContentView(R.layout.activity_devapphome);
+            TextView site_text = (TextView) findViewById(R.id.site_text);
+            Button site_select = (Button) findViewById(R.id.site_btn);
+            Button test_select = (Button) findViewById(R.id.test_btn);
+            current_site = new Site();
+            current_site.id = 0;
+            service = WiMapLocationService.StartServiceThread(this, "com.wimap.devapp", "com.wimap.devapp.DevAppHomeActivity", "com.wimap.devapp.DevExitActivity");
+            site_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivityForResult(new Intent(getBaseContext(), SelectSiteActivity.class), SELECT_SITE_CODE);
+                }
+            });
+            test_select.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent test = new Intent(getBaseContext(), DevAppActivity.class);
+                    test.putExtra("site_id", current_site.id);
+                    startActivity(test);
+                }
+            });
+            site_text.setText("0");
+        }
     }
 
     @Override

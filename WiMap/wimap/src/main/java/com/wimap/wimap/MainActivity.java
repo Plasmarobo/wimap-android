@@ -18,7 +18,7 @@ import android.widget.Button;
 import com.wimap.activities.HomeActivity;
 import com.wimap.location.WiMapLocationService;
 import com.wimap.location.models.BasicResult;
-import com.wimap.location.templates.WiMapLocationSubscriber;
+import com.wimap.location.templates.WiMapScanSubscriber;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
         login_submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                WiMapLocationSubscriber.setCache(new ArrayList<BasicResult>());
+                WiMapScanSubscriber.setCache(new ArrayList<BasicResult>());
                 StartService();
                 startActivity(new Intent(getBaseContext(), HomeActivity.class));
             }
@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
 
     private void StartService()
     {
-        service = WiMapLocationService.StartServiceThread(this);
+        service = WiMapLocationService.StartServiceThread(this, "com.wimap.wimap", "com.wimap.wimap.MainActivity", "com.wimap.wimap.WimapExitActivity");
     }
 
 

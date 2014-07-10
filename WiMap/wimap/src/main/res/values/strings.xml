@@ -4,7 +4,12 @@
   ~
   ~ Authorized internal use only.
   ~ No reproduction or access without express permission of WiMap.
-  -->
+-->
+<resources>
 
+    <string name="app_name">WiMap</string>
+    <string name="title_activity_wimap_exit">WimapExitActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
-<resources><string name="app_name">WiMap</string></resources>
+</resources>

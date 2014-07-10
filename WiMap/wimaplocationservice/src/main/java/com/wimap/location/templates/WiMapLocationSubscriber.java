@@ -14,63 +14,54 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import com.wimap.common.math.Intersect;
 import com.wimap.location.WiMapLocationService;
+import com.wimap.location.helpers.IntersectBundle;
 import com.wimap.location.models.BasicResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
-public abstract class WiMapLocationSubscriber extends Activity implements ScanListConsumer {
-	protected AggrigateReceiver aggrigate_receiver;
-    protected RawReceiver scan_receiver;
-	protected static List<BasicResult> cache;
-	protected class AggrigateReceiver extends BroadcastReceiver
-	{
-		
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			WiMapLocationSubscriber parent = (WiMapLocationSubscriber) context;
-			List<BasicResult> aggrigate = intent.getParcelableArrayListExtra(WiMapLocationService.AGGRIGATE_DATA);
-			parent.onScanAggrigate(aggrigate);
-		}
-		
-	}
-    protected class RawReceiver extends BroadcastReceiver
+public abstract class WiMapLocationSubscriber extends Activity implements LocationConsumer {
+    protected LocationReceiver location_receiver;
+
+    protected static List<Intersect> cache;
+    protected class LocationReceiver extends BroadcastReceiver
     {
+
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             WiMapLocationSubscriber parent = (WiMapLocationSubscriber) context;
-            List<BasicResult> raw_scan = WiMapLocationService.getLatestScan();
-            parent.onScanResult(raw_scan);
+            IntersectBundle bundle = intent.getParcelableExtra(WiMapLocationService.LOCATION_DATA);
+            parent.onLocation(bundle);
         }
+
     }
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		aggrigate_receiver = new AggrigateReceiver();
-        scan_receiver = new RawReceiver();
-		
-	}
-	public void onPause()
-	{
-		super.onPause();
-		unregisterReceiver(aggrigate_receiver);
-        unregisterReceiver(scan_receiver);
-	}
-	public void onResume()
-	{
-		super.onResume();
-		registerReceiver(aggrigate_receiver, new IntentFilter(WiMapLocationService.AGGRIGATE_READY));
-        registerReceiver(scan_receiver, new IntentFilter(WiMapLocationService.RAW_READY));
-	}
-	@Override
-	public void onScanAggrigate(List<BasicResult> l) { cache = l; }
 
-    public void onScanResult(List<BasicResult> l) {}; //Do nothing
-
-    public static void setCache(List<BasicResult> cache)
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
     {
-        WiMapLocationSubscriber.cache = cache;
+        super.onCreate(savedInstanceState);
+        location_receiver = new LocationReceiver();
+        if(cache == null)
+            cache = new ArrayList<Intersect>();
+
+    }
+    public void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(location_receiver);
+
+    }
+    public void onResume()
+    {
+        super.onResume();
+        registerReceiver(location_receiver, new IntentFilter(WiMapLocationService.LOCATION_READY));
+    }
+    @Override
+    public void onLocation(Intersect location)
+    {
+        cache.add(location);
     }
 }

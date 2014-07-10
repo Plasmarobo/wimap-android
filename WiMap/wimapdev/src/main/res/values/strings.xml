@@ -4,9 +4,9 @@
   ~
   ~ Authorized internal use only.
   ~ No reproduction or access without express permission of WiMap.
-  -->
-
+-->
 <resources>
+
     <string name="app_name">WiMap Toolkit</string>
     <string name="title_activity_beacon">Beacon</string>
     <string name="title_activity_calibrate">Calibration Options</string>
@@ -16,4 +16,12 @@
     <string name="title_activity_scan_list">Scan Results</string>
     <string name="title_activity_select_router">Select Router</string>
     <string name="title_activity_select_site">Select Site</string>
+    <string name="title_activity_build_map">BuildMapActivity</string>
+    <string name="quitting">Service Terminated, closing app</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_dynamic_map">DynamicMap</string>
+    <string name="title_activity_exit">ExitActivity</string>
+    <string name="title_activity_dev_exit">DevExitActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

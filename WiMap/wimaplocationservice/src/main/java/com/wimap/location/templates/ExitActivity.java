@@ -1,11 +1,4 @@
-/*
- * Copyright (c) 2014 WiMap.
- *
- * Authorized internal use only.
- * No reproduction or access without express permission of WiMap.
- */
-
-package com.wimap.location.core;
+package com.wimap.location.templates;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +9,9 @@ import android.os.Bundle;
 import com.wimap.location.R;
 import com.wimap.location.WiMapLocationService;
 
-public class ExitActivity extends Activity {
+public abstract class ExitActivity extends Activity {
+
+    protected abstract Intent GetExitIntent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +27,10 @@ public class ExitActivity extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         stopService(new Intent(getBaseContext(), WiMapLocationService.class));
-
+                        Intent intent = GetExitIntent();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("EXIT", true);
+                        startActivity(intent);
                         finish();
                     }
 
