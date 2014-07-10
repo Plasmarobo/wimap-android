@@ -11,6 +11,6 @@
     <view
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        class="com.wimap.devapp.dynamic_map.DynamicMap"
+        class="com.wimap.devapp.DynamicMap"
         android:id="@+id/map_view" />
 </LinearLayout>

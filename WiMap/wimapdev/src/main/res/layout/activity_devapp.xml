@@ -24,6 +24,12 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Show Map"
+            android:id="@+id/show_cal" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Distance Test"
             android:id="@+id/dist_cal"
             android:layout_above="@+id/clear_cal"

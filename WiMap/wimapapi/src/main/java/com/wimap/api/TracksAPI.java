@@ -35,6 +35,22 @@ public class TracksAPI extends CachedAPI {
 	public static final String TRACKS_ENDPOINT = "tracks";
     public static final String TRACKS_FIELD = "tracks";
 
+    private static List<Track> cache;
+
+    protected List<APIObject> GetCache()
+    {
+        return (List<APIObject>)(List<?>) cache;
+    }
+
+    protected void PopulateCache(List<APIObject> data)
+    {
+        cache = new ArrayList<Track>();
+        for(APIObject object : data)
+        {
+            cache.add((Track)object);
+        }
+    }
+
     public TracksAPI(Context c) {
         super(c);
     }

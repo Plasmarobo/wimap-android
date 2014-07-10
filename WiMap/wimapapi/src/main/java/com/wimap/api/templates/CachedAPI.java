@@ -36,7 +36,10 @@ import java.util.Queue;
 
 public abstract class CachedAPI extends BasicAPI {
     //If the remote database has the same sync key, we have the most up to date version of it
-    protected List<APIObject> cache;
+    //protected List<APIObject> cache;
+    abstract protected List<APIObject> GetCache();
+    abstract protected void PopulateCache(List<APIObject> cache);
+
     protected Queue<APIObject> queue;
     protected static final int queue_limit=64;
     protected SQLiteDatabase local_db;
@@ -79,9 +82,8 @@ public abstract class CachedAPI extends BasicAPI {
     protected boolean LoadCache(Context c)
     {
         SQLiteDatabase local_db = GetLocalDatabase(c);
-        cache = new ArrayList<APIObject>();
         if(local_db.isOpen()) {
-            cache = LocalDBRead(local_db);
+            PopulateCache(LocalDBRead(local_db));
             local_db.close();
         } else return false;
         return true;
@@ -92,7 +94,7 @@ public abstract class CachedAPI extends BasicAPI {
         SQLiteDatabase local_db = GetLocalDatabase(c);
         if(local_db.isOpen())
         {
-            LocalDBWrite(local_db, cache);
+            LocalDBWrite(local_db, GetCache());
             local_db.close();
         }else return false;
         return true;
@@ -101,7 +103,7 @@ public abstract class CachedAPI extends BasicAPI {
 
     public void Push(APIObject item)
     {
-        cache.add(item);
+        GetCache().add(item);
         queue.add(item);
 
         if(queue.size() > queue_limit)
@@ -152,27 +154,27 @@ public abstract class CachedAPI extends BasicAPI {
         }
 
         JSONToCache(json_str);
-        return cache;
+        return GetCache();
     }
 
     abstract protected APIObject ParseJSON(JSONObject json) throws JSONException;
 
     protected List<APIObject> JSONToCache(String json_str)
     {
-        cache = new ArrayList<APIObject>();
+        PopulateCache(new ArrayList<APIObject>());
         try {
             JSONArray sites_json = new JSONArray(json_str);
             for(int index = 0; index < sites_json.length(); ++index)
             {
                 JSONObject json = sites_json.getJSONObject(index);
-                cache.add(this.ParseJSON(json));
+                GetCache().add(this.ParseJSON(json));
             }
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
-        return cache;
+        return GetCache();
     }
 
     abstract protected String GetLocalDBName();
@@ -204,17 +206,18 @@ public abstract class CachedAPI extends BasicAPI {
 
     public List<APIObject> UpdateNow() { //TODO: Check sync key
         SyncPull();
-        return cache;
+        return GetCache();
     }
 
     public boolean OnResult(HttpResponse response)
     {
-        cache = ParseResponse(response);
-        return cache != null;
+        PopulateCache(ParseResponse(response));
+        return GetCache() != null;
     }
 
-    public void Flush()
+    public void Flush(Context c)
     {
+        SaveCache(c);
         SyncPush();
     }
 

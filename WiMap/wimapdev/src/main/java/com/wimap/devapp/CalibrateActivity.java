@@ -51,7 +51,8 @@ public class CalibrateActivity extends ScanListActivity {
 	}
     public void onDestroy()
     {
-        routers.Flush();
+        super.onDestroy();
+        routers.Flush(this);
     }
 
 	

@@ -16,7 +16,6 @@ import android.util.Log;
 import com.wimap.api.templates.CachedAPI;
 import com.wimap.common.APIObject;
 import com.wimap.common.Router;
-import com.wimap.common.Site;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -35,6 +34,20 @@ public class RouterAPI extends CachedAPI {
     public static final String ROUTERS_FIELD = "router";
     public static final String SITE_FIELD = "site_id";
 
+    private static List<Router> cache;
+
+    protected List<APIObject> GetCache() {
+        return (List<APIObject>)(List<?>)cache;
+    }
+    protected void PopulateCache(List<APIObject> data)
+    {
+        if(cache == null) {
+            cache = new ArrayList<Router>();
+            for (APIObject object : data) {
+                cache.add((Router) object);
+            }
+        }
+    }
     protected int current_site;
 
     @Override
@@ -57,7 +70,7 @@ public class RouterAPI extends CachedAPI {
 
     public List<Router> Routers()
 	{
-		return (List<Router>)(List<?>) cache;
+		return cache;
 	}
     public List<Router> FilterByUID(String uid)
     {
@@ -65,7 +78,7 @@ public class RouterAPI extends CachedAPI {
         Iterator<Router> i = this.Routers().iterator();
         while(i.hasNext()) {
             Router current = i.next();
-            if(current.uid == uid)
+            if(current.uid.equals(uid))
             {
                 result.add(current);
             }
@@ -77,7 +90,7 @@ public class RouterAPI extends CachedAPI {
         Iterator<Router> i = this.Routers().iterator();
         while(i.hasNext()) {
             Router current = i.next();
-            if(current.uid == uid)
+            if(current.uid.equals(uid))
             {
                 return current;
             }

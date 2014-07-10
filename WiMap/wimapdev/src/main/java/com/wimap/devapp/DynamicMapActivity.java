@@ -4,19 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.wimap.api.RouterAPI;
 import com.wimap.common.Router;
 import com.wimap.common.math.Intersect;
-import com.wimap.devapp.dynamic_map.DynamicMap;
 import com.wimap.location.WiMapLocationService;
 import com.wimap.location.models.BasicResult;
 import com.wimap.location.templates.WiMapLocationSubscriber;
 import com.wimap.location.templates.WiMapScanSubscriber;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DynamicMapActivity extends WiMapLocationSubscriber  {
@@ -55,7 +51,7 @@ public class DynamicMapActivity extends WiMapLocationSubscriber  {
         {
             for(BasicResult res : results)
             {
-                if(res.GetUID() == r.uid)
+                if(res.GetUID().equals(r.uid))
                 {
                     r.power = res.GetPower();
                     results.remove(res);

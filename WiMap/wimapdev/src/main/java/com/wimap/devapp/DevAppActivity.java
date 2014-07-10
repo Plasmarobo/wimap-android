@@ -33,11 +33,20 @@ public class DevAppActivity extends Activity {
 
         setContentView(R.layout.activity_devapp);
         //Button ClearButton = (Button) findViewById(R.id.clear_cal);
+        Button ShowButton = (Button) findViewById(R.id.show_cal);
         Button DistButton = (Button) findViewById(R.id.dist_cal);
         Button EditButton = (Button) findViewById(R.id.edit_cal);
         Button TrainButton = (Button) findViewById(R.id.train_cal);
         Button Upload = (Button) findViewById(R.id.up_cal);
         Button Download = (Button) findViewById(R.id.down_cal);
+        ShowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("ShowButton", "click");
+                Intent dynamap = new Intent(view.getContext(), DynamicMapActivity.class);
+                startActivity(dynamap);
+            }
+        });
         DistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

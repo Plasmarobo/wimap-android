@@ -242,7 +242,7 @@ public class WiMapLocationService extends Service {
     @Override
     public void onDestroy() {
         // Tell the user we stopped.
-        tracks_api.Flush();
+        tracks_api.Flush(this);
         Log.d("WiMapService", "Destroying");
         lock.release();
         unregisterReceiver(scanner);

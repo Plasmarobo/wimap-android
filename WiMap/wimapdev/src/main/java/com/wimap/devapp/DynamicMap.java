@@ -1,10 +1,11 @@
-package com.wimap.devapp.dynamic_map;
+package com.wimap.devapp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.wimap.common.Router;
@@ -52,9 +53,23 @@ public class DynamicMap extends View {
             else
                 return 0;
     }
+    public DynamicMap(Context context)
+    {
+        super(context);
+        Init();
+    }
+    public DynamicMap(Context context, AttributeSet attrs)
+    {
+        super(context,attrs);
+        Init();
+    }
+    public DynamicMap(Context context, AttributeSet attrs, int defStyleAttr)
+    {
+        super(context, attrs, defStyleAttr);
+        Init();
+    }
 
-    public DynamicMap(Context c) {
-        super(c);
+    private void Init() {
         routers = new ArrayList<Router>();
         user = new Intersect();
         scale = 1.0;
@@ -139,6 +154,7 @@ public class DynamicMap extends View {
     @Override
     protected void onDraw(Canvas canvas)
     {
+        canvas.drawARGB(255,255,255,255);
         int w = this.getWidth();
         int h = this.getHeight();
         //Normalize so that min = zero + pad

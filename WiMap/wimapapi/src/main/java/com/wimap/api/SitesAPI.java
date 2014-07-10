@@ -40,6 +40,22 @@ public class SitesAPI extends CachedAPI {
     public static final String long_tag = "long";
     public static final String range_tag = "range";
 
+    private static List<Site> cache;
+
+    protected List<APIObject> GetCache()
+    {
+        return (List<APIObject>)(List<?>)cache;
+    }
+
+    protected void PopulateCache(List<APIObject> data)
+    {
+        cache = new ArrayList<Site>();
+        for(APIObject object :data)
+        {
+            cache.add((Site) object);
+        }
+    }
+
     public SitesAPI(Context c)
     {
         super(c);

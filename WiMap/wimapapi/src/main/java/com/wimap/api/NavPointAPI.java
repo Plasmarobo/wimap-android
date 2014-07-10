@@ -30,6 +30,22 @@ public class NavPointAPI extends CachedAPI {
 
     public static final String NAVPOINTS_SITE_ID = "site_id";
 
+    private static List<NavPoint> cache;
+
+    protected List<APIObject> GetCache()
+    {
+        return (List<APIObject>)(List<?>) cache;
+    }
+
+    protected void PopulateCache(List<APIObject> data)
+    {
+        cache = new ArrayList<NavPoint>();
+        for(APIObject object : data)
+        {
+            cache.add((NavPoint) object);
+        }
+    }
+
     protected int current_site;
     protected int cached_site;
 
