@@ -3,6 +3,7 @@ package com.wimap.devapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.wimap.api.RouterAPI;
@@ -34,9 +35,11 @@ public class DynamicMapActivity extends WiMapLocationSubscriber  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_map);
         scanner = new ScanReceiver();
+        registerReceiver(scanner, new IntentFilter(WiMapLocationService.RAW_READY));
         map = (DynamicMap) findViewById(R.id.map_view);
         RouterAPI router_api = new RouterAPI(this);
         routers = router_api.Routers();
+        map.UpdateRouters(routers);
     }
 
     @Override
@@ -62,6 +65,17 @@ public class DynamicMapActivity extends WiMapLocationSubscriber  {
         map.UpdateRouters(routers);
     }
 
+    public void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(scanner);
+
+    }
+    public void onResume()
+    {
+        super.onResume();
+        registerReceiver(scanner, new IntentFilter(WiMapLocationService.RAW_READY));
+    }
 
 
 }
