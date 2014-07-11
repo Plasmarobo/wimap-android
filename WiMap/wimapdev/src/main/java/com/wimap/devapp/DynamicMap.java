@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.wimap.common.Router;
@@ -21,15 +22,15 @@ import java.util.List;
  */
 public class DynamicMap extends View {
 
-    protected final double BASIC_DOT_SIZE = 0.25; //Meters
+    protected final double BASIC_DOT_SIZE = 0.25;
     protected final double BASIC_WALL_SIZE = 0.3; //Meters
-    protected final double EDGE_WIDTH = 0.1; //Meters
+    protected final double EDGE_WIDTH = 0.2; //Meters
 
     List<Router> routers;
     Intersect user;
     double max_pad_x;
     double max_pad_y;
-    double scale;
+    double scale; //PX per meter
     double max_x;
     double max_y;
     double max_z;
@@ -72,7 +73,7 @@ public class DynamicMap extends View {
     private void Init() {
         routers = new ArrayList<Router>();
         user = new Intersect();
-        scale = 1.0;
+        scale = 5.0; //5 px per meter
         min_x = min_y = min_z = 0.0;
         max_x = max_y = max_z = 1.0;
         max_pad_x = max_pad_y = 1.0;
@@ -162,13 +163,14 @@ public class DynamicMap extends View {
         double x_translation_factor = Math.ceil(-min_x);
         double y_translation_factor = Math.ceil(-min_y);
 
-        int virtual_width = (int) (Math.ceil(max_x + x_translation_factor) + (max_pad_x*2));
-        int virtual_height = (int) (Math.ceil(max_y + y_translation_factor) + (max_pad_y*2));
+        double virtual_width =  (Math.ceil(max_x + x_translation_factor) + (max_pad_x*2));
+        double virtual_height =  (Math.ceil(max_y + y_translation_factor) + (max_pad_y*2));
 
-        double x_proj_factor = (virtual_width)/w;
-        double y_proj_factor = (virtual_height)/h;
+        double x_proj_factor = (virtual_width)/(double)w;
+        double y_proj_factor = (virtual_height)/(double)h;
 
         projection_factor = Math.min(x_proj_factor,y_proj_factor) * scale;
+
 
         wall_paint.setStrokeWidth((float)(BASIC_WALL_SIZE*projection_factor));
         canvas.drawRect((float)(max_pad_x*projection_factor),(float) (max_pad_y*projection_factor), (float)(w-(max_pad_x*projection_factor)),(float) (h-(max_pad_y*projection_factor)), wall_paint);
@@ -176,8 +178,8 @@ public class DynamicMap extends View {
         router_distance_paint.setStrokeWidth((float)(EDGE_WIDTH*projection_factor));
         for(Router r : routers)
         {
-            projectCircle(canvas, r.x, r.y, r.GetFSPLDistance_d(r.power), router_distance_paint);
-            projectCircle(canvas, r.x, r.y, (float) (BASIC_DOT_SIZE*projection_factor), router_point_paint);
+            projectCircle(canvas, r.x+x_translation_factor, r.y+y_translation_factor, r.GetFSPLDistance_d(r.power), router_distance_paint);
+            projectCircle(canvas, r.x+x_translation_factor, r.y+y_translation_factor, (float) (BASIC_DOT_SIZE*projection_factor), router_point_paint);
             projectText(canvas, r.ssid + Double.toString(r.power), r.x + BASIC_DOT_SIZE*projection_factor, r.y - BASIC_DOT_SIZE * projection_factor, text_paint);
         }
         projectCircle(canvas, user.x, user.y, Math.min(user.x_conf, user.y_conf), user_paint);
@@ -189,6 +191,7 @@ public class DynamicMap extends View {
         float center_x = (float) (projection_factor * (max_pad_x + cx));
         float center_y = (float) (projection_factor * (max_pad_y + cy));
         float proj_radius = (float) (projection_factor* radius);
+        Log.i("DynamicMap", "Router at " + Double.toString(cx) + ", " + Double.toString(cy));
         canvas.drawCircle(center_x, center_y, proj_radius, paint);
     }
 

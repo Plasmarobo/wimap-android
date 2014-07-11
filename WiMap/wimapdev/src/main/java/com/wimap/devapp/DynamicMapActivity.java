@@ -24,9 +24,9 @@ public class DynamicMapActivity extends WiMapLocationSubscriber  {
         @Override
         public void onReceive(Context context, Intent intent)
         {
-            WiMapScanSubscriber parent = (WiMapScanSubscriber) context;
+            //WiMapScanSubscriber parent = (WiMapScanSubscriber) context;
             List<BasicResult> raw_scan = WiMapLocationService.getLatestScan();
-            parent.onScanResult(raw_scan);
+            onScanResult(raw_scan);
         }
     }
     ScanReceiver scanner;
