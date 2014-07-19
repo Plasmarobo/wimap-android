@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.DragEvent;
+import android.view.ScaleGestureDetector;
+import android.view.View;
 
 import com.wimap.api.RouterAPI;
 import com.wimap.common.Router;
@@ -19,6 +22,7 @@ import java.util.List;
 public class DynamicMapActivity extends WiMapLocationSubscriber  {
     DynamicMap map;
     List<Router> routers;
+
     protected class ScanReceiver extends BroadcastReceiver
     {
         @Override
@@ -33,10 +37,17 @@ public class DynamicMapActivity extends WiMapLocationSubscriber  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //sgt = new ScaleGestureDetector(this, )
         setContentView(R.layout.activity_dynamic_map);
         scanner = new ScanReceiver();
         registerReceiver(scanner, new IntentFilter(WiMapLocationService.RAW_READY));
         map = (DynamicMap) findViewById(R.id.map_view);
+        map.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                return false;
+            }
+        });
         RouterAPI router_api = new RouterAPI(this);
         routers = router_api.Routers();
         map.UpdateRouters(routers);

@@ -7,6 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.wimap.common.Router;
@@ -25,6 +28,30 @@ public class DynamicMap extends View {
     protected final double BASIC_DOT_SIZE = 0.25;
     protected final double BASIC_WALL_SIZE = 0.3; //Meters
     protected final double EDGE_WIDTH = 0.2; //Meters
+    protected ScaleGestureDetector sgt;
+    protected GestureDetector sogl;
+
+    private class PanDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2,
+                                float distanceX, float distanceY) {
+            // Scrolling uses math based on the viewport (as opposed to math using pixels).
+
+            // Pixel offset is the offset in screen pixels, while viewport offset is the
+            // offset within the current viewport.
+            x_offset = distanceX * getWidth();
+                  //  / mContentRect.width();
+            y_offset = -distanceY * getHeight();
+                  //  / mContentRect.height();
+            // Updates the viewport, refreshes the display.
+           // setViewportBottomLeft(
+           //         mCurrentViewport.left + viewportOffsetX,
+           //         mCurrentViewport.bottom + viewportOffsetY);
+           // ...
+            invalidate();
+            return true;
+        }
+    };
 
     List<Router> routers;
     Intersect user;
@@ -37,6 +64,8 @@ public class DynamicMap extends View {
     double min_x;
     double min_y;
     double min_z;
+    double x_offset;
+    double y_offset;
     Paint router_distance_paint;
     Paint router_point_paint;
     Paint user_paint;
@@ -57,23 +86,56 @@ public class DynamicMap extends View {
     public DynamicMap(Context context)
     {
         super(context);
+        InitGestures(context);
         Init();
     }
     public DynamicMap(Context context, AttributeSet attrs)
     {
         super(context,attrs);
+        InitGestures(context);
         Init();
     }
     public DynamicMap(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+        InitGestures(context);
         Init();
+    }
+
+    private class ScaleListener
+            extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scale *= detector.getScaleFactor();
+
+            // Don't let the object get too small or too large.
+            scale = Math.max(0.1f, Math.min(scale, 5.0f));
+
+            invalidate();
+            return true;
+        }
+    }
+
+    private void InitGestures(Context context)
+    {
+        sgt = new ScaleGestureDetector(context, new ScaleListener());
+        sogl = new GestureDetector(context, new PanDetector());
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        // Let the ScaleGestureDetector inspect all events.
+        boolean retVal = sgt.onTouchEvent(ev);
+        retVal = sogl.onTouchEvent(ev) || retVal;
+        return retVal || super.onTouchEvent(ev);
     }
 
     private void Init() {
         routers = new ArrayList<Router>();
         user = new Intersect();
-        scale = 5.0; //5 px per meter
+        scale = 1.0; //5 px per meter
+        x_offset = 0.0; //translation offset
+        y_offset = 0.0;
         min_x = min_y = min_z = 0.0;
         max_x = max_y = max_z = 1.0;
         max_pad_x = max_pad_y = 1.0;
@@ -152,6 +214,12 @@ public class DynamicMap extends View {
         this.invalidate();
     }
 
+    public void Offset(double x, double y)
+    {
+        this.x_offset += x;
+        this.y_offset += y;
+    }
+
     @Override
     protected void onDraw(Canvas canvas)
     {
@@ -160,8 +228,8 @@ public class DynamicMap extends View {
         int h = this.getHeight();
         //Normalize so that min = zero + pad
         //Normalize so that max = height - pad
-        double x_translation_factor = Math.ceil(-min_x);
-        double y_translation_factor = Math.ceil(-min_y);
+        double x_translation_factor = x_offset + Math.ceil(-min_x);
+        double y_translation_factor = y_offset + Math.ceil(-min_y);
 
         double virtual_width =  (Math.ceil(max_x + x_translation_factor) + (max_pad_x*2));
         double virtual_height =  (Math.ceil(max_y + y_translation_factor) + (max_pad_y*2));
