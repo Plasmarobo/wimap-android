@@ -39,15 +39,8 @@ public class DynamicMap extends View {
 
             // Pixel offset is the offset in screen pixels, while viewport offset is the
             // offset within the current viewport.
-            x_offset = distanceX * getWidth();
-                  //  / mContentRect.width();
-            y_offset = -distanceY * getHeight();
-                  //  / mContentRect.height();
-            // Updates the viewport, refreshes the display.
-           // setViewportBottomLeft(
-           //         mCurrentViewport.left + viewportOffsetX,
-           //         mCurrentViewport.bottom + viewportOffsetY);
-           // ...
+            Offset(x_offset - distanceX,  y_offset -distanceY); //* (float) getWidth(), -distanceY * (float)getWidth());
+            //Offset(distanceX, -distanceY);
             invalidate();
             return true;
         }
@@ -216,8 +209,8 @@ public class DynamicMap extends View {
 
     public void Offset(double x, double y)
     {
-        this.x_offset += x;
-        this.y_offset += y;
+        this.x_offset = x;
+        this.y_offset = y;
     }
 
     @Override
@@ -228,14 +221,14 @@ public class DynamicMap extends View {
         int h = this.getHeight();
         //Normalize so that min = zero + pad
         //Normalize so that max = height - pad
-        double x_translation_factor = x_offset + Math.ceil(-min_x);
-        double y_translation_factor = y_offset + Math.ceil(-min_y);
+        double x_translation_factor = x_offset + Math.ceil(-min_x)+max_pad_x;
+        double y_translation_factor = y_offset + Math.ceil(-min_y)+max_pad_y;
 
         double virtual_width =  (Math.ceil(max_x + x_translation_factor) + (max_pad_x*2));
         double virtual_height =  (Math.ceil(max_y + y_translation_factor) + (max_pad_y*2));
 
-        double x_proj_factor = (virtual_width)/(double)w;
-        double y_proj_factor = (virtual_height)/(double)h;
+        double x_proj_factor = (double)w/virtual_width;
+        double y_proj_factor = (double)h/virtual_height;
 
         projection_factor = Math.min(x_proj_factor,y_proj_factor) * scale;
 
@@ -246,27 +239,27 @@ public class DynamicMap extends View {
         router_distance_paint.setStrokeWidth((float)(EDGE_WIDTH*projection_factor));
         for(Router r : routers)
         {
-            projectCircle(canvas, r.x+x_translation_factor, r.y+y_translation_factor, r.GetFSPLDistance_d(r.power), router_distance_paint);
-            projectCircle(canvas, r.x+x_translation_factor, r.y+y_translation_factor, (float) (BASIC_DOT_SIZE*projection_factor), router_point_paint);
-            projectText(canvas, r.ssid + Double.toString(r.power), r.x + BASIC_DOT_SIZE*projection_factor, r.y - BASIC_DOT_SIZE * projection_factor, text_paint);
+            projectCircle(canvas, r.x,x_translation_factor, r.y,y_translation_factor, r.GetFSPLDistance_d(r.power), router_distance_paint);
+            projectCircle(canvas, r.x,x_translation_factor, r.y,y_translation_factor, (float) (BASIC_DOT_SIZE), router_point_paint);
+            projectText(canvas, r.ssid + Double.toString(r.power), r.x, x_translation_factor, r.y, y_translation_factor, text_paint);
         }
-        projectCircle(canvas, user.x, user.y, Math.min(user.x_conf, user.y_conf), user_paint);
+        projectCircle(canvas, user.x, x_translation_factor, user.y, y_translation_factor, Math.min(user.x_conf, user.y_conf), user_paint);
 
     }
 
-    protected void projectCircle(Canvas canvas, double cx, double cy, double radius, Paint paint)
+    protected void projectCircle(Canvas canvas, double cx, double tx, double cy, double ty, double radius, Paint paint)
     {
-        float center_x = (float) (projection_factor * (max_pad_x + cx));
-        float center_y = (float) (projection_factor * (max_pad_y + cy));
+        float center_x = (float) (projection_factor * cx + tx);
+        float center_y = (float) (projection_factor * cy + ty);
         float proj_radius = (float) (projection_factor* radius);
         Log.i("DynamicMap", "Router at " + Double.toString(cx) + ", " + Double.toString(cy));
         canvas.drawCircle(center_x, center_y, proj_radius, paint);
     }
 
-    protected void projectText(Canvas canvas, String text, double x, double y, Paint paint)
+    protected void projectText(Canvas canvas, String text, double x, double tx, double y, double ty, Paint paint)
     {
-        float p_x = (float)(projection_factor * (max_pad_x + x));
-        float p_y = (float)(projection_factor * (max_pad_y + y));
+        float p_x = (float)(projection_factor * x + tx);
+        float p_y = (float)(projection_factor * y + ty);
         canvas.drawText(text, p_x,p_y,paint);
     }
 }
