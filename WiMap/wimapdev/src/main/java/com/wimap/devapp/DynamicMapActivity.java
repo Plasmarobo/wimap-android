@@ -56,6 +56,7 @@ public class DynamicMapActivity extends WiMapLocationSubscriber  {
     @Override
     public void onLocation(Intersect location)
     {
+        super.onLocation(location);
         map.UpdatePosition(location);
     }
 

@@ -266,7 +266,7 @@ public class WiMapLocationService extends Service {
         List<AndroidRouter> routers = (List<AndroidRouter>)(List<?>)router_api.Routers();
         if(routers == null)
             return;
-        if(last_aggrigate.size() > 4)
+        if(last_aggrigate.size() >= 3)
         {
             List<RadialDistance> ld = new ArrayList<RadialDistance>();
             for(BasicResult sr : last_aggrigate)
@@ -286,7 +286,7 @@ public class WiMapLocationService extends Service {
                 }
             }
 
-            if(ld.size() >= 4)
+            if(ld.size() >= 3)
             {
                 Intersect point = new Intersect(ld, 0, 0, 128);
                 intent = new Intent();
