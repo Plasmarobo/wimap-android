@@ -224,8 +224,8 @@ public class DynamicMap extends View {
         double x_translation_factor = x_offset + Math.ceil(-min_x)+max_pad_x;
         double y_translation_factor = y_offset + Math.ceil(-min_y)+max_pad_y;
 
-        double virtual_width =  (Math.ceil(max_x + x_translation_factor) + (max_pad_x*2));
-        double virtual_height =  (Math.ceil(max_y + y_translation_factor) + (max_pad_y*2));
+        double virtual_width =  (Math.ceil(max_x) + (max_pad_x*2));
+        double virtual_height =  (Math.ceil(max_y) + (max_pad_y*2));
 
         double x_proj_factor = (double)w/virtual_width;
         double y_proj_factor = (double)h/virtual_height;
