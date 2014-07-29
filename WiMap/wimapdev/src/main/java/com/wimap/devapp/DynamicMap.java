@@ -137,7 +137,7 @@ public class DynamicMap extends View {
         user_paint = new Paint();
         wall_paint = new Paint();
         text_paint = new Paint();
-        router_point_paint.setARGB(255, 255, 255, 255);
+        router_point_paint.setARGB(255, 0, 0, 0);
         router_point_paint.setStyle(Paint.Style.FILL);
         router_distance_paint.setARGB(32, 255, 0, 0);
         router_distance_paint.setStyle(Paint.Style.FILL_AND_STROKE);

@@ -32,6 +32,8 @@ import java.util.List;
 
 public class SitesAPI extends CachedAPI {
 
+    public static final String SITE_UPDATED_ACTION = "com.wimap.wimapapi.SITE_UPDATED";
+
     public static final String SITES_ENDPOINT = "sites";
     public static final String SITES_FIELD = "site";
     public static final String SITES_PULL_FIELD = "location";

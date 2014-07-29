@@ -70,6 +70,7 @@ public class CalibrateActivity extends ScanListActivity {
                 rt.frequency = (data.getIntExtra("frequency", 2400));
 
 				routers.Push(rt);
+
 				Toast.makeText(this, "Commiting Router", Toast.LENGTH_SHORT).show();
 
                 this.listview.invalidate();

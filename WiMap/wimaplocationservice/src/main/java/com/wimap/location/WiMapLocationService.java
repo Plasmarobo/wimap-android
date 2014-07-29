@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.wimap.api.MessageAPI;
 import com.wimap.api.RouterAPI;
+import com.wimap.api.SitesAPI;
 import com.wimap.api.TracksAPI;
 import com.wimap.common.Track;
 import com.wimap.common.math.Intersect;
@@ -48,6 +49,7 @@ public class WiMapLocationService extends Service {
     protected WifiLock lock;
     protected Timer timer;
     protected ScanReceiver scanner;
+    protected SiteUpdateReceiver site_listener;
     protected static List<BasicResult> last_scan;
     protected static List<BasicResult> last_aggrigate;
     //protected static KalmanFilter kalman_filter;
@@ -118,6 +120,15 @@ public class WiMapLocationService extends Service {
         }
     }
 
+    public class SiteUpdateReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context c, Intent intent)
+        {
+            updateSite(intent.getIntExtra("site", 0));
+        }
+    }
+
     // Unique Identification Number for the Notification.
     // We use it on Notification start, and to cancel it.
     private static final int SERVICEUID = 74657922;
@@ -135,6 +146,7 @@ public class WiMapLocationService extends Service {
         }
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -150,10 +162,12 @@ public class WiMapLocationService extends Service {
         this.aggrigate_index = 0;
         router_api = new RouterAPI(this.getBaseContext());
         tracks_api = new TracksAPI(this.getBaseContext());
-
-        this.filters = WiMapWifiFilter.GenerateFilters(router_api, SAMPLE_COUNT);
+        this.updateSite(0);
+        //this.filters = WiMapWifiFilter.GenerateFilters(router_api, SAMPLE_COUNT);
         scanner = new ScanReceiver();
+        site_listener = new SiteUpdateReceiver();
         registerReceiver(scanner, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+        registerReceiver(site_listener, new IntentFilter(SitesAPI.SITE_UPDATED_ACTION));
         Log.v("Wifi Scanner", "Starting Scanner");
         while(!this.wifi_man.isWifiEnabled())
         {
@@ -343,5 +357,11 @@ public class WiMapLocationService extends Service {
         };
         new Thread(service).start();
         return service;
+    }
+
+    public void updateSite(int site)
+    {
+        router_api.SetSite(site);
+        this.filters = WiMapWifiFilter.GenerateFilters(router_api, SAMPLE_COUNT);
     }
 }

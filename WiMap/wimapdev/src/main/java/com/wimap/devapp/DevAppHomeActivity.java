@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.wimap.api.SitesAPI;
 import com.wimap.common.Site;
 import com.wimap.devapp.lists.SelectSiteActivity;
 import com.wimap.location.WiMapLocationService;
@@ -68,6 +69,9 @@ public class DevAppHomeActivity extends Activity {
                 current_site.name = data.getStringExtra("name");
                 TextView site_text = (TextView)findViewById(R.id.site_text);
                 site_text.setText(current_site.name + "(" + Integer.toString(current_site.id) + ")");
+                Intent intent = new Intent();
+                intent.setAction(SitesAPI.SITE_UPDATED_ACTION);
+                sendBroadcast(intent);
                 findViewById(R.id.devapphome_root).invalidate();
             }
 
