@@ -245,6 +245,7 @@ public class WiMapLocationService extends Service {
                 .setContentIntent(focusIntent)
                 .addAction(R.drawable.ic_wimap_clear_normal, "Stop", deleteIntent)
                 .setSmallIcon(R.drawable.ic_wimap_target)
+                .setPriority(2)
                 .build();
 
         startForeground(service_id, n);

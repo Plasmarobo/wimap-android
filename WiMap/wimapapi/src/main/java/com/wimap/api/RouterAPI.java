@@ -161,7 +161,7 @@ public class RouterAPI extends CachedAPI {
         while(iterator.hasNext())
         {
             Router r = iterator.next();
-            ContentValues cv = new ContentValues();
+            /*ContentValues cv = new ContentValues();
             cv.put("id", r.id);
             cv.put("x", r.x);
             cv.put("y", r.y);
@@ -171,9 +171,24 @@ public class RouterAPI extends CachedAPI {
             cv.put("power", r.power);
             cv.put("frequency", r.frequency);
             cv.put("site_id", r.site_id);
-            cv.put("tx_power", r.tx_power);
+            cv.put("tx_power", r.tx_power);*/
             try {
-                local_db.insert("ROUTERS", null, cv);
+                local_db.execSQL(
+                        "INSERT OR REPLACE INTO ROUTERS (id, x, y, z, ssid, uid, power, frequency,"+
+                                "siteid, tx_power) VALUES ("+
+                                r.id + ","+
+                                r.x + ","+
+                                r.y + ","+
+                                r.z + ","+
+                                r.ssid + ","+
+                                r.uid + ","+
+                                r.power + ","+
+                                r.frequency + ","+
+                                r.site_id + ","+
+                                r.tx_power+ ","+
+                                ");"
+                );
+                //local_db.insert("ROUTERS", null, cv);
             }catch(SQLiteException e){
                 Log.e("Sqlite", e.getMessage());
                 return false;
